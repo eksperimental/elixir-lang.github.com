@@ -1,0 +1,1090 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.11.4">
+    <title>Set – Elixir v1.1.1</title>
+    <link rel="stylesheet" href="dist/app-ddd9717ad9.css" />
+    
+      <link rel="canonical" href="https://hexdocs.pm/elixir/Set.html" />
+    
+    <script src="dist/sidebar_items.js"></script>
+  </head>
+  <body data-type="modules">
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+  <button class="sidebar-toggle">
+    <i class="icon-menu"></i>
+  </button>
+
+  
+  <a href="http://elixir-lang.org/docs.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        Elixir
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v1.1.1
+      </h2>
+    </div>
+    
+      <img src="assets/logo.png" alt="Elixir" class="sidebar-projectImage">
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+      <li><a id="exceptions-list" href="#full-list">Exceptions</a></li>
+    
+
+    
+      <li><a id="protocols-list" href="#full-list">Protocols</a></li>
+    
+  </ul>
+
+  <ul id="full-list" class="sidebar-fullList"></ul>
+  <div class="sidebar-noResults"></div>
+</section>
+
+<section class="content">
+  <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">Elixir v1.1.1</small>
+        Set
+        
+          <small>behaviour</small>
+        
+        
+          <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/set.ex#L1" title="View Source" class="view-source" rel="help">
+            <i class="icon-code"></i>
+          </a>
+        
+      </h1>
+
+      
+        <section id="moduledoc" class="docstring">
+          <p>This module specifies the <a href="Set.html#content"><code class="inline">Set</code></a> behaviour expected to be
+implemented by different representations of sets.</p>
+<p>It also provides functions that redirect to the
+underlying implementation, allowing a developer to work with
+different <a href="Set.html#content"><code class="inline">Set</code></a> implementations using a common API.</p>
+<p>To create a new set, use the <code class="inline">new</code> function which each set implementation
+defines:</p>
+<pre><code class="elixir">HashSet.new  #=&gt; creates an empty HashSet</code></pre>
+<p>In the examples below, <code class="inline">set_impl</code> means a specific
+<a href="Set.html#content"><code class="inline">Set</code></a> implementation, for example <a href="HashSet.html"><code class="inline">HashSet</code></a>.</p>
+<h2>Protocols</h2>
+<p>Sets are required to implement both the <a href="Enumerable.html"><code class="inline">Enumerable</code></a> and <a href="Collectable.html"><code class="inline">Collectable</code></a>
+protocols.</p>
+<h2>Matching</h2>
+<p>Sets are required to implement all equality checks using the match (<code class="inline">===</code>)
+operator.</p>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <i class="icon-link"></i>
+            </a>
+            Summary
+          </h1>
+          
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:t/0">t()</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:value/0">value()</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:values/0">values()</a>
+  </div>
+  
+</div>
+
+  </div>
+
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#delete/2">delete(set, value)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Deletes <code class="inline">value</code> from <code class="inline">set</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#difference/2">difference(set1, set2)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns a set that is <code class="inline">set1</code> without the members of <code class="inline">set2</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#disjoint?/2">disjoint?(set1, set2)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Checks if <code class="inline">set1</code> and <code class="inline">set2</code> have no members in common</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#equal?/2">equal?(set1, set2)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Checks if two sets are equal using <code class="inline">===</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#intersection/2">intersection(set1, set2)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns a set containing only members that <code class="inline">set1</code> and <code class="inline">set2</code> have in common</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#member?/2">member?(set, value)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Checks if <code class="inline">set</code> contains <code class="inline">value</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#put/2">put(set, value)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Inserts <code class="inline">value</code> into <code class="inline">set</code> if <code class="inline">set</code> doesn’t already contain it</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#size/1">size(set)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns the number of elements in <code class="inline">set</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#subset?/2">subset?(set1, set2)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Checks if <code class="inline">set1</code>‘s members are all contained in <code class="inline">set2</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#to_list/1">to_list(set)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Converts <code class="inline">set</code> to a list</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#union/2">union(set1, set2)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns a set containing all members of <code class="inline">set1</code> and <code class="inline">set2</code></p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+
+          
+  <div class="summary-callbacks summary">
+    <h2>
+      <a href="#callbacks">Callbacks</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:delete/2">delete(t, value)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:difference/2">difference(t, t)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:disjoint?/2">disjoint?(t, t)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:equal?/2">equal?(t, t)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:intersection/2">intersection(t, t)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:member?/2">member?(t, value)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:new/0">new()</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:put/2">put(t, value)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:size/1">size(t)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:subset?/2">subset?(t, t)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:to_list/1">to_list(t)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:union/2">union(t, t)</a>
+  </div>
+  
+</div>
+
+  </div>
+
+
+        </section>
+      
+
+      
+        <section id="types" class="types details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <i class="icon-link"></i>
+            </a>
+            Types
+          </h1>
+          <div class="types-list">
+            <div id="t:t/0" class="type-detail">
+  <pre><code class="elixir"><a href="#t:t/0">t</a> :: map</code></pre>
+  
+</div>
+<div id="t:value/0" class="type-detail">
+  <pre><code class="elixir"><a href="#t:value/0">value</a> :: any</code></pre>
+  
+</div>
+<div id="t:values/0" class="type-detail">
+  <pre><code class="elixir"><a href="#t:values/0">values</a> :: [<a href="#t:value/0">value</a>]</code></pre>
+  
+</div>
+
+          </div>
+        </section>
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <i class="icon-link"></i>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="delete/2">
+  <div class="detail-header">
+    <a href="#delete/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">delete(set, value)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/set.ex#L74" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">delete(<a href="#t:t/0">t</a>, <a href="#t:value/0">value</a>) :: <a href="#t:t/0">t</a></code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Deletes <code class="inline">value</code> from <code class="inline">set</code>.</p>
+<p>Returns a new set which is a copy of <code class="inline">set</code> but without <code class="inline">value</code>.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; s = Enum.into([1, 2, 3], set_impl.new)
+iex&gt; Set.delete(s, 4) |&gt; Enum.sort
+[1, 2, 3]
+
+iex&gt; s = Enum.into([1, 2, 3], set_impl.new)
+iex&gt; Set.delete(s, 2) |&gt; Enum.sort
+[1, 3]</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="difference/2">
+  <div class="detail-header">
+    <a href="#difference/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">difference(set1, set2)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/set.ex#L93" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">difference(<a href="#t:t/0">t</a>, <a href="#t:t/0">t</a>) :: <a href="#t:t/0">t</a></code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Returns a set that is <code class="inline">set1</code> without the members of <code class="inline">set2</code>.</p>
+<p>Note that this function is polymorphic as it calculates the difference for
+sets of the same type as well as of sets of different types. Each set
+implementation also provides a <code class="inline">difference</code> function which only works with
+sets of that type.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; Set.difference(Enum.into([1, 2], set_impl.new), Enum.into([2, 3, 4], set_impl.new)) |&gt; Enum.sort
+[1]</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="disjoint?/2">
+  <div class="detail-header">
+    <a href="#disjoint?/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">disjoint?(set1, set2)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/set.ex#L123" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">disjoint?(<a href="#t:t/0">t</a>, <a href="#t:t/0">t</a>) :: boolean</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Checks if <code class="inline">set1</code> and <code class="inline">set2</code> have no members in common.</p>
+<p>Note that this function is polymorphic as it checks for disjoint sets of
+any type. Each set implementation also provides a <code class="inline">disjoint?</code> function,
+but that function can only work with sets of the same type.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; Set.disjoint?(Enum.into([1, 2], set_impl.new), Enum.into([3, 4], set_impl.new))
+true
+
+iex&gt; Set.disjoint?(Enum.into([1, 2], set_impl.new), Enum.into([2, 3], set_impl.new))
+false</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="equal?/2">
+  <div class="detail-header">
+    <a href="#equal?/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">equal?(set1, set2)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/set.ex#L162" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">equal?(<a href="#t:t/0">t</a>, <a href="#t:t/0">t</a>) :: boolean</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Checks if two sets are equal using <code class="inline">===</code>.</p>
+<p>Note that this function is polymorphic as it compares sets of
+any type. Each set implementation also provides an <code class="inline">equal?</code>
+function, but that function can only work with sets of the same type.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; Set.equal?(Enum.into([1, 2], set_impl.new), Enum.into([2, 1, 1], set_impl.new))
+true
+
+iex&gt; Set.equal?(Enum.into([1, 2], set_impl.new), Enum.into([3, 4], set_impl.new))
+false</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="intersection/2">
+  <div class="detail-header">
+    <a href="#intersection/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">intersection(set1, set2)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/set.ex#L195" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">intersection(<a href="#t:t/0">t</a>, <a href="#t:t/0">t</a>) :: <a href="#t:t/0">t</a></code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Returns a set containing only members that <code class="inline">set1</code> and <code class="inline">set2</code> have in common.</p>
+<p>Note that this function is polymorphic as it calculates the intersection of
+any type. Each set implementation also provides an <code class="inline">intersection</code> function,
+but that function can only work with sets of the same type.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; Set.intersection(Enum.into([1, 2], set_impl.new), Enum.into([2, 3, 4], set_impl.new)) |&gt; Enum.sort
+[2]
+
+iex&gt; Set.intersection(Enum.into([1, 2], set_impl.new), Enum.into([3, 4], set_impl.new)) |&gt; Enum.sort
+[]</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="member?/2">
+  <div class="detail-header">
+    <a href="#member?/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">member?(set, value)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/set.ex#L221" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">member?(<a href="#t:t/0">t</a>, <a href="#t:value/0">value</a>) :: boolean</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Checks if <code class="inline">set</code> contains <code class="inline">value</code>.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; Set.member?(Enum.into([1, 2, 3], set_impl.new), 2)
+true
+
+iex&gt; Set.member?(Enum.into([1, 2, 3], set_impl.new), 4)
+false</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="put/2">
+  <div class="detail-header">
+    <a href="#put/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">put(set, value)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/set.ex#L238" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">put(<a href="#t:t/0">t</a>, <a href="#t:value/0">value</a>) :: <a href="#t:t/0">t</a></code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Inserts <code class="inline">value</code> into <code class="inline">set</code> if <code class="inline">set</code> doesn’t already contain it.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; Set.put(Enum.into([1, 2, 3], set_impl.new), 3) |&gt; Enum.sort
+[1, 2, 3]
+
+iex&gt; Set.put(Enum.into([1, 2, 3], set_impl.new), 4) |&gt; Enum.sort
+[1, 2, 3, 4]</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="size/1">
+  <div class="detail-header">
+    <a href="#size/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">size(set)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/set.ex#L252" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">size(<a href="#t:t/0">t</a>) :: non_neg_integer</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Returns the number of elements in <code class="inline">set</code>.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; Set.size(Enum.into([1, 2, 3], set_impl.new))
+3</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="subset?/2">
+  <div class="detail-header">
+    <a href="#subset?/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">subset?(set1, set2)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/set.ex#L275" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">subset?(<a href="#t:t/0">t</a>, <a href="#t:t/0">t</a>) :: boolean</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Checks if <code class="inline">set1</code>‘s members are all contained in <code class="inline">set2</code>.</p>
+<p>This function checks if <code class="inline">set1</code> is a subset of <code class="inline">set2</code>.</p>
+<p>Note that this function is polymorphic as it checks the subset for
+any type. Each set implementation also provides a <code class="inline">subset?</code> function,
+but that function can only work with sets of the same type.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; Set.subset?(Enum.into([1, 2], set_impl.new), Enum.into([1, 2, 3], set_impl.new))
+true
+
+iex&gt; Set.subset?(Enum.into([1, 2, 3], set_impl.new), Enum.into([1, 2], set_impl.new))
+false</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="to_list/1">
+  <div class="detail-header">
+    <a href="#to_list/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">to_list(set)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/set.ex#L296" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">to_list(<a href="#t:t/0">t</a>) :: list</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Converts <code class="inline">set</code> to a list.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; set_impl.to_list(Enum.into([1, 2, 3], set_impl.new)) |&gt; Enum.sort
+[1, 2, 3]</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="union/2">
+  <div class="detail-header">
+    <a href="#union/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">union(set1, set2)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/set.ex#L314" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">union(<a href="#t:t/0">t</a>, <a href="#t:t/0">t</a>) :: <a href="#t:t/0">t</a></code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Returns a set containing all members of <code class="inline">set1</code> and <code class="inline">set2</code>.</p>
+<p>Note that this function is polymorphic as it calculates the union of sets of
+any type. Each set implementation also provides a <code class="inline">union</code> function,
+but that function can only work with sets of the same type.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; Set.union(Enum.into([1, 2], set_impl.new), Enum.into([2, 3, 4], set_impl.new)) |&gt; Enum.sort
+[1, 2, 3, 4]</code></pre>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+
+      
+        <section id="callbacks" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#callbacks">
+              <i class="icon-link"></i>
+            </a>
+            Callbacks
+          </h1>
+          <div class="detail" id="c:delete/2">
+  <div class="detail-header">
+    <a href="#c:delete/2" class="detail-link" title="Link to this callback">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">delete(t, value)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/set.ex#L34" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">delete(<a href="#t:t/0">t</a>, <a href="#t:value/0">value</a>) :: <a href="#t:t/0">t</a></code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="c:difference/2">
+  <div class="detail-header">
+    <a href="#c:difference/2" class="detail-link" title="Link to this callback">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">difference(t, t)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/set.ex#L35" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">difference(<a href="#t:t/0">t</a>, <a href="#t:t/0">t</a>) :: <a href="#t:t/0">t</a></code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="c:disjoint?/2">
+  <div class="detail-header">
+    <a href="#c:disjoint?/2" class="detail-link" title="Link to this callback">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">disjoint?(t, t)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/set.ex#L36" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">disjoint?(<a href="#t:t/0">t</a>, <a href="#t:t/0">t</a>) :: boolean</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="c:equal?/2">
+  <div class="detail-header">
+    <a href="#c:equal?/2" class="detail-link" title="Link to this callback">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">equal?(t, t)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/set.ex#L37" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">equal?(<a href="#t:t/0">t</a>, <a href="#t:t/0">t</a>) :: boolean</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="c:intersection/2">
+  <div class="detail-header">
+    <a href="#c:intersection/2" class="detail-link" title="Link to this callback">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">intersection(t, t)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/set.ex#L38" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">intersection(<a href="#t:t/0">t</a>, <a href="#t:t/0">t</a>) :: <a href="#t:t/0">t</a></code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="c:member?/2">
+  <div class="detail-header">
+    <a href="#c:member?/2" class="detail-link" title="Link to this callback">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">member?(t, value)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/set.ex#L39" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">member?(<a href="#t:t/0">t</a>, <a href="#t:value/0">value</a>) :: boolean</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="c:new/0">
+  <div class="detail-header">
+    <a href="#c:new/0" class="detail-link" title="Link to this callback">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">new()</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/set.ex#L33" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">new :: <a href="#t:t/0">t</a></code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="c:put/2">
+  <div class="detail-header">
+    <a href="#c:put/2" class="detail-link" title="Link to this callback">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">put(t, value)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/set.ex#L40" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">put(<a href="#t:t/0">t</a>, <a href="#t:value/0">value</a>) :: <a href="#t:t/0">t</a></code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="c:size/1">
+  <div class="detail-header">
+    <a href="#c:size/1" class="detail-link" title="Link to this callback">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">size(t)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/set.ex#L41" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">size(<a href="#t:t/0">t</a>) :: non_neg_integer</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="c:subset?/2">
+  <div class="detail-header">
+    <a href="#c:subset?/2" class="detail-link" title="Link to this callback">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">subset?(t, t)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/set.ex#L42" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">subset?(<a href="#t:t/0">t</a>, <a href="#t:t/0">t</a>) :: boolean</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="c:to_list/1">
+  <div class="detail-header">
+    <a href="#c:to_list/1" class="detail-link" title="Link to this callback">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">to_list(t)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/set.ex#L43" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">to_list(<a href="#t:t/0">t</a>) :: list</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="c:union/2">
+  <div class="detail-header">
+    <a href="#c:union/2" class="detail-link" title="Link to this callback">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">union(t, t)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/set.ex#L44" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">union(<a href="#t:t/0">t</a>, <a href="#t:t/0">t</a>) :: <a href="#t:t/0">t</a></code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+
+        </section>
+      
+        <footer class="footer">
+      <p>
+        <span class="line">
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.11.4),
+        </span>
+        <span class="line">
+          designed by
+          <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+      </p>
+      <button class="night-mode-toggle" />
+    </footer>
+  </div>
+</section>
+</div>
+  <script src="dist/app-6d2e071366.js"></script>
+  </body>
+</html>
+

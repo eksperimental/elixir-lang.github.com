@@ -1,0 +1,676 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.14.2">
+    <title>Supervisor.Spec – Elixir v1.3.4</title>
+    <link rel="stylesheet" href="dist/app-23e810f3fe.css" />
+    
+      <link rel="canonical" href="https://hexdocs.pm/elixir/Supervisor.Spec.html" />
+    
+    <script src="dist/sidebar_items.js"></script>
+  </head>
+  <body data-type="modules">
+    <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+
+  
+  <a href="http://elixir-lang.org/docs.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        Elixir
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v1.3.4
+      </h2>
+    </div>
+    
+      <img src="assets/logo.png" alt="Elixir" class="sidebar-projectImage">
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+      <li><a id="exceptions-list" href="#full-list">Exceptions</a></li>
+    
+
+    
+      <li><a id="protocols-list" href="#full-list">Protocols</a></li>
+    
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">Elixir v1.3.4</small>
+        Supervisor.Spec
+        
+        
+          <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/supervisor/spec.ex#L1" title="View Source" class="view-source" rel="help">
+            <i class="icon-code"></i>
+          </a>
+        
+      </h1>
+
+      
+        <section id="moduledoc">
+          <p>Convenience functions for defining supervisor specifications.</p>
+<h2 id="module-example" class="section-heading">
+  <a href="#module-example" class="hover-link"><i class="icon-link"></i></a>
+  Example
+</h2>
+
+<p>By using the functions in this module one can specify the children
+to be used under a supervisor, started with <a href="Supervisor.html#start_link/2"><code class="inline">Supervisor.start_link/2</code></a>:</p>
+<pre><code class="elixir">import Supervisor.Spec
+
+children = [
+  worker(MyWorker, [arg1, arg2, arg3]),
+  supervisor(MySupervisor, [arg1])
+]
+
+Supervisor.start_link(children, strategy: :one_for_one)</code></pre>
+<p>Sometimes, it may be handy to define supervisors backed
+by a module:</p>
+<pre><code class="elixir">defmodule MySupervisor do
+  use Supervisor
+
+  def start_link(arg) do
+    Supervisor.start_link(__MODULE__, arg)
+  end
+
+  def init(arg) do
+    children = [
+      worker(MyWorker, [arg], restart: :temporary)
+    ]
+
+    supervise(children, strategy: :simple_one_for_one)
+  end
+end</code></pre>
+<p>Notice in this case we don’t have to explicitly import
+<a href="Supervisor.Spec.html#content"><code class="inline">Supervisor.Spec</code></a> as <code class="inline">use Supervisor</code> automatically does so.
+Defining a module-based supervisor can be useful, for example,
+to perform initialization tasks in the <code class="inline">init/1</code> callback.</p>
+<h2 id="module-supervisor-and-worker-options" class="section-heading">
+  <a href="#module-supervisor-and-worker-options" class="hover-link"><i class="icon-link"></i></a>
+  Supervisor and worker options
+</h2>
+
+<p>In the example above, we defined specs for workers and supervisors.
+These specs (both for workers as well as supervisors) accept the
+following options:</p>
+<ul>
+<li><p><code class="inline">:id</code> - a name used to identify the child specification
+internally by the supervisor; defaults to the given module
+name for the child worker/supervisor</p>
+</li>
+<li><p><code class="inline">:function</code> - the function to invoke on the child to start it</p>
+</li>
+<li><p><code class="inline">:restart</code> - an atom that defines when a terminated child process should
+be restarted (see the “Restart values” section below)</p>
+</li>
+<li><p><code class="inline">:shutdown</code> - an atom that defines how a child process should be
+terminated (see the “Shutdown values” section below)</p>
+</li>
+<li><code class="inline">:modules</code> - it should be a list with one element <code class="inline">[module]</code>,
+where module is the name of the callback module only if the
+child process is a <a href="Supervisor.html"><code class="inline">Supervisor</code></a> or <a href="GenServer.html"><code class="inline">GenServer</code></a>; if the child
+process is a <a href="GenEvent.html"><code class="inline">GenEvent</code></a>, <code class="inline">:modules</code> should be <code class="inline">:dynamic</code>
+</li>
+</ul>
+<h3>Restart values (:restart)</h3>
+<p>The following restart values are supported in the <code class="inline">:restart</code> option:</p>
+<ul>
+<li><p><code class="inline">:permanent</code> - the child process is always restarted</p>
+</li>
+<li><p><code class="inline">:temporary</code> - the child process is never restarted (not even
+when the supervisor’s strategy is <code class="inline">:rest_for_one</code> or <code class="inline">:one_for_all</code>)</p>
+</li>
+<li><code class="inline">:transient</code> - the child process is restarted only if it
+terminates abnormally, i.e., with an exit reason other than
+<code class="inline">:normal</code>, <code class="inline">:shutdown</code> or <code class="inline">{:shutdown, term}</code>
+</li>
+</ul>
+<h3>Shutdown values (:shutdown)</h3>
+<p>The following shutdown values are supported in the <code class="inline">:shutdown</code> option:</p>
+<ul>
+<li><p><code class="inline">:brutal_kill</code> - the child process is unconditionally terminated
+using <code class="inline">exit(child, :kill)</code></p>
+</li>
+<li><p><code class="inline">:infinity</code> - if the child process is a supervisor, this is a mechanism
+to give the subtree enough time to shutdown; it can also be used with
+workers with care</p>
+</li>
+<li>any integer - the value of <code class="inline">:shutdown</code> can also be any integer meaning
+that the supervisor tells the child process to terminate by calling
+<code class="inline">Process.exit(child, :shutdown)</code> and then waits for an exit signal back.
+If no exit signal is received within the specified time (the value of this
+option, in milliseconds), the child process is unconditionally terminated
+using <code class="inline">Process.exit(child, :kill)</code>
+</li>
+</ul>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <i class="icon-link"></i>
+            </a>
+            Summary
+          </h1>
+          
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:child_id/0">child_id()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Supported id values</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:modules/0">modules()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Supported module values</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:restart/0">restart()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Supported restart values</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:shutdown/0">shutdown()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Supported shutdown values</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:spec/0">spec()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>The supervisor specification</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:strategy/0">strategy()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Supported strategies</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:worker/0">worker()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Supported worker values</p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#supervise/2">supervise(children, options)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Receives a list of children (workers or supervisors) to
+supervise and a set of options</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#supervisor/3">supervisor(module, args, options \\ [])</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Defines the given <code class="inline">module</code> as a supervisor which will be started
+with the given arguments</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#worker/3">worker(module, args, options \\ [])</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Defines the given <code class="inline">module</code> as a worker which will be started
+with the given arguments</p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+
+          
+
+        </section>
+      
+
+      
+        <section id="types" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <i class="icon-link"></i>
+            </a>
+            Types
+          </h1>
+          <div class="types-list">
+            <div class="detail" id="t:child_id/0">
+  
+  <div class="detail-header">
+    <a href="#t:child_id/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">child_id()</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/supervisor/spec.ex#L116" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre><a href="#t:child_id/0">child_id</a> :: term</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Supported id values</p>
+
+  </section>
+</div>
+<div class="detail" id="t:modules/0">
+  
+  <div class="detail-header">
+    <a href="#t:modules/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">modules()</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/supervisor/spec.ex#L113" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre><a href="#t:modules/0">modules</a> :: :dynamic | [module]</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Supported module values</p>
+
+  </section>
+</div>
+<div class="detail" id="t:restart/0">
+  
+  <div class="detail-header">
+    <a href="#t:restart/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">restart()</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/supervisor/spec.ex#L104" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre><a href="#t:restart/0">restart</a> :: :permanent | :transient | :temporary</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Supported restart values</p>
+
+  </section>
+</div>
+<div class="detail" id="t:shutdown/0">
+  
+  <div class="detail-header">
+    <a href="#t:shutdown/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">shutdown()</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/supervisor/spec.ex#L107" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre><a href="#t:shutdown/0">shutdown</a> :: :brutal_kill | :infinity | non_neg_integer</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Supported shutdown values</p>
+
+  </section>
+</div>
+<div class="detail" id="t:spec/0">
+  
+  <div class="detail-header">
+    <a href="#t:spec/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">spec()</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/supervisor/spec.ex#L119" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre><a href="#t:spec/0">spec</a> :: {<a href="#t:child_id/0">child_id</a>, start_fun :: {module, atom, [term]}, <a href="#t:restart/0">restart</a>, <a href="#t:shutdown/0">shutdown</a>, <a href="#t:worker/0">worker</a>, <a href="#t:modules/0">modules</a>}</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>The supervisor specification</p>
+
+  </section>
+</div>
+<div class="detail" id="t:strategy/0">
+  
+  <div class="detail-header">
+    <a href="#t:strategy/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">strategy()</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/supervisor/spec.ex#L101" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre><a href="#t:strategy/0">strategy</a> ::
+  :simple_one_for_one |
+  :one_for_one |
+  :one_for_all |
+  :rest_for_one</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Supported strategies</p>
+
+  </section>
+</div>
+<div class="detail" id="t:worker/0">
+  
+  <div class="detail-header">
+    <a href="#t:worker/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">worker()</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/supervisor/spec.ex#L110" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre><a href="#t:worker/0">worker</a> :: :worker | :supervisor</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Supported worker values</p>
+
+  </section>
+</div>
+
+          </div>
+        </section>
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <i class="icon-link"></i>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="supervise/2">
+  
+  <div class="detail-header">
+    <a href="#supervise/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">supervise(children, options)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/supervisor/spec.ex#L161" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>supervise([<a href="#t:spec/0">spec</a>], strategy: <a href="#t:strategy/0">strategy</a>, max_restarts: non_neg_integer, max_seconds: non_neg_integer) :: {:ok, tuple}</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Receives a list of children (workers or supervisors) to
+supervise and a set of options.</p>
+<p>Returns a tuple containing the supervisor specification. This tuple can be
+used as the return value of the <code class="inline">init/1</code> callback when implementing a
+module-based supervisor.</p>
+<h2 id="supervise/2-examples" class="section-heading">
+  <a href="#supervise/2-examples" class="hover-link"><i class="icon-link"></i></a>
+  Examples
+</h2>
+
+<pre><code class="elixir">supervise(children, strategy: :one_for_one)</code></pre>
+<h2 id="supervise/2-options" class="section-heading">
+  <a href="#supervise/2-options" class="hover-link"><i class="icon-link"></i></a>
+  Options
+</h2>
+
+<ul>
+<li><p><code class="inline">:strategy</code> - the restart strategy option. It can be either
+<code class="inline">:one_for_one</code>, <code class="inline">:rest_for_one</code>, <code class="inline">:one_for_all</code>, or
+<code class="inline">:simple_one_for_one</code>. You can learn more about strategies
+in the <a href="Supervisor.html"><code class="inline">Supervisor</code></a> module docs.</p>
+</li>
+<li><p><code class="inline">:max_restarts</code> - the maximum amount of restarts allowed in
+a time frame. Defaults to <code class="inline">3</code>.</p>
+</li>
+<li><code class="inline">:max_seconds</code> - the time frame in which <code class="inline">:max_restarts</code> applies.
+Defaults to <code class="inline">5</code>.
+</li>
+</ul>
+<p>The <code class="inline">:strategy</code> option is required and by default a maximum of 3 restarts is
+allowed within 5 seconds. Check the <a href="Supervisor.html"><code class="inline">Supervisor</code></a> module for a detailed
+description of the available strategies.</p>
+
+  </section>
+</div>
+<div class="detail" id="supervisor/3">
+  
+    <span id="supervisor/2" />
+  
+  <div class="detail-header">
+    <a href="#supervisor/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">supervisor(module, args, options \\ [])</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/supervisor/spec.ex#L231" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>supervisor(module, [term], restart: <a href="#t:restart/0">restart</a>, shutdown: <a href="#t:shutdown/0">shutdown</a>, id: term, function: atom, modules: <a href="#t:modules/0">modules</a>) :: <a href="#t:spec/0">spec</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Defines the given <code class="inline">module</code> as a supervisor which will be started
+with the given arguments.</p>
+<pre><code class="elixir">supervisor(ExUnit.Runner, [], restart: :permanent)</code></pre>
+<p>By default, the function <code class="inline">start_link</code> is invoked on the given
+module. Overall, the default values for the options are:</p>
+<pre><code class="elixir">[id: module,
+ function: :start_link,
+ restart: :permanent,
+ shutdown: :infinity,
+ modules: [module]]</code></pre>
+<p>Check the documentation for the <a href="Supervisor.Spec.html#content"><code class="inline">Supervisor.Spec</code></a> module for more
+information on the options.</p>
+
+  </section>
+</div>
+<div class="detail" id="worker/3">
+  
+    <span id="worker/2" />
+  
+  <div class="detail-header">
+    <a href="#worker/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">worker(module, args, options \\ [])</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/supervisor/spec.ex#L207" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>worker(module, [term], restart: <a href="#t:restart/0">restart</a>, shutdown: <a href="#t:shutdown/0">shutdown</a>, id: term, function: atom, modules: <a href="#t:modules/0">modules</a>) :: <a href="#t:spec/0">spec</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Defines the given <code class="inline">module</code> as a worker which will be started
+with the given arguments.</p>
+<pre><code class="elixir">worker(ExUnit.Runner, [], restart: :permanent)</code></pre>
+<p>By default, the function <code class="inline">start_link</code> is invoked on the given
+module. Overall, the default values for the options are:</p>
+<pre><code class="elixir">[id: module,
+ function: :start_link,
+ restart: :permanent,
+ shutdown: 5000,
+ modules: [module]]</code></pre>
+<p>Check the documentation for the <a href="Supervisor.Spec.html#content"><code class="inline">Supervisor.Spec</code></a> module for more
+information on the options.</p>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+
+      
+          <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.14.2),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle" />
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  <script src="dist/app-f0381555b5.js"></script>
+  </body>
+</html>
+

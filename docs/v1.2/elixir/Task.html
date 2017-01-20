@@ -1,0 +1,872 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.11.4">
+    <title>Task – Elixir v1.2.6</title>
+    <link rel="stylesheet" href="dist/app-ddd9717ad9.css" />
+    
+      <link rel="canonical" href="https://hexdocs.pm/elixir/Task.html" />
+    
+    <script src="dist/sidebar_items.js"></script>
+  </head>
+  <body data-type="modules">
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+  <button class="sidebar-toggle">
+    <i class="icon-menu"></i>
+  </button>
+
+  
+  <a href="http://elixir-lang.org/docs.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        Elixir
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v1.2.6
+      </h2>
+    </div>
+    
+      <img src="assets/logo.png" alt="Elixir" class="sidebar-projectImage">
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+      <li><a id="exceptions-list" href="#full-list">Exceptions</a></li>
+    
+
+    
+      <li><a id="protocols-list" href="#full-list">Protocols</a></li>
+    
+  </ul>
+
+  <ul id="full-list" class="sidebar-fullList"></ul>
+  <div class="sidebar-noResults"></div>
+</section>
+
+<section class="content">
+  <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">Elixir v1.2.6</small>
+        Task
+        
+        
+          <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/task.ex#L1" title="View Source" class="view-source" rel="help">
+            <i class="icon-code"></i>
+          </a>
+        
+      </h1>
+
+      
+        <section id="moduledoc" class="docstring">
+          <p>Conveniences for spawning and awaiting tasks.</p>
+<p>Tasks are processes meant to execute one particular
+action throughout their life-cycle, often with little or no
+communication with other processes. The most common use case
+for tasks is to convert sequential code into concurrent code
+by computing a value asynchronously:</p>
+<pre><code class="elixir">task = Task.async(fn -&gt; do_some_work() end)
+res  = do_some_other_work()
+res + Task.await(task)</code></pre>
+<p>Tasks spawned with <code class="inline">async</code> can be waited on by their caller
+process (and only their caller) as shown in the example above.
+They are implemented by spawning a process that sends a message
+to the caller once the given computation is performed.</p>
+<p>Besides <a href="#async/1"><code class="inline">async/1</code></a> and <a href="#await/2"><code class="inline">await/2</code></a>, tasks can also be
+started as part of supervision tree and dynamically spawned
+in remote nodes. We will explore all three scenarios next.</p>
+<h2>async and await</h2>
+<p>One of the common use of tasks is to convert sequential code
+into concurrent code with <a href="Task.html#async/1"><code class="inline">Task.async/1</code></a> while keeping its semantics.
+When invoked, a new process will be created, linked and monitored
+by the caller. Once the task action finishes, a message will be sent
+to the caller with the result.</p>
+<p><a href="Task.html#await/2"><code class="inline">Task.await/2</code></a> is used to read the message sent by the task.
+<code class="inline">await</code> will check the monitor setup by the call to <a href="#async/1"><code class="inline">async/1</code></a> to
+verify if the process exited for any abnormal reason (or in case
+exits are being trapped by the caller).</p>
+<p>There are two important things to consider when using async:</p>
+<ol>
+<li><p>If you are using async tasks, you must await a reply
+ as they are <em>always</em> sent. If you are not expecting a reply,
+ consider using <a href="Task.html#start_link/1"><code class="inline">Task.start_link/1</code></a> detailed below</p>
+</li>
+<li>async tasks link the caller and the spawned process. This
+ means that, if the caller crashes, the task will crash
+ too and vice-versa. This is on purpose, if the process
+ meant to receive the result no longer exists, there is
+ no purpose in completing computation of the result. If this
+ is not desired, consider using <a href="Task.html#start_link/1"><code class="inline">Task.start_link/1</code></a> as well
+</li>
+</ol>
+<p><a href="Task.html#yield/2"><code class="inline">Task.yield/2</code></a> is an alternative to <a href="#await/2"><code class="inline">await/2</code></a> where the caller will
+temporarily block, waiting until the task replies or crashes. If the
+result does not arrive within the timeout it can be called again at a
+later moment. This allows checking for the result of a task multiple
+times or to handle a timeout. If a reply does not arrive within the
+desired time, <a href="Task.html#shutdown/2"><code class="inline">Task.shutdown/2</code></a> can be used to stop the task.</p>
+<h2>Supervised tasks</h2>
+<p>It is also possible to spawn a task inside a supervision tree
+with <a href="#start_link/1"><code class="inline">start_link/1</code></a> and <a href="#start_link/3"><code class="inline">start_link/3</code></a>:</p>
+<pre><code class="elixir">Task.start_link(fn -&gt; IO.puts &quot;ok&quot; end)</code></pre>
+<p>Such tasks can be mounted in your supervision tree as:</p>
+<pre><code class="elixir">import Supervisor.Spec
+
+children = [
+  worker(Task, [fn -&gt; IO.puts &quot;ok&quot; end])
+]</code></pre>
+<p>Since these tasks are supervised and not directly linked to
+the caller, they cannot be waited on. Note <a href="#start_link/1"><code class="inline">start_link/1</code></a>,
+unlike <a href="#async/1"><code class="inline">async/1</code></a>, returns <code class="inline">{:ok, pid}</code> (which is
+the result expected by supervision trees).</p>
+<p>By default, most supervision strategies will try to restart
+a worker after it exits regardless of reason. If you design the
+task to terminate normally (as in the example with <a href="IO.html#puts/2"><code class="inline">IO.puts/2</code></a> above),
+consider passing <code class="inline">restart: :transient</code> in the options to <code class="inline">worker/3</code>.</p>
+<h2>Dynamically supervised tasks</h2>
+<p>The <a href="Task.Supervisor.html"><code class="inline">Task.Supervisor</code></a> module allows developers to dynamically
+create multiple supervised tasks.</p>
+<p>A short example is:</p>
+<pre><code class="elixir">{:ok, pid} = Task.Supervisor.start_link()
+task = Task.Supervisor.async(pid, fn -&gt;
+  # Do something
+end)
+Task.await(task)</code></pre>
+<p>However, in the majority of cases, you want to add the task supervisor
+to your supervision tree:</p>
+<pre><code class="elixir">import Supervisor.Spec
+
+children = [
+  supervisor(Task.Supervisor, [[name: MyApp.TaskSupervisor]])
+]</code></pre>
+<p>Now you can dynamically start supervised tasks:</p>
+<pre><code class="elixir">Task.Supervisor.start_child(MyApp.TaskSupervisor, fn -&gt;
+  # Do something
+end)</code></pre>
+<p>Or even use the async/await pattern:</p>
+<pre><code class="elixir">Task.Supervisor.async(MyApp.TaskSupervisor, fn -&gt;
+  # Do something
+end) |&gt; Task.await()</code></pre>
+<p>Finally, check <a href="Task.Supervisor.html"><code class="inline">Task.Supervisor</code></a> for other operations supported by the
+Task supervisor.</p>
+<h2>Distributed tasks</h2>
+<p>Since Elixir provides a Task supervisor, it is easy to use a task
+supervisor to dynamically spawn tasks across nodes:</p>
+<pre><code class="elixir"># In the remote node
+Task.Supervisor.start_link(name: MyApp.DistSupervisor)
+
+# In the client
+Task.Supervisor.async({MyApp.DistSupervisor, :remote@local},
+                      MyMod, :my_fun, [arg1, arg2, arg3])</code></pre>
+<p>Note that, when working with distributed tasks, one should use the <code class="inline">async/4</code> function
+that expects explicit module, function and arguments, instead of <code class="inline">async/2</code> that
+works with anonymous functions. That’s because anonymous functions expect
+the same module version to exist on all involved nodes. Check the <a href="Agent.html"><code class="inline">Agent</code></a> module
+documentation for more information on distributed processes as the limitations
+described in the agents documentation apply to the whole ecosystem.</p>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <i class="icon-link"></i>
+            </a>
+            Summary
+          </h1>
+          
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:t/0">t()</a>
+  </div>
+  
+</div>
+
+  </div>
+
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#__struct__/0">__struct__()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>The Task struct</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#async/1">async(fun)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Starts a task that can be awaited on</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#async/3">async(mod, fun, args)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Starts a task that must be awaited on</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#await/2">await(task, timeout \\ 5000)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Awaits a task reply</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#find/2">find(tasks, msg)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Receives a group of tasks and a message and finds
+a task that matches the given message</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#shutdown/2">shutdown(task, shutdown \\ 5000)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Unlinks and shutdowns the task, and then checks for a reply</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#start/1">start(fun)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Starts a task</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#start/3">start(mod, fun, args)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Starts a task</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#start_link/1">start_link(fun)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Starts a task as part of a supervision tree</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#start_link/3">start_link(mod, fun, args)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Starts a task as part of a supervision tree</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#yield/2">yield(task, timeout \\ 5000)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Yields for a task reply in the given time interval</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#yield_many/2">yield_many(tasks, timeout \\ 5000)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Yields to multiple tasks in the given time interval</p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+
+          
+
+        </section>
+      
+
+      
+        <section id="types" class="types details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <i class="icon-link"></i>
+            </a>
+            Types
+          </h1>
+          <div class="types-list">
+            <div id="t:t/0" class="type-detail">
+  <pre><code class="elixir"><a href="#t:t/0">t</a> :: %Task{owner: term, pid: term, ref: term}</code></pre>
+  
+</div>
+
+          </div>
+        </section>
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <i class="icon-link"></i>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="__struct__/0">
+  <div class="detail-header">
+    <a href="#__struct__/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">__struct__()</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/task.ex#L152" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>The Task struct.</p>
+<p>It contains two fields:</p>
+<ul>
+<li><p><code class="inline">:pid</code> - the process reference of the task process; <code class="inline">nil</code> if the task does
+not use a task process.</p>
+</li>
+<li><p><code class="inline">:ref</code> - the task monitor reference</p>
+</li>
+<li><code class="inline">:owner</code> - the PID of the process that started the task
+</li>
+</ul>
+
+  </section>
+</div>
+<div class="detail" id="async/1">
+  <div class="detail-header">
+    <a href="#async/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">async(fun)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/task.ex#L212" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">async((... -> any)) :: <a href="#t:t/0">t</a></code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Starts a task that can be awaited on.</p>
+<p>This function spawns a process that is linked to and monitored
+by the caller process. A <a href="Task.html#content"><code class="inline">Task</code></a> struct is returned containing
+the relevant information.</p>
+<p>Read the <a href="Task.html#content"><code class="inline">Task</code></a> module documentation for more info on general
+usage of <a href="#async/1"><code class="inline">async/1</code></a> and <a href="#async/3"><code class="inline">async/3</code></a>.</p>
+<h2>Task's message format</h2>
+<p>The reply sent by the task will be in the format <code class="inline">{ref, msg}</code>,
+where <code class="inline">ref</code> is the monitoring reference held by the task.</p>
+
+  </section>
+</div>
+<div class="detail" id="async/3">
+  <div class="detail-header">
+    <a href="#async/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">async(mod, fun, args)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/task.ex#L275" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">async(module, atom, [term]) :: <a href="#t:t/0">t</a></code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Starts a task that must be awaited on.</p>
+<p>A <a href="Task.html#content"><code class="inline">Task</code></a> struct is returned containing the relevant information.
+Developers must eventually call <a href="Task.html#await/2"><code class="inline">Task.await/2</code></a> or <a href="Task.html#yield/2"><code class="inline">Task.yield/2</code></a>
+followed by <a href="Task.html#shutdown/2"><code class="inline">Task.shutdown/2</code></a> on the returned task.</p>
+<p>Read the <a href="Task.html#content"><code class="inline">Task</code></a> module documentation for more info on general
+usage of <a href="#async/1"><code class="inline">async/1</code></a> and <a href="#async/3"><code class="inline">async/3</code></a>.</p>
+<h2>Linking</h2>
+<p>This function spawns a process that is linked to and monitored
+by the caller process. The linking part is important because it
+aborts the task if the parent process dies. It also guarantees
+the code before async/await has the same properties after you
+add the async call. For example, imagine you have this:</p>
+<pre><code class="elixir">x = heavy_fun()
+y = some_fun()
+x + y</code></pre>
+<p>Now you want to make the <code class="inline">heavy_fun()</code> async:</p>
+<pre><code class="elixir">x = Task.async(&amp;heavy_fun/0)
+y = some_fun()
+Task.await(x) + y</code></pre>
+<p>As before, if <code class="inline">heavy_fun/0</code> fails, the whole computation will
+fail, including the parent process. If you don’t want the task
+to fail then you must change the <code class="inline">heavy_fun/0</code> code in the
+same way you would if you didn’t have the async call. For
+example to either return <code class="inline">{:ok, val} | :error</code> results or,
+in more extreme cases, by using <code class="inline">try/rescue</code>. In other words,
+an asynchronous task should be considered an extension of a
+process rather than a mechanism to isolate it from all errors.</p>
+<p>If you don’t want to link the caller to the task, then you
+must use a supervised task with <a href="Task.Supervisor.html"><code class="inline">Task.Supervisor</code></a> and call
+<a href="Task.Supervisor.html#async_nolink/2"><code class="inline">Task.Supervisor.async_nolink/2</code></a>.</p>
+<p>In any case, avoid any of the following:</p>
+<ul>
+<li><p>Setting <code class="inline">:trap_exit</code> to true - trapping exists should be
+used only in special circumstances as it would make your
+process immune to not only exits from the task but from
+any other processes.</p>
+</li>
+<li>Unlinking the task process started with <code class="inline">async</code>/<code class="inline">await</code>.
+If you unlink the processes and the task does not belong
+to any supervisor, you may leave dangling tasks in case
+the parent dies.
+</li>
+</ul>
+<h2>Message format</h2>
+<p>The reply sent by the task will be in the format <code class="inline">{ref, msg}</code>,
+where <code class="inline">ref</code> is the monitoring reference held by the task.</p>
+
+  </section>
+</div>
+<div class="detail" id="await/2">
+  <div class="detail-header">
+    <a href="#await/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">await(task, timeout \\ 5000)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/task.ex#L313" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">await(<a href="#t:t/0">t</a>, timeout) :: term | no_return</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Awaits a task reply.</p>
+<p>A timeout, in milliseconds, can be given with default value
+of <code class="inline">5000</code>. In case the task process dies, this function will
+exit with the same reason as the task.</p>
+<p>If the timeout is exceeded, <code class="inline">await</code> will exit, however,
+the task will continue to run. When the calling process exits, its
+exit signal will terminate the task if it is not trapping exits.</p>
+<p>This function assumes the task’s monitor is still active or the monitor’s
+<code class="inline">:DOWN</code> message is in the message queue. If it has been demonitored, or the
+message already received, this function may wait for the duration of the
+timeout awaiting the message.</p>
+<p>This function will always exit and demonitor if the task crashes or if
+it times out, so the task can not be used again. To explicitly handle
+the timeout or the crash, use <a href="#yield/2"><code class="inline">yield/2</code></a> instead.</p>
+
+  </section>
+</div>
+<div class="detail" id="find/2">
+  <div class="detail-header">
+    <a href="#find/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">find(tasks, msg)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/task.ex#L356" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">find([<a href="#t:t/0">t</a>], any) :: {term, <a href="#t:t/0">t</a>} | nil | no_return</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Receives a group of tasks and a message and finds
+a task that matches the given message.</p>
+<p>This function returns a tuple with the returned value
+in case the message matches a task that exited with
+success alongside the matching task. It returns <code class="inline">nil</code>
+if no task was found. It exits if the task has failed.</p>
+<p>This function is useful in situations where multiple
+tasks are spawned and their results are collected
+later on. For example, a <a href="GenServer.html"><code class="inline">GenServer</code></a> can spawn tasks,
+store the tasks in a list and later use <a href="Task.html#find/2"><code class="inline">Task.find/2</code></a>
+to see if incoming messages are from any of the tasks.</p>
+
+  </section>
+</div>
+<div class="detail" id="shutdown/2">
+  <div class="detail-header">
+    <a href="#shutdown/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">shutdown(task, shutdown \\ 5000)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/task.ex#L544" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">shutdown(<a href="#t:t/0">t</a>, timeout | :brutal_kill) ::
+  {:ok, term} |
+  {:exit, term} |
+  nil</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Unlinks and shutdowns the task, and then checks for a reply.</p>
+<p>Returns <code class="inline">{:ok, reply}</code> if the reply is received while shutting down the task,
+<code class="inline">{:exit, reason}</code> if the task exited abornormally, otherwise <code class="inline">nil</code>.</p>
+<p>The shutdown method is either a timeout or <code class="inline">:brutal_kill</code>. In case
+of a <code class="inline">timeout</code>, a <code class="inline">:shutdown</code> exit signal is sent to the task process
+and if it does not exit within the timeout it is killed. With <code class="inline">:brutal_kill</code>
+the task is killed straight away. In case the task exits abnormally, or a 
+timeout shutdown kills the task, this function will exit with the same reason.</p>
+<p>It is not required to call this function when terminating the caller, unless
+exiting with reason <code class="inline">:normal</code> or the task is trapping exits. If the caller is
+exiting with a reason other than <code class="inline">:normal</code> and the task is not trapping exits the
+caller’s exit signal will stop the task. The caller can exit with reason
+<code class="inline">:shutdown</code> to shutdown linked processes, such as tasks, that are not trapping
+exits without generating any log messages.</p>
+<p>This function assumes the task’s monitor is still active or the monitor’s
+<code class="inline">:DOWN</code> message is in the message queue. If it has been demonitored, or the
+message already received, this function will block forever awaiting the message.</p>
+
+  </section>
+</div>
+<div class="detail" id="start/1">
+  <div class="detail-header">
+    <a href="#start/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">start(fun)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/task.ex#L180" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">start((... -> any)) :: {:ok, pid}</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Starts a task.</p>
+<p>This is only used when the task is used for side-effects
+(i.e. no interest in the returned result) and it should not
+be linked to the current process.</p>
+
+  </section>
+</div>
+<div class="detail" id="start/3">
+  <div class="detail-header">
+    <a href="#start/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">start(mod, fun, args)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/task.ex#L192" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">start(module, atom, [term]) :: {:ok, pid}</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Starts a task.</p>
+<p>This is only used when the task is used for side-effects
+(i.e. no interest in the returned result) and it should not
+be linked to the current process.</p>
+
+  </section>
+</div>
+<div class="detail" id="start_link/1">
+  <div class="detail-header">
+    <a href="#start_link/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">start_link(fun)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/task.ex#L160" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">start_link((... -> any)) :: {:ok, pid}</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Starts a task as part of a supervision tree.</p>
+
+  </section>
+</div>
+<div class="detail" id="start_link/3">
+  <div class="detail-header">
+    <a href="#start_link/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">start_link(mod, fun, args)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/task.ex#L168" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">start_link(module, atom, [term]) :: {:ok, pid}</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Starts a task as part of a supervision tree.</p>
+
+  </section>
+</div>
+<div class="detail" id="yield/2">
+  <div class="detail-header">
+    <a href="#yield/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">yield(task, timeout \\ 5000)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/task.ex#L399" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">yield(<a href="#t:t/0">t</a>, timeout) ::
+  {:ok, term} |
+  {:exit, term} |
+  nil</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Yields for a task reply in the given time interval.</p>
+<p>Returns <code class="inline">{:ok, reply}</code> if the reply is received, <code class="inline">{:exit, reason}</code>
+if the task exited or <code class="inline">nil</code> if no reply arrived.</p>
+<p>A timeout, in milliseconds, can be given with default value
+of <code class="inline">5000</code>. In case of the timeout, this function will return <code class="inline">nil</code>
+and the monitor will remain active. Therefore <a href="#yield/2"><code class="inline">yield/2</code></a> can be
+called multiple times on the same task.</p>
+<p>In case the task process dies, this function will exit with the
+same reason as the task.</p>
+<p>This function assumes the task’s monitor is still active or the
+monitor’s <code class="inline">:DOWN</code> message is in the message queue. If it has been
+demonitored, or the message already received, this function waits
+for the duration of the timeout awaiting the message.</p>
+
+  </section>
+</div>
+<div class="detail" id="yield_many/2">
+  <div class="detail-header">
+    <a href="#yield_many/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">yield_many(tasks, timeout \\ 5000)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/task.ex#L476" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">yield_many([<a href="#t:t/0">t</a>], timeout) :: [{<a href="#t:t/0">t</a>, {:ok, term} | {:exit, term} | nil}]</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Yields to multiple tasks in the given time interval.</p>
+<p>This function receives a list of tasks and await for their
+replies at once in the given time interval. It returns a list
+of tuples of two elements, with tasks as the first element and
+the <code class="inline">yield</code> result as the second.</p>
+<p>Similar to <a href="#yield/2"><code class="inline">yield/2</code></a>, if the task replied in the given interval,
+it will return <code class="inline">{:ok, term}</code>, <code class="inline">{:exit, reason}</code>if it crashed or
+<code class="inline">nil</code> if it timed out. Check <a href="#yield/2"><code class="inline">yield/2</code></a> for more information.</p>
+<h2>Example</h2>
+<p><a href="Task.html#yield_many/2"><code class="inline">Task.yield_many/2</code></a> allows developers to spawn multiple tasks
+and retrieve the results received in a given timeframe.
+If we combine it with <a href="Task.html#shutdown/2"><code class="inline">Task.shutdown/2</code></a>, it allows us to gather
+those results and cancel the tasks that have not replied in time.
+Let’s see an example.</p>
+<pre><code class="elixir">tasks =
+  for i &lt;- 1..10 do
+    Task.async(fn -&gt;
+      :timer.sleep(i * 1000)
+      i
+    end)
+  end
+
+tasks_with_results = Task.yield_many(tasks, 5000)
+
+results = Enum.map(tasks_with_results, fn {task, res} -&gt;
+  # Shutdown the tasks that did not reply nor exit
+  res || Task.shutdown(task, :brutal_kill)
+end)
+
+# Here we are matching only on {:ok, value} and
+# ignoring {:exit, _} (crashed tasks) and `nil` (no replies)
+for {:ok, value} &lt;- results do
+  IO.inspect value
+end</code></pre>
+<p>In the example above, we create tasks that sleep from 1
+up to 10 seconds and return the amount of seconds they slept.
+If you execute the code all at once, you should see 1 up to 5
+printed, as those were the tasks that have replied in the
+given time. All other tasks will have been shutdown, according
+to the <a href="Task.html#shutdown/2"><code class="inline">Task.shutdown/2</code></a> call.</p>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+
+      
+        <footer class="footer">
+      <p>
+        <span class="line">
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.11.4),
+        </span>
+        <span class="line">
+          designed by
+          <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+      </p>
+      <button class="night-mode-toggle" />
+    </footer>
+  </div>
+</section>
+</div>
+  <script src="dist/app-918614602f.js"></script>
+  </body>
+</html>
+

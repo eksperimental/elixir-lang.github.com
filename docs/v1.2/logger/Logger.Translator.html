@@ -1,0 +1,199 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.11.4">
+    <title>Logger.Translator – Logger v1.2.6</title>
+    <link rel="stylesheet" href="dist/app-ddd9717ad9.css" />
+    
+      <link rel="canonical" href="https://hexdocs.pm/logger/Logger.Translator.html" />
+    
+    <script src="dist/sidebar_items.js"></script>
+  </head>
+  <body data-type="modules">
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+  <button class="sidebar-toggle">
+    <i class="icon-menu"></i>
+  </button>
+
+  
+  <a href="http://elixir-lang.org/docs.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        Logger
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v1.2.6
+      </h2>
+    </div>
+    
+      <img src="assets/logo.png" alt="Logger" class="sidebar-projectImage">
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+
+    
+  </ul>
+
+  <ul id="full-list" class="sidebar-fullList"></ul>
+  <div class="sidebar-noResults"></div>
+</section>
+
+<section class="content">
+  <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">Logger v1.2.6</small>
+        Logger.Translator
+        
+        
+          <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/logger/lib/logger/translator.ex#L1" title="View Source" class="view-source" rel="help">
+            <i class="icon-code"></i>
+          </a>
+        
+      </h1>
+
+      
+        <section id="moduledoc" class="docstring">
+          <p>Default translation for Erlang log messages.</p>
+<p>Logger allows developers to rewrite log messages provided by
+Erlang applications into a format more compatible with Elixir
+log messages by providing a translator.</p>
+<p>A translator is simply a tuple containing a module and a function
+that can be added and removed via the <a href="Logger.html#add_translator/1"><code class="inline">Logger.add_translator/1</code></a> and
+<a href="Logger.html#remove_translator/1"><code class="inline">Logger.remove_translator/1</code></a> functions and is invoked for every Erlang
+message above the minimum log level with four arguments:</p>
+<ul>
+<li><code class="inline">min_level</code> - the current Logger level
+</li>
+<li><code class="inline">level</code> - the level of the message being translated
+</li>
+<li><code class="inline">kind</code> - if the message is a report or a format
+</li>
+<li><code class="inline">message</code> - the message to format. If it is a report, it is a tuple
+with <code class="inline">{report_type, report_data}</code>, if it is a format, it is a
+tuple with <code class="inline">{format_message, format_args}</code>
+</li>
+</ul>
+<p>The function must return:</p>
+<ul>
+<li><code class="inline">{:ok, chardata}</code> - if the message was translated with its translation
+</li>
+<li><code class="inline">:skip</code> - if the message is not meant to be translated nor logged
+</li>
+<li><code class="inline">:none</code> - if there is no translation, which triggers the next translator
+</li>
+</ul>
+<p>See the function <a href="#translate/4"><code class="inline">translate/4</code></a> in this module for an example implementation
+and the default messages translated by Logger.</p>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <i class="icon-link"></i>
+            </a>
+            Summary
+          </h1>
+          
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#translate/4">translate(min_level, level, kind, message)</a>
+  </div>
+  
+</div>
+
+  </div>
+
+
+          
+
+          
+
+        </section>
+      
+
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <i class="icon-link"></i>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="translate/4">
+  <div class="detail-header">
+    <a href="#translate/4" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">translate(min_level, level, kind, message)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/logger/lib/logger/translator.ex#L33" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+
+        </section>
+      
+
+      
+
+      
+        <footer class="footer">
+      <p>
+        <span class="line">
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.11.4),
+        </span>
+        <span class="line">
+          designed by
+          <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+      </p>
+      <button class="night-mode-toggle" />
+    </footer>
+  </div>
+</section>
+</div>
+  <script src="dist/app-918614602f.js"></script>
+  </body>
+</html>
+

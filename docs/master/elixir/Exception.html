@@ -1,0 +1,826 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.14.3">
+    <title>Exception – Elixir v1.4.0-dev</title>
+    <link rel="stylesheet" href="dist/app-6c3a9fd2f7.css" />
+    
+      <link rel="canonical" href="https://hexdocs.pm/elixir/master/Exception.html" />
+    
+    <script src="dist/sidebar_items-40d065029c.js"></script>
+  </head>
+  <body data-type="modules">
+    <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+
+  
+  <a href="http://elixir-lang.org/docs.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        Elixir
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v1.4.0-dev
+      </h2>
+    </div>
+    
+      <img src="assets/logo.png" alt="Elixir" class="sidebar-projectImage">
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+      <li><a id="exceptions-list" href="#full-list">Exceptions</a></li>
+    
+
+    
+      <li><a id="protocols-list" href="#full-list">Protocols</a></li>
+    
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">Elixir v1.4.0-dev</small>
+        Exception
+        
+          <small>behaviour</small>
+        
+        
+          <a href="https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/exception.ex#L1" title="View Source" class="view-source" rel="help">
+            <i class="icon-code"></i>
+          </a>
+        
+      </h1>
+
+      
+        <section id="moduledoc">
+          <p>Functions to format throw/catch/exit and exceptions.</p>
+<p>Note that stacktraces in Elixir are updated on throw,
+errors and exits. For example, at any given moment,
+<a href="System.html#stacktrace/0"><code class="inline">System.stacktrace/0</code></a> will return the stacktrace for the
+last throw/error/exit that occurred in the current process.</p>
+<p>Do not rely on the particular format returned by the <code class="inline">format*</code>
+functions in this module. They may be changed in future releases
+in order to better suit Elixir’s tool chain. In other words,
+by using the functions in this module it is guaranteed you will
+format exceptions as in the current Elixir version being used.</p>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <i class="icon-link"></i>
+            </a>
+            Summary
+          </h1>
+          
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:kind/0">kind()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>The kind handled by formatting functions</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:stacktrace/0">stacktrace()</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:stacktrace_entry/0">stacktrace_entry()</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:t/0">t()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>The exception type</p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#exception?/1">exception?(term)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns <code class="inline">true</code> if the given <code class="inline">term</code> is an exception</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#format/3">format(kind, payload, stacktrace \\ nil)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Normalizes and formats throw/errors/exits and stacktraces</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#format_banner/3">format_banner(kind, exception, stacktrace \\ nil)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Normalizes and formats any throw/error/exit</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#format_exit/1">format_exit(reason)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Formats an exit. It returns a string</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#format_fa/2">format_fa(fun, arity)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Receives an anonymous function and arity and formats it as
+shown in stacktraces. The arity may also be a list of arguments</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#format_file_line/3">format_file_line(file, line, suffix \\ &quot;&quot;)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Formats the given <code class="inline">file</code> and <code class="inline">line</code> as shown in stacktraces.
+If any of the values are <code class="inline">nil</code>, they are omitted</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#format_mfa/3">format_mfa(module, fun, arity)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Receives a module, fun and arity and formats it
+as shown in stacktraces. The arity may also be a list
+of arguments</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#format_stacktrace/1">format_stacktrace(trace \\ nil)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Formats the stacktrace</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#format_stacktrace_entry/1">format_stacktrace_entry(entry)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Receives a stacktrace entry and formats it into a string</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#message/1">message(exception)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Gets the message for an <code class="inline">exception</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#normalize/3">normalize(kind, payload, stacktrace \\ nil)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Normalizes an exception, converting Erlang exceptions
+to Elixir exceptions</p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+
+          
+  <div class="summary-callbacks summary">
+    <h2>
+      <a href="#callbacks">Callbacks</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:exception/1">exception(term)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:message/1">message(t)</a>
+  </div>
+  
+</div>
+
+  </div>
+
+
+        </section>
+      
+
+      
+        <section id="types" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <i class="icon-link"></i>
+            </a>
+            Types
+          </h1>
+          <div class="types-list">
+            <div class="detail" id="t:kind/0">
+  
+  <div class="detail-header">
+    <a href="#t:kind/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">kind()</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/exception.ex#L25" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>kind() :: :error | :exit | :throw | {:EXIT, pid}</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>The kind handled by formatting functions</p>
+
+  </section>
+</div>
+<div class="detail" id="t:stacktrace/0">
+  
+  <div class="detail-header">
+    <a href="#t:stacktrace/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">stacktrace()</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/exception.ex#L27" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>stacktrace() :: [<a href="#t:stacktrace_entry/0">stacktrace_entry</a>]</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="t:stacktrace_entry/0">
+  
+  <div class="detail-header">
+    <a href="#t:stacktrace_entry/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">stacktrace_entry()</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/exception.ex#L28" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre><a href="#t:stacktrace_entry/0">stacktrace_entry</a> ::
+  {module, atom, arity_or_args, location} |
+  {(... -> any), arity_or_args, location}</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="t:t/0">
+  
+  <div class="detail-header">
+    <a href="#t:t/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">t()</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/exception.ex#L18" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>t() :: %module{:__exception__ => true, optional(atom) => any}</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>The exception type</p>
+
+  </section>
+</div>
+
+          </div>
+        </section>
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <i class="icon-link"></i>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="exception?/1">
+  
+  <div class="detail-header">
+    <a href="#exception?/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">exception?(term)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/exception.ex#L41" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Returns <code class="inline">true</code> if the given <code class="inline">term</code> is an exception.</p>
+
+  </section>
+</div>
+<div class="detail" id="format/3">
+  
+    <span id="format/2" />
+  
+  <div class="detail-header">
+    <a href="#format/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">format(kind, payload, stacktrace \\ nil)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/exception.ex#L146" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>format(<a href="#t:kind/0">kind</a>, any, <a href="#t:stacktrace/0">stacktrace</a> | nil) :: <a href="String.html#t:t/0">String.t</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Normalizes and formats throw/errors/exits and stacktraces.</p>
+<p>It relies on <a href="#format_banner/3"><code class="inline">format_banner/3</code></a> and <a href="#format_stacktrace/1"><code class="inline">format_stacktrace/1</code></a>
+to generate the final format.</p>
+<p>Note that <code class="inline">{:EXIT, pid}</code> do not generate a stacktrace though
+(as they are retrieved as messages without stacktraces).</p>
+
+  </section>
+</div>
+<div class="detail" id="format_banner/3">
+  
+    <span id="format_banner/2" />
+  
+  <div class="detail-header">
+    <a href="#format_banner/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">format_banner(kind, exception, stacktrace \\ nil)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/exception.ex#L115" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>format_banner(<a href="#t:kind/0">kind</a>, any, <a href="#t:stacktrace/0">stacktrace</a> | nil) :: <a href="String.html#t:t/0">String.t</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Normalizes and formats any throw/error/exit.</p>
+<p>The message is formatted and displayed in the same
+format as used by Elixir’s CLI.</p>
+<p>The third argument, a stacktrace, is optional. If it is
+not supplied <a href="System.html#stacktrace/0"><code class="inline">System.stacktrace/0</code></a> will sometimes be used
+to get additional information for the <code class="inline">kind</code> <code class="inline">:error</code>. If
+the stacktrace is unknown and <a href="System.html#stacktrace/0"><code class="inline">System.stacktrace/0</code></a> would
+not return the stacktrace corresponding to the exception
+an empty stacktrace, <code class="inline">[]</code>, must be used.</p>
+
+  </section>
+</div>
+<div class="detail" id="format_exit/1">
+  
+  <div class="detail-header">
+    <a href="#format_exit/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">format_exit(reason)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/exception.ex#L170" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>format_exit(any) :: <a href="String.html#t:t/0">String.t</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Formats an exit. It returns a string.</p>
+<p>Often there are errors/exceptions inside exits. Exits are often
+wrapped by the caller and provide stacktraces too. This function
+formats exits in a way to nicely show the exit reason, caller
+and stacktrace.</p>
+
+  </section>
+</div>
+<div class="detail" id="format_fa/2">
+  
+  <div class="detail-header">
+    <a href="#format_fa/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">format_fa(fun, arity)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/exception.ex#L407" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Receives an anonymous function and arity and formats it as
+shown in stacktraces. The arity may also be a list of arguments.</p>
+<h2 id="format_fa/2-examples" class="section-heading">
+  <a href="#format_fa/2-examples" class="hover-link"><i class="icon-link"></i></a>
+  Examples
+</h2>
+
+<pre><code class="elixir">Exception.format_fa(fn -&gt; nil end, 1)
+#=&gt; &quot;#Function&lt;...&gt;/1&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="format_file_line/3">
+  
+    <span id="format_file_line/2" />
+  
+  <div class="detail-header">
+    <a href="#format_file_line/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">format_file_line(file, line, suffix \\ &quot;&quot;)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/exception.ex#L471" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Formats the given <code class="inline">file</code> and <code class="inline">line</code> as shown in stacktraces.
+If any of the values are <code class="inline">nil</code>, they are omitted.</p>
+<h2 id="format_file_line/3-examples" class="section-heading">
+  <a href="#format_file_line/3-examples" class="hover-link"><i class="icon-link"></i></a>
+  Examples
+</h2>
+
+<pre><code class="iex elixir">iex&gt; Exception.format_file_line(&quot;foo&quot;, 1)
+&quot;foo:1:&quot;
+
+iex&gt; Exception.format_file_line(&quot;foo&quot;, nil)
+&quot;foo:&quot;
+
+iex&gt; Exception.format_file_line(nil, nil)
+&quot;&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="format_mfa/3">
+  
+  <div class="detail-header">
+    <a href="#format_mfa/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">format_mfa(module, fun, arity)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/exception.ex#L431" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Receives a module, fun and arity and formats it
+as shown in stacktraces. The arity may also be a list
+of arguments.</p>
+<h2 id="format_mfa/3-examples" class="section-heading">
+  <a href="#format_mfa/3-examples" class="hover-link"><i class="icon-link"></i></a>
+  Examples
+</h2>
+
+<pre><code class="iex elixir">iex&gt; Exception.format_mfa Foo, :bar, 1
+&quot;Foo.bar/1&quot;
+
+iex&gt; Exception.format_mfa Foo, :bar, []
+&quot;Foo.bar()&quot;
+
+iex&gt; Exception.format_mfa nil, :bar, []
+&quot;nil.bar()&quot;</code></pre>
+<p>Anonymous functions are reported as -func/arity-anonfn-count-,
+where func is the name of the enclosing function. Convert to
+“anonymous fn in func/arity”</p>
+
+  </section>
+</div>
+<div class="detail" id="format_stacktrace/1">
+  
+    <span id="format_stacktrace/0" />
+  
+  <div class="detail-header">
+    <a href="#format_stacktrace/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">format_stacktrace(trace \\ nil)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/exception.ex#L386" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Formats the stacktrace.</p>
+<p>A stacktrace must be given as an argument. If not, the stacktrace
+is retrieved from <a href="Process.html#info/2"><code class="inline">Process.info/2</code></a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="format_stacktrace_entry/1">
+  
+  <div class="detail-header">
+    <a href="#format_stacktrace_entry/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">format_stacktrace_entry(entry)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/exception.ex#L347" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>format_stacktrace_entry(<a href="#t:stacktrace_entry/0">stacktrace_entry</a>) :: <a href="String.html#t:t/0">String.t</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Receives a stacktrace entry and formats it into a string.</p>
+
+  </section>
+</div>
+<div class="detail" id="message/1">
+  
+  <div class="detail-header">
+    <a href="#message/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">message(exception)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/exception.ex#L51" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Gets the message for an <code class="inline">exception</code>.</p>
+
+  </section>
+</div>
+<div class="detail" id="normalize/3">
+  
+    <span id="normalize/2" />
+  
+  <div class="detail-header">
+    <a href="#normalize/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">normalize(kind, payload, stacktrace \\ nil)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/exception.ex#L87" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>normalize(:error, any, <a href="#t:stacktrace/0">stacktrace</a>) :: <a href="#t:t/0">t</a></pre>
+        
+          <pre>normalize(<a href="#t:kind/0">kind</a>, payload, <a href="#t:stacktrace/0">stacktrace</a>) :: payload when payload: var</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Normalizes an exception, converting Erlang exceptions
+to Elixir exceptions.</p>
+<p>It takes the <code class="inline">kind</code> spilled by <code class="inline">catch</code> as an argument and
+normalizes only <code class="inline">:error</code>, returning the untouched payload
+for others.</p>
+<p>The third argument, a stacktrace, is optional. If it is
+not supplied <a href="System.html#stacktrace/0"><code class="inline">System.stacktrace/0</code></a> will sometimes be used
+to get additional information for the <code class="inline">kind</code> <code class="inline">:error</code>. If
+the stacktrace is unknown and <a href="System.html#stacktrace/0"><code class="inline">System.stacktrace/0</code></a> would
+not return the stacktrace corresponding to the exception
+an empty stacktrace, <code class="inline">[]</code>, must be used.</p>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+
+      
+        <section id="callbacks" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#callbacks">
+              <i class="icon-link"></i>
+            </a>
+            Callbacks
+          </h1>
+          <div class="detail" id="c:exception/1">
+  
+  <div class="detail-header">
+    <a href="#c:exception/1" class="detail-link" title="Link to this callback">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">exception(term)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/exception.ex#L35" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>exception(term) :: <a href="#t:t/0">t</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="c:message/1">
+  
+  <div class="detail-header">
+    <a href="#c:message/1" class="detail-link" title="Link to this callback">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">message(t)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/exception.ex#L36" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>message(<a href="#t:t/0">t</a>) :: <a href="String.html#t:t/0">String.t</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+
+        </section>
+      
+          <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.14.3),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle" />
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  <script src="dist/app-4aef34ad5f.js"></script>
+  </body>
+</html>
+

@@ -1,0 +1,260 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.14.3">
+    <title>Mix.Tasks.Xref – Mix v1.4.0-dev</title>
+    <link rel="stylesheet" href="dist/app-6c3a9fd2f7.css" />
+    
+      <link rel="canonical" href="https://hexdocs.pm/mix/master/Mix.Tasks.Xref.html" />
+    
+    <script src="dist/sidebar_items-c3824784f8.js"></script>
+  </head>
+  <body data-type="modules">
+    <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+
+  
+  <a href="http://elixir-lang.org/docs.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        Mix
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v1.4.0-dev
+      </h2>
+    </div>
+    
+      <img src="assets/logo.png" alt="Mix" class="sidebar-projectImage">
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+      <li><a id="exceptions-list" href="#full-list">Exceptions</a></li>
+    
+
+    
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">Mix v1.4.0-dev</small>
+        Mix.Tasks.Xref
+        
+        
+          <a href="https://github.com/elixir-lang/elixir/blob/master/lib/mix/lib/mix/tasks/xref.ex#L1" title="View Source" class="view-source" rel="help">
+            <i class="icon-code"></i>
+          </a>
+        
+      </h1>
+
+      
+        <section id="moduledoc">
+          <p>Performs cross reference checks between modules.</p>
+<h2 id="module-xref-modes" class="section-heading">
+  <a href="#module-xref-modes" class="hover-link"><i class="icon-link"></i></a>
+  Xref modes
+</h2>
+
+<p>The <code class="inline">xref</code> task expects a mode as first argument:</p>
+<pre><code class="elixir">mix xref MODE</code></pre>
+<p>All available modes are discussed below.</p>
+<h3>warnings</h3>
+<p>Prints warnings for violated cross reference checks:</p>
+<pre><code class="elixir">mix xref warnings</code></pre>
+<p>This is the mode used by Mix during compilation.</p>
+<h3>unreachable</h3>
+<p>Prints all unreachable “file:line: module.function/arity” entries:</p>
+<pre><code class="elixir">mix xref unreachable</code></pre>
+<p>The “file:line” represents the file and line a call to an unknown
+“module.function/arity” is made.</p>
+<h3>callers CALLEE</h3>
+<p>Prints all callers of the given <code class="inline">CALLEE</code>, which can be one of: <a href="http://elixir-lang.org/docs/stable/elixir/Module.html"><code class="inline">Module</code></a>,
+<code class="inline">Module.function</code>, or <code class="inline">Module.function/arity</code>. Examples:</p>
+<pre><code class="elixir">mix xref callers MyMod
+mix xref callers MyMod.fun
+mix xref callers MyMod.fun/3</code></pre>
+<h3>graph</h3>
+<p>Prints a file dependency graph where an edge from <code class="inline">A</code> to <code class="inline">B</code> indicates
+that <code class="inline">A</code> depends on <code class="inline">B</code>.</p>
+<pre><code class="elixir">mix xref graph --format dot</code></pre>
+<p>The following options are accepted:</p>
+<ul>
+<li><p><code class="inline">--exclude</code> - paths to exclude</p>
+</li>
+<li><p><code class="inline">--source</code> - displays all files that the given source file references (directly or indirectly)</p>
+</li>
+<li><p><code class="inline">--sink</code> - displays all files that reference the given file (directly or indirectly)</p>
+</li>
+<li><p><code class="inline">--format</code> - can be set to one of:</p>
+<ul>
+<li><p><code class="inline">pretty</code> - uses Unicode codepoints for formatting the graph.
+  This is the default except on Windows</p>
+</li>
+<li><p><code class="inline">plain</code> - does not use Unicode codepoints for formatting the graph.
+  This is the default on Windows</p>
+</li>
+<li><code class="inline">dot</code> - produces a DOT graph description in <code class="inline">xref_graph.dot</code> in the
+  current directory. Warning: this will override any previously generated file
+</li>
+</ul>
+</li>
+</ul>
+<p>The <code class="inline">--source</code> and <code class="inline">--sink</code> options are particularly useful when trying to understand how
+the modules in a particular file interact with the whole system.</p>
+<h2 id="module-shared-options" class="section-heading">
+  <a href="#module-shared-options" class="hover-link"><i class="icon-link"></i></a>
+  Shared options
+</h2>
+
+<p>Those options are shared across all modes:</p>
+<ul>
+<li><p><code class="inline">--no-compile</code> - does not compile even if files require compilation</p>
+</li>
+<li><p><code class="inline">--no-deps-check</code> - does not check dependencies</p>
+</li>
+<li><p><code class="inline">--no-archives-check</code> - does not check archives</p>
+</li>
+<li><code class="inline">--no-elixir-version-check</code> - does not check the Elixir version from mix.exs
+</li>
+</ul>
+<h2 id="module-configuration" class="section-heading">
+  <a href="#module-configuration" class="hover-link"><i class="icon-link"></i></a>
+  Configuration
+</h2>
+
+<p>All configuration for Xref should be placed under the key <code class="inline">:xref</code>.</p>
+<ul>
+<li><code class="inline">:exclude</code> - a list of modules and <code class="inline">{module, function, arity}</code> tuples to ignore when checking
+cross references. For example: <code class="inline">[MissingModule, {MissingModule2, :missing_func, 2}]</code>
+</li>
+</ul>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <i class="icon-link"></i>
+            </a>
+            Summary
+          </h1>
+          
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#run/1">run(args)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Runs this task</p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+
+          
+
+        </section>
+      
+
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <i class="icon-link"></i>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="run/1">
+  
+  <div class="detail-header">
+    <a href="#run/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">run(args)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/master/lib/mix/lib/mix/tasks/xref.ex#L105" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>run(<a href="http://elixir-lang.org/docs/stable/elixir/OptionParser.html#t:argv/0">OptionParser.argv</a>) :: :ok | :error</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Runs this task.</p>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+
+      
+          <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.14.3),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle" />
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  <script src="dist/app-4aef34ad5f.js"></script>
+  </body>
+</html>
+

@@ -1,0 +1,558 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.14.2">
+    <title>Port – Elixir v1.3.4</title>
+    <link rel="stylesheet" href="dist/app-23e810f3fe.css" />
+    
+      <link rel="canonical" href="https://hexdocs.pm/elixir/Port.html" />
+    
+    <script src="dist/sidebar_items.js"></script>
+  </head>
+  <body data-type="modules">
+    <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+
+  
+  <a href="http://elixir-lang.org/docs.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        Elixir
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v1.3.4
+      </h2>
+    </div>
+    
+      <img src="assets/logo.png" alt="Elixir" class="sidebar-projectImage">
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+      <li><a id="exceptions-list" href="#full-list">Exceptions</a></li>
+    
+
+    
+      <li><a id="protocols-list" href="#full-list">Protocols</a></li>
+    
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">Elixir v1.3.4</small>
+        Port
+        
+        
+          <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/port.ex#L1" title="View Source" class="view-source" rel="help">
+            <i class="icon-code"></i>
+          </a>
+        
+      </h1>
+
+      
+        <section id="moduledoc">
+          <p>Functions related to Erlang ports.</p>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <i class="icon-link"></i>
+            </a>
+            Summary
+          </h1>
+          
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:name/0">name()</a>
+  </div>
+  
+</div>
+
+  </div>
+
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#call/3">call(port, operation, data)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Makes a synchronous call to the <code class="inline">port</code> and returns its reply as a term</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#close/1">close(port)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Closes the <code class="inline">port</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#command/3">command(port, data, options \\ [])</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Sends <code class="inline">data</code> to the port driver <code class="inline">port</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#connect/2">connect(port, pid)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Associates the <code class="inline">port</code> identifier with a <code class="inline">pid</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#control/3">control(port, operation, data)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Sends a synchronous control command to the <code class="inline">port</code> and returns its reply as a binary</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#info/1">info(port)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns information about the <code class="inline">port</code>
+or <code class="inline">nil</code> if the port is closed</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#info/2">info(port, spec)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns information about the <code class="inline">port</code>
+or <code class="inline">nil</code> if the port is closed</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#list/0">list()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns a list of the ports for the current node</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#open/2">open(name, settings)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Opens an Erlang port given a tuple <code class="inline">name</code> and a list of <code class="inline">settings</code></p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+
+          
+
+        </section>
+      
+
+      
+        <section id="types" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <i class="icon-link"></i>
+            </a>
+            Types
+          </h1>
+          <div class="types-list">
+            <div class="detail" id="t:name/0">
+  
+  <div class="detail-header">
+    <a href="#t:name/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">name()</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/port.ex#L6" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre><a href="#t:name/0">name</a> ::
+  {:spawn, charlist | binary} |
+  {:spawn_driver, charlist | binary} |
+  {:spawn_executable, charlist | atom} |
+  {:fd, non_neg_integer, non_neg_integer}</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+
+          </div>
+        </section>
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <i class="icon-link"></i>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="call/3">
+  
+  <div class="detail-header">
+    <a href="#call/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">call(port, operation, data)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/port.ex#L98" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>call(port, integer, term) :: term</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Makes a synchronous call to the <code class="inline">port</code> and returns its reply as a term.</p>
+<p>Not all port drivers support this control feature.</p>
+<p>For more information, see <a href="http://www.erlang.org/doc/man/erlang.html#port_call-3"><code class="inline">:erlang.port_call/3</code></a>.</p>
+<p>Inlined by the compiler.</p>
+
+  </section>
+</div>
+<div class="detail" id="close/1">
+  
+  <div class="detail-header">
+    <a href="#close/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">close(port)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/port.ex#L46" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>close(port) :: true</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Closes the <code class="inline">port</code>.</p>
+<p>For more information, see <a href="http://www.erlang.org/doc/man/erlang.html#port_close-1"><code class="inline">:erlang.port_close/1</code></a>.</p>
+<p>Inlined by the compiler.</p>
+
+  </section>
+</div>
+<div class="detail" id="command/3">
+  
+    <span id="command/2" />
+  
+  <div class="detail-header">
+    <a href="#command/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">command(port, data, options \\ [])</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/port.ex#L58" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>command(port, iodata, [:force | :nosuspend]) :: boolean</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Sends <code class="inline">data</code> to the port driver <code class="inline">port</code>.</p>
+<p>For more information, see <a href="http://www.erlang.org/doc/man/erlang.html#port_command-2"><code class="inline">:erlang.port_command/2</code></a>.</p>
+<p>Inlined by the compiler.</p>
+
+  </section>
+</div>
+<div class="detail" id="connect/2">
+  
+  <div class="detail-header">
+    <a href="#connect/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">connect(port, pid)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/port.ex#L70" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>connect(port, pid) :: true</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Associates the <code class="inline">port</code> identifier with a <code class="inline">pid</code>.</p>
+<p>For more information, see <a href="http://www.erlang.org/doc/man/erlang.html#port_connect-2"><code class="inline">:erlang.port_connect/2</code></a>.</p>
+<p>Inlined by the compiler.</p>
+
+  </section>
+</div>
+<div class="detail" id="control/3">
+  
+  <div class="detail-header">
+    <a href="#control/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">control(port, operation, data)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/port.ex#L84" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>control(port, integer, iodata) :: iodata | binary</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Sends a synchronous control command to the <code class="inline">port</code> and returns its reply as a binary.</p>
+<p>Not all port drivers support this feature.</p>
+<p>For more information, see <a href="http://www.erlang.org/doc/man/erlang.html#port_control-3"><code class="inline">:erlang.port_control/3</code></a>.</p>
+<p>Inlined by the compiler.</p>
+
+  </section>
+</div>
+<div class="detail" id="info/1">
+  
+  <div class="detail-header">
+    <a href="#info/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">info(port)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/port.ex#L108" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Returns information about the <code class="inline">port</code>
+or <code class="inline">nil</code> if the port is closed.</p>
+<p>For more information, see <a href="http://www.erlang.org/doc/man/erlang.html#port_info-1"><code class="inline">:erlang.port_info/1</code></a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="info/2">
+  
+  <div class="detail-header">
+    <a href="#info/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">info(port, spec)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/port.ex#L119" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>info(port, atom) :: {atom, term} | nil</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Returns information about the <code class="inline">port</code>
+or <code class="inline">nil</code> if the port is closed.</p>
+<p>For more information, see <a href="http://www.erlang.org/doc/man/erlang.html#port_info-2"><code class="inline">:erlang.port_info/2</code></a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="list/0">
+  
+  <div class="detail-header">
+    <a href="#list/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">list()</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/port.ex#L140" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>list :: [port]</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Returns a list of the ports for the current node.</p>
+<p>For more information, see <a href="http://www.erlang.org/doc/man/erlang.html#ports-0"><code class="inline">:erlang.ports/0</code></a>.</p>
+<p>Inlined by the compiler.</p>
+
+  </section>
+</div>
+<div class="detail" id="open/2">
+  
+  <div class="detail-header">
+    <a href="#open/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">open(name, settings)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/port.ex#L34" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>open(<a href="#t:name/0">name</a>, list) :: port</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Opens an Erlang port given a tuple <code class="inline">name</code> and a list of <code class="inline">settings</code>.</p>
+<h2 id="open/2-name" class="section-heading">
+  <a href="#open/2-name" class="hover-link"><i class="icon-link"></i></a>
+  Name
+</h2>
+
+<p>The supported values for <code class="inline">name</code> are:</p>
+<ul>
+<li><code class="inline">{:spawn, command}</code> - to run an external program. The first space separated
+word of <code class="inline">command</code> will be considered as the name of the program to run, so
+use <code class="inline">{:spawn_executable, command}</code> to run a program having spaces in its name.
+</li>
+<li><code class="inline">{:spawn_driver, command}</code> - similar to <code class="inline">{:spawn, command}</code>, but to run a
+loaded driver.
+</li>
+<li><code class="inline">{:spawn_executable, filename}</code> - similar to <code class="inline">{:spawn, filename}</code>, but to run
+an external executable. With this option, <code class="inline">filename</code> in its whole is considered
+the name of the program to execute.
+</li>
+<li><code class="inline">{:fd, fd_in, fd_out}</code> - to access file descriptors used by Erlang, <code class="inline">fd_in</code>
+being used for standard input, <code class="inline">fd_out</code> for standard output.
+</li>
+</ul>
+<p>For more information, see <a href="http://www.erlang.org/doc/man/erlang.html#open_port-2"><code class="inline">:erlang.open_port/2</code></a>.</p>
+<p>Inlined by the compiler.</p>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+
+      
+          <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.14.2),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle" />
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  <script src="dist/app-f0381555b5.js"></script>
+  </body>
+</html>
+

@@ -1,0 +1,1029 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.11.4">
+    <title>Macro – Elixir v1.1.1</title>
+    <link rel="stylesheet" href="dist/app-ddd9717ad9.css" />
+    
+      <link rel="canonical" href="https://hexdocs.pm/elixir/Macro.html" />
+    
+    <script src="dist/sidebar_items.js"></script>
+  </head>
+  <body data-type="modules">
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+  <button class="sidebar-toggle">
+    <i class="icon-menu"></i>
+  </button>
+
+  
+  <a href="http://elixir-lang.org/docs.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        Elixir
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v1.1.1
+      </h2>
+    </div>
+    
+      <img src="assets/logo.png" alt="Elixir" class="sidebar-projectImage">
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+      <li><a id="exceptions-list" href="#full-list">Exceptions</a></li>
+    
+
+    
+      <li><a id="protocols-list" href="#full-list">Protocols</a></li>
+    
+  </ul>
+
+  <ul id="full-list" class="sidebar-fullList"></ul>
+  <div class="sidebar-noResults"></div>
+</section>
+
+<section class="content">
+  <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">Elixir v1.1.1</small>
+        Macro
+        
+        
+          <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/macro.ex#L3" title="View Source" class="view-source" rel="help">
+            <i class="icon-code"></i>
+          </a>
+        
+      </h1>
+
+      
+        <section id="moduledoc" class="docstring">
+          <p>Conveniences for working with macros.</p>
+<h2>Custom Sigils</h2>
+<p>To create a custom sigil, define a function with the name
+<code class="inline">sigil_{identifier}</code> that takes two arguments. The first argument will be
+the interpolated string, the second will be a char list containing any
+modifiers.</p>
+<p>Valid modifiers include only lower and upper case letters. Other characters
+will cause a syntax error.</p>
+<p>The module containing the custom sigil must be imported before the sigil
+syntax can be used.</p>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <i class="icon-link"></i>
+            </a>
+            Summary
+          </h1>
+          
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:expr/0">expr()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Expr node (remaining ones are literals)</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:t/0">t()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Abstract Syntax Tree (AST)</p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#decompose_call/1">decompose_call(ast)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Decomposes a local or remote call into its remote part (when provided),
+function name and argument list</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#escape/2">escape(expr, opts \\ [])</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Recursively escapes a value so it can be inserted
+into a syntax tree</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#expand/2">expand(tree, env)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Receives an AST node and expands it until it can no longer
+be expanded</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#expand_once/2">expand_once(ast, env)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Receives an AST node and expands it once</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#pipe/3">pipe(expr, call_args, position)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Pipes <code class="inline">expr</code> into the <code class="inline">call_args</code> at the given <code class="inline">position</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#postwalk/2">postwalk(ast, fun)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Performs a depth-first, post-order traversal of quoted expressions</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#postwalk/3">postwalk(ast, acc, fun)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Performs a depth-first, post-order traversal of quoted expressions
+using an accumulator</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#prewalk/2">prewalk(ast, fun)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Performs a depth-first, pre-order traversal of quoted expressions</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#prewalk/3">prewalk(ast, acc, fun)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Performs a depth-first, pre-order traversal of quoted expressions
+using an accumulator</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#to_string/2">to_string(tree, fun \\ fn _ast, string -&gt; string end)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Converts the given expression to a binary</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#unescape_string/1">unescape_string(chars)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Unescapes the given chars</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#unescape_string/2">unescape_string(chars, map)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Unescapes the given chars according to the map given</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#unescape_tokens/1">unescape_tokens(tokens)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Unescapes the given tokens according to the default map</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#unescape_tokens/2">unescape_tokens(tokens, map)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Unescapes the given tokens according to the given map</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#unpipe/1">unpipe(expr)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Breaks a pipeline expression into a list</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#update_meta/2">update_meta(quoted, fun)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Applies the given function to the node metadata if it contains one</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#validate/1">validate(expr)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Validates the given expressions are valid quoted expressions</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#var/2">var(var, context)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Generates an AST node representing the variable given
+by the atoms <code class="inline">var</code> and <code class="inline">context</code></p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+
+          
+
+        </section>
+      
+
+      
+        <section id="types" class="types details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <i class="icon-link"></i>
+            </a>
+            Types
+          </h1>
+          <div class="types-list">
+            <div id="t:expr/0" class="type-detail">
+  <pre><code class="elixir"><a href="#t:expr/0">expr</a> :: {<a href="#t:expr/0">expr</a> | atom, <a href="Keyword.html#t:t/0">Keyword.t</a>, atom | [<a href="#t:t/0">t</a>]}</code></pre>
+  
+    <div class="typespec-doc"><p>Expr node (remaining ones are literals)</p>
+</div>
+  
+</div>
+<div id="t:t/0" class="type-detail">
+  <pre><code class="elixir"><a href="#t:t/0">t</a> ::
+  <a href="#t:expr/0">expr</a> |
+  {<a href="#t:t/0">t</a>, <a href="#t:t/0">t</a>} |
+  atom |
+  number |
+  binary |
+  pid |
+  (... -> any) |
+  [<a href="#t:t/0">t</a>]</code></pre>
+  
+    <div class="typespec-doc"><p>Abstract Syntax Tree (AST)</p>
+</div>
+  
+</div>
+
+          </div>
+        </section>
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <i class="icon-link"></i>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="decompose_call/1">
+  <div class="detail-header">
+    <a href="#decompose_call/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">decompose_call(ast)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/macro.ex#L290" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">decompose_call(<a href="Macro.html#t:t/0">Macro.t</a>) ::
+  {atom, [<a href="Macro.html#t:t/0">Macro.t</a>]} |
+  {<a href="Macro.html#t:t/0">Macro.t</a>, atom, [<a href="Macro.html#t:t/0">Macro.t</a>]} |
+  :error</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Decomposes a local or remote call into its remote part (when provided),
+function name and argument list.</p>
+<p>Returns <code class="inline">:error</code> when an invalid call syntax is provided.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; Macro.decompose_call(quote do: foo)
+{:foo, []}
+
+iex&gt; Macro.decompose_call(quote do: foo())
+{:foo, []}
+
+iex&gt; Macro.decompose_call(quote do: foo(1, 2, 3))
+{:foo, [1, 2, 3]}
+
+iex&gt; Macro.decompose_call(quote do: Elixir.M.foo(1, 2, 3))
+{{:__aliases__, [], [:Elixir, :M]}, :foo, [1, 2, 3]}
+
+iex&gt; Macro.decompose_call(quote do: 42)
+:error</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="escape/2">
+  <div class="detail-header">
+    <a href="#escape/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">escape(expr, opts \\ [])</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/macro.ex#L326" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">escape(term, <a href="Keyword.html#t:t/0">Keyword.t</a>) :: <a href="Macro.html#t:t/0">Macro.t</a></code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Recursively escapes a value so it can be inserted
+into a syntax tree.</p>
+<p>One may pass <code class="inline">unquote: true</code> to <a href="#escape/2"><code class="inline">escape/2</code></a>
+which leaves <code class="inline">unquote</code> statements unescaped, effectively
+unquoting the contents on escape.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; Macro.escape(:foo)
+:foo
+
+iex&gt; Macro.escape({:a, :b, :c})
+{:{}, [], [:a, :b, :c]}
+
+iex&gt; Macro.escape({:unquote, [], [1]}, unquote: true)
+1</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="expand/2">
+  <div class="detail-header">
+    <a href="#expand/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">expand(tree, env)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/macro.ex#L1009" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Receives an AST node and expands it until it can no longer
+be expanded.</p>
+<p>This function uses <a href="#expand_once/2"><code class="inline">expand_once/2</code></a> under the hood. Check
+it out for more information and examples.</p>
+
+  </section>
+</div>
+<div class="detail" id="expand_once/2">
+  <div class="detail-header">
+    <a href="#expand_once/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">expand_once(ast, env)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/macro.ex#L891" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Receives an AST node and expands it once.</p>
+<p>The following contents are expanded:</p>
+<ul>
+<li>Macros (local or remote)
+</li>
+<li>Aliases are expanded (if possible) and return atoms
+</li>
+<li>Pseudo-variables (<code class="inline">__ENV__</code>, <code class="inline">__MODULE__</code> and <code class="inline">__DIR__</code>)
+</li>
+<li>Module attributes reader (<code class="inline">@foo</code>)
+</li>
+</ul>
+<p>If the expression cannot be expanded, it returns the expression
+itself. Notice that <a href="#expand_once/2"><code class="inline">expand_once/2</code></a> performs the expansion just
+once and it is not recursive. Check <a href="#expand/2"><code class="inline">expand/2</code></a> for expansion
+until the node can no longer be expanded.</p>
+<h2>Examples</h2>
+<p>In the example below, we have a macro that generates a module
+with a function named <code class="inline">name_length</code> that returns the length
+of the module name. The value of this function will be calculated
+at compilation time and not at runtime.</p>
+<p>Consider the implementation below:</p>
+<pre><code class="elixir">defmacro defmodule_with_length(name, do: block) do
+  length = length(Atom.to_char_list(name))
+
+  quote do
+    defmodule unquote(name) do
+      def name_length, do: unquote(length)
+      unquote(block)
+    end
+  end
+end</code></pre>
+<p>When invoked like this:</p>
+<pre><code class="elixir">defmodule_with_length My.Module do
+  def other_function, do: ...
+end</code></pre>
+<p>The compilation will fail because <code class="inline">My.Module</code> when quoted
+is not an atom, but a syntax tree as follow:</p>
+<pre><code class="elixir">{:__aliases__, [], [:My, :Module]}</code></pre>
+<p>That said, we need to expand the aliases node above to an
+atom, so we can retrieve its length. Expanding the node is
+not straight-forward because we also need to expand the
+caller aliases. For example:</p>
+<pre><code class="elixir">alias MyHelpers, as: My
+
+defmodule_with_length My.Module do
+  def other_function, do: ...
+end</code></pre>
+<p>The final module name will be <code class="inline">MyHelpers.Module</code> and not
+<code class="inline">My.Module</code>. With <a href="Macro.html#expand/2"><code class="inline">Macro.expand/2</code></a>, such aliases are taken
+into consideration. Local and remote macros are also
+expanded. We could rewrite our macro above to use this
+function as:</p>
+<pre><code class="elixir">defmacro defmodule_with_length(name, do: block) do
+  expanded = Macro.expand(name, __CALLER__)
+  length   = length(Atom.to_char_list(expanded))
+
+  quote do
+    defmodule unquote(name) do
+      def name_length, do: unquote(length)
+      unquote(block)
+    end
+  end
+end</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="pipe/3">
+  <div class="detail-header">
+    <a href="#pipe/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">pipe(expr, call_args, position)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/macro.ex#L88" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">pipe(<a href="Macro.html#t:t/0">Macro.t</a>, <a href="Macro.html#t:t/0">Macro.t</a>, integer) ::
+  <a href="Macro.html#t:t/0">Macro.t</a> |
+  no_return</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Pipes <code class="inline">expr</code> into the <code class="inline">call_args</code> at the given <code class="inline">position</code>.</p>
+
+  </section>
+</div>
+<div class="detail" id="postwalk/2">
+  <div class="detail-header">
+    <a href="#postwalk/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">postwalk(ast, fun)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/macro.ex#L225" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">postwalk(<a href="#t:t/0">t</a>, (<a href="#t:t/0">t</a> -> <a href="#t:t/0">t</a>)) :: <a href="#t:t/0">t</a></code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Performs a depth-first, post-order traversal of quoted expressions.</p>
+
+  </section>
+</div>
+<div class="detail" id="postwalk/3">
+  <div class="detail-header">
+    <a href="#postwalk/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">postwalk(ast, acc, fun)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/macro.ex#L234" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">postwalk(<a href="#t:t/0">t</a>, any, (<a href="#t:t/0">t</a>, any -> {<a href="#t:t/0">t</a>, any})) :: {<a href="#t:t/0">t</a>, any}</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Performs a depth-first, post-order traversal of quoted expressions
+using an accumulator.</p>
+
+  </section>
+</div>
+<div class="detail" id="prewalk/2">
+  <div class="detail-header">
+    <a href="#prewalk/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">prewalk(ast, fun)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/macro.ex#L172" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">prewalk(<a href="#t:t/0">t</a>, (<a href="#t:t/0">t</a> -> <a href="#t:t/0">t</a>)) :: <a href="#t:t/0">t</a></code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Performs a depth-first, pre-order traversal of quoted expressions.</p>
+
+  </section>
+</div>
+<div class="detail" id="prewalk/3">
+  <div class="detail-header">
+    <a href="#prewalk/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">prewalk(ast, acc, fun)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/macro.ex#L181" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">prewalk(<a href="#t:t/0">t</a>, any, (<a href="#t:t/0">t</a>, any -> {<a href="#t:t/0">t</a>, any})) :: {<a href="#t:t/0">t</a>, any}</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Performs a depth-first, pre-order traversal of quoted expressions
+using an accumulator.</p>
+
+  </section>
+</div>
+<div class="detail" id="to_string/2">
+  <div class="detail-header">
+    <a href="#to_string/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">to_string(tree, fun \\ fn _ast, string -&gt; string end)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/macro.ex#L473" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">to_string(<a href="Macro.html#t:t/0">Macro.t</a>, (<a href="Macro.html#t:t/0">Macro.t</a>, <a href="String.html#t:t/0">String.t</a> -> <a href="String.html#t:t/0">String.t</a>)) :: <a href="String.html#t:t/0">String.t</a></code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Converts the given expression to a binary.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; Macro.to_string(quote do: foo.bar(1, 2, 3))
+&quot;foo.bar(1, 2, 3)&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="unescape_string/1">
+  <div class="detail-header">
+    <a href="#unescape_string/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">unescape_string(chars)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/macro.ex#L388" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">unescape_string(<a href="String.html#t:t/0">String.t</a>) :: <a href="String.html#t:t/0">String.t</a></code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Unescapes the given chars.</p>
+<p>This is the unescaping behaviour used by default in Elixir
+single- and double-quoted strings. Check <a href="#unescape_string/2"><code class="inline">unescape_string/2</code></a>
+for information on how to customize the escaping map.</p>
+<p>In this setup, Elixir will escape the following: <code class="inline">\0</code>, <code class="inline">\a</code>, <code class="inline">\b</code>,
+<code class="inline">\d</code>, <code class="inline">\e</code>, <code class="inline">\f</code>, <code class="inline">\n</code>, <code class="inline">\r</code>, <code class="inline">\s</code>, <code class="inline">\t</code> and <code class="inline">\v</code>. Unicode codepoints
+can be given as hexadecimals via <code class="inline">\xNN</code> and <code class="inline">\x{NN...}</code> escapes.</p>
+<p>This function is commonly used on sigil implementations
+(like <code class="inline">~r</code>, <code class="inline">~s</code> and others) which receive a raw, unescaped
+string.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; Macro.unescape_string(&quot;example\\n&quot;)
+&quot;example\n&quot;</code></pre>
+<p>In the example above, we pass a string with <code class="inline">\n</code> escaped
+and return a version with it unescaped.</p>
+
+  </section>
+</div>
+<div class="detail" id="unescape_string/2">
+  <div class="detail-header">
+    <a href="#unescape_string/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">unescape_string(chars, map)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/macro.ex#L432" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">unescape_string(<a href="String.html#t:t/0">String.t</a>, (non_neg_integer -> non_neg_integer | false)) :: <a href="String.html#t:t/0">String.t</a></code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Unescapes the given chars according to the map given.</p>
+<p>Check <a href="#unescape_string/1"><code class="inline">unescape_string/1</code></a> if you want to use the same map
+as Elixir single- and double-quoted strings.</p>
+<h2>Map</h2>
+<p>The map must be a function. The function receives an integer
+representing the codepoint of the character it wants to unescape.
+Here is the default mapping function implemented by Elixir:</p>
+<pre><code class="elixir">def unescape_map(?0), do: ?0
+def unescape_map(?a), do: ?\a
+def unescape_map(?b), do: ?\b
+def unescape_map(?d), do: ?\d
+def unescape_map(?e), do: ?\e
+def unescape_map(?f), do: ?\f
+def unescape_map(?n), do: ?\n
+def unescape_map(?r), do: ?\r
+def unescape_map(?s), do: ?\s
+def unescape_map(?t), do: ?\t
+def unescape_map(?v), do: ?\v
+def unescape_map(?x), do: true
+def unescape_map(e),  do: e</code></pre>
+<p>If the <code class="inline">unescape_map</code> function returns <code class="inline">false</code>. The char is
+not escaped and <code class="inline">\</code> is kept in the char list.</p>
+<p>Hexadecimals will be escaped if the map function returns <code class="inline">true</code>
+for <code class="inline">?x</code>.</p>
+<h2>Examples</h2>
+<p>Using the <code class="inline">unescape_map</code> function defined above is easy:</p>
+<pre><code class="elixir">Macro.unescape_string &quot;example\\n&quot;, &amp;unescape_map(&amp;1)</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="unescape_tokens/1">
+  <div class="detail-header">
+    <a href="#unescape_tokens/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">unescape_tokens(tokens)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/macro.ex#L448" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">unescape_tokens([<a href="Macro.html#t:t/0">Macro.t</a>]) :: [<a href="Macro.html#t:t/0">Macro.t</a>]</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Unescapes the given tokens according to the default map.</p>
+<p>Check <a href="#unescape_string/1"><code class="inline">unescape_string/1</code></a> and <a href="#unescape_string/2"><code class="inline">unescape_string/2</code></a> for more
+information about unescaping.</p>
+<p>Only tokens that are binaries are unescaped, all others are
+ignored. This function is useful when implementing your own
+sigils. Check the implementation of <a href="Kernel.html#sigil_s/2"><code class="inline">Kernel.sigil_s/2</code></a>
+for examples.</p>
+
+  </section>
+</div>
+<div class="detail" id="unescape_tokens/2">
+  <div class="detail-header">
+    <a href="#unescape_tokens/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">unescape_tokens(tokens, map)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/macro.ex#L458" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">unescape_tokens([<a href="Macro.html#t:t/0">Macro.t</a>], (non_neg_integer -> non_neg_integer | false)) :: [<a href="Macro.html#t:t/0">Macro.t</a>]</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Unescapes the given tokens according to the given map.</p>
+<p>Check <a href="#unescape_tokens/1"><code class="inline">unescape_tokens/1</code></a> and <a href="#unescape_string/2"><code class="inline">unescape_string/2</code></a> for more information.</p>
+
+  </section>
+</div>
+<div class="detail" id="unpipe/1">
+  <div class="detail-header">
+    <a href="#unpipe/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">unpipe(expr)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/macro.ex#L72" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">unpipe(<a href="Macro.html#t:t/0">Macro.t</a>) :: [<a href="Macro.html#t:t/0">Macro.t</a>]</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Breaks a pipeline expression into a list.</p>
+<p>Raises if the pipeline is ill-formed.</p>
+
+  </section>
+</div>
+<div class="detail" id="update_meta/2">
+  <div class="detail-header">
+    <a href="#update_meta/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">update_meta(quoted, fun)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/macro.ex#L133" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">update_meta(<a href="#t:t/0">t</a>, (<a href="Keyword.html#t:t/0">Keyword.t</a> -> <a href="Keyword.html#t:t/0">Keyword.t</a>)) :: <a href="#t:t/0">t</a></code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Applies the given function to the node metadata if it contains one.</p>
+<p>This is often useful when used with <a href="Macro.html#prewalk/2"><code class="inline">Macro.prewalk/2</code></a> to remove
+information like lines and hygienic counters from the expression
+for either storage or comparison.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; quoted = quote line: 10, do: sample()
+{:sample, [line: 10], []}
+iex&gt; Macro.update_meta(quoted, &amp;Keyword.delete(&amp;1, :line))
+{:sample, [], []}</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="validate/1">
+  <div class="detail-header">
+    <a href="#validate/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">validate(expr)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/macro.ex#L337" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">validate(term) :: :ok | {:error, term}</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Validates the given expressions are valid quoted expressions.</p>
+<p>Check the <code class="inline">type:Macro.t</code> for the specification of a valid
+quoted expression.</p>
+
+  </section>
+</div>
+<div class="detail" id="var/2">
+  <div class="detail-header">
+    <a href="#var/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">var(var, context)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/macro.ex#L164" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">var(var, context) :: {var, [], context} when var: atom, context: atom</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Generates an AST node representing the variable given
+by the atoms <code class="inline">var</code> and <code class="inline">context</code>.</p>
+<h2>Examples</h2>
+<p>In order to build a variable, a context is expected.
+Most of the times, in order to preserve hygiene, the
+context must be <code class="inline">__MODULE__</code>:</p>
+<pre><code class="iex elixir">iex&gt; Macro.var(:foo, __MODULE__)
+{:foo, [], __MODULE__}</code></pre>
+<p>However, if there is a need to access the user variable,
+nil can be given:</p>
+<pre><code class="iex elixir">iex&gt; Macro.var(:foo, nil)
+{:foo, [], nil}</code></pre>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+
+      
+        <footer class="footer">
+      <p>
+        <span class="line">
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.11.4),
+        </span>
+        <span class="line">
+          designed by
+          <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+      </p>
+      <button class="night-mode-toggle" />
+    </footer>
+  </div>
+</section>
+</div>
+  <script src="dist/app-6d2e071366.js"></script>
+  </body>
+</html>
+

@@ -1,0 +1,303 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.14.2">
+    <title>File.Stat – Elixir v1.3.4</title>
+    <link rel="stylesheet" href="dist/app-23e810f3fe.css" />
+    
+      <link rel="canonical" href="https://hexdocs.pm/elixir/File.Stat.html" />
+    
+    <script src="dist/sidebar_items.js"></script>
+  </head>
+  <body data-type="modules">
+    <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+
+  
+  <a href="http://elixir-lang.org/docs.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        Elixir
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v1.3.4
+      </h2>
+    </div>
+    
+      <img src="assets/logo.png" alt="Elixir" class="sidebar-projectImage">
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+      <li><a id="exceptions-list" href="#full-list">Exceptions</a></li>
+    
+
+    
+      <li><a id="protocols-list" href="#full-list">Protocols</a></li>
+    
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">Elixir v1.3.4</small>
+        File.Stat
+        
+        
+          <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/file/stat.ex#L3" title="View Source" class="view-source" rel="help">
+            <i class="icon-code"></i>
+          </a>
+        
+      </h1>
+
+      
+        <section id="moduledoc">
+          <p>A struct that holds file information.</p>
+<p>In Erlang, this struct is represented by a <code class="inline">:file_info</code> record.
+Therefore this module also provides functions for converting
+between the Erlang record and the Elixir struct.</p>
+<p>Its fields are:</p>
+<ul>
+<li><p><code class="inline">size</code> - size of file in bytes.</p>
+</li>
+<li><p><code class="inline">type</code> - <code class="inline">:device | :directory | :regular | :other</code>; the type of the
+file.</p>
+</li>
+<li><p><code class="inline">access</code> - <code class="inline">:read | :write | :read_write | :none</code>; the current system
+access to the file.</p>
+</li>
+<li><p><code class="inline">atime</code> - the last time the file was read.</p>
+</li>
+<li><p><code class="inline">mtime</code> - the last time the file was written.</p>
+</li>
+<li><p><code class="inline">ctime</code> - the interpretation of this time field depends on the operating
+system. On Unix, it is the last time the file or the inode was changed.
+In Windows, it is the time of creation.</p>
+</li>
+<li><p><code class="inline">mode</code> - the file permissions.</p>
+</li>
+<li><p><code class="inline">links</code> - the number of links to this file. This is always 1 for file
+systems which have no concept of links.</p>
+</li>
+<li><p><code class="inline">major_device</code> - identifies the file system where the file is located.
+In Windows, the number indicates a drive as follows: 0 means A:, 1 means
+B:, and so on.</p>
+</li>
+<li><p><code class="inline">minor_device</code> - only valid for character devices on Unix. In all other
+cases, this field is zero.</p>
+</li>
+<li><p><code class="inline">inode</code> - gives the inode number. On non-Unix file systems, this field
+will be zero.</p>
+</li>
+<li><p><code class="inline">uid</code> - indicates the owner of the file. Will be zero for non-Unix file
+systems.</p>
+</li>
+<li><code class="inline">gid</code> - indicates the group that owns the file. Will be zero for
+non-Unix file systems.
+</li>
+</ul>
+<p>The time type returned in <code class="inline">atime</code>, <code class="inline">mtime</code>, and <code class="inline">ctime</code> is dependent on the
+time type set in options. <code class="inline">{:time, type}</code> where type can be <code class="inline">:local</code>,
+<code class="inline">:universal</code>, or <code class="inline">:posix</code>. Default is <code class="inline">:universal</code>.</p>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <i class="icon-link"></i>
+            </a>
+            Summary
+          </h1>
+          
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:t/0">t()</a>
+  </div>
+  
+</div>
+
+  </div>
+
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#from_record/1">from_record(file_info)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Converts a <code class="inline">:file_info</code> record into a <a href="File.Stat.html#content"><code class="inline">File.Stat</code></a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#to_record/1">to_record(stat)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Converts a <a href="File.Stat.html#content"><code class="inline">File.Stat</code></a> struct to a <code class="inline">:file_info</code> record</p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+
+          
+
+        </section>
+      
+
+      
+        <section id="types" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <i class="icon-link"></i>
+            </a>
+            Types
+          </h1>
+          <div class="types-list">
+            <div class="detail" id="t:t/0">
+  
+  <div class="detail-header">
+    <a href="#t:t/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">t()</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/file/stat.ex#L61" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre><a href="#t:t/0">t</a> :: %File.Stat{access: term, atime: term, ctime: term, gid: term, inode: term, links: term, major_device: term, minor_device: term, mode: term, mtime: term, size: term, type: term, uid: term}</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+
+          </div>
+        </section>
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <i class="icon-link"></i>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="from_record/1">
+  
+  <div class="detail-header">
+    <a href="#from_record/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">from_record(file_info)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/file/stat.ex#L73" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Converts a <code class="inline">:file_info</code> record into a <a href="File.Stat.html#content"><code class="inline">File.Stat</code></a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="to_record/1">
+  
+  <div class="detail-header">
+    <a href="#to_record/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">to_record(stat)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/file/stat.ex#L66" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Converts a <a href="File.Stat.html#content"><code class="inline">File.Stat</code></a> struct to a <code class="inline">:file_info</code> record.</p>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+
+      
+          <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.14.2),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle" />
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  <script src="dist/app-f0381555b5.js"></script>
+  </body>
+</html>
+

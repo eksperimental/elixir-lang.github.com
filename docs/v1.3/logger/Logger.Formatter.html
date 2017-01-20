@@ -1,0 +1,388 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.14.2">
+    <title>Logger.Formatter – Logger v1.3.4</title>
+    <link rel="stylesheet" href="dist/app-23e810f3fe.css" />
+    
+      <link rel="canonical" href="https://hexdocs.pm/logger/Logger.Formatter.html" />
+    
+    <script src="dist/sidebar_items.js"></script>
+  </head>
+  <body data-type="modules">
+    <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+
+  
+  <a href="http://elixir-lang.org/docs.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        Logger
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v1.3.4
+      </h2>
+    </div>
+    
+      <img src="assets/logo.png" alt="Logger" class="sidebar-projectImage">
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+
+    
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">Logger v1.3.4</small>
+        Logger.Formatter
+        
+        
+          <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/logger/lib/logger/formatter.ex#L3" title="View Source" class="view-source" rel="help">
+            <i class="icon-code"></i>
+          </a>
+        
+      </h1>
+
+      
+        <section id="moduledoc">
+          <p>Conveniences for formatting data for logs.</p>
+<p>This module allows developers to specify a string that
+serves as template for log messages, for example:</p>
+<pre><code class="elixir">$time $metadata[$level] $message\n</code></pre>
+<p>Will print error messages as:</p>
+<pre><code class="elixir">18:43:12.439 user_id=13 [error] Hello\n</code></pre>
+<p>The valid parameters you can use are:</p>
+<ul>
+<li><code class="inline">$time</code>     - time the log message was sent
+</li>
+<li><code class="inline">$date</code>     - date the log message was sent
+</li>
+<li><code class="inline">$message</code>  - the log message
+</li>
+<li><code class="inline">$level</code>    - the log level
+</li>
+<li><code class="inline">$node</code>     - the node that prints the message
+</li>
+<li><code class="inline">$metadata</code> - user controlled data presented in <code class="inline">&quot;key=val key2=val2&quot;</code> format
+</li>
+<li><code class="inline">$levelpad</code> - set to a single space if level is 4 characters long,
+otherwise set to the empty space. Used to align the message after level.
+</li>
+</ul>
+<p>Backends typically allow developers to supply such control
+strings via configuration files. This module provides <a href="#compile/1"><code class="inline">compile/1</code></a>,
+which compiles the string into a format for fast operations at
+runtime and <a href="#format/5"><code class="inline">format/5</code></a> to format the compiled pattern into an
+actual IO data.</p>
+<h2 id="module-metadata" class="section-heading">
+  <a href="#module-metadata" class="hover-link"><i class="icon-link"></i></a>
+  Metadata
+</h2>
+
+<p>Metadata to be sent to the Logger can be read and written with
+the <a href="Logger.html#metadata/0"><code class="inline">Logger.metadata/0</code></a> and <a href="Logger.html#metadata/1"><code class="inline">Logger.metadata/1</code></a> functions. For example,
+you can set <code class="inline">Logger.metadata([user_id: 13])</code> to add user_id metadata
+to the current process. The user can configure the backend to chose
+which metadata it wants to print and it will replace the <code class="inline">$metadata</code>
+value.</p>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <i class="icon-link"></i>
+            </a>
+            Summary
+          </h1>
+          
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:pattern/0">pattern()</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:time/0">time()</a>
+  </div>
+  
+</div>
+
+  </div>
+
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#compile/1">compile(str)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Compiles a format string into a data structure that the <a href="#format/5"><code class="inline">format/5</code></a> can handle</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#format/5">format(config, level, msg, ts, md)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Takes a compiled format and injects the, level, timestamp, message and
+metadata listdict and returns a properly formatted string</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#prune/1">prune(binary)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Prune non-valid UTF-8 codepoints</p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+
+          
+
+        </section>
+      
+
+      
+        <section id="types" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <i class="icon-link"></i>
+            </a>
+            Types
+          </h1>
+          <div class="types-list">
+            <div class="detail" id="t:pattern/0">
+  
+  <div class="detail-header">
+    <a href="#t:pattern/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">pattern()</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/logger/lib/logger/formatter.ex#L44" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre><a href="#t:pattern/0">pattern</a> ::
+  :date |
+  :level |
+  :levelpad |
+  :message |
+  :metadata |
+  :node |
+  :time</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="t:time/0">
+  
+  <div class="detail-header">
+    <a href="#t:time/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">time()</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/logger/lib/logger/formatter.ex#L43" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre><a href="#t:time/0">time</a> :: {{1970..10000, 1..12, 1..31}, {0..23, 0..59, 0..59, 0..999}}</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+
+          </div>
+        </section>
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <i class="icon-link"></i>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="compile/1">
+  
+  <div class="detail-header">
+    <a href="#compile/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">compile(str)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/logger/lib/logger/formatter.ex#L83" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>compile(binary | nil) :: [<a href="#t:pattern/0">pattern</a> | binary]</pre>
+        
+          <pre>compile({atom, atom}) :: {atom, atom}</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Compiles a format string into a data structure that the <a href="#format/5"><code class="inline">format/5</code></a> can handle.</p>
+<p>Check the module doc for documentation on the valid parameters. If you
+pass <code class="inline">nil</code>, it defaults to: <code class="inline">$time $metadata [$level] $levelpad$message\n</code></p>
+<p>If you would like to make your own custom formatter simply pass
+<code class="inline">{module, function}</code> to <a href="#compile/1"><code class="inline">compile/1</code></a> and the rest is handled.</p>
+<pre><code class="iex elixir">iex&gt; Logger.Formatter.compile(&quot;$time $metadata [$level] $message\n&quot;)
+[:time, &quot; &quot;, :metadata, &quot; [&quot;, :level, &quot;] &quot;, :message, &quot;\n&quot;]</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="format/5">
+  
+  <div class="detail-header">
+    <a href="#format/5" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">format(config, level, msg, ts, md)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/logger/lib/logger/formatter.ex#L107" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>format({atom, atom} | [<a href="#t:pattern/0">pattern</a> | binary], <a href="Logger.html#t:level/0">Logger.level</a>, <a href="Logger.html#t:message/0">Logger.message</a>, <a href="#t:time/0">time</a>, <a href="http://elixir-lang.org/docs/stable/elixir/Keyword.html#t:t/0">Keyword.t</a>) :: <a href="http://elixir-lang.org/docs/stable/elixir/IO.html#t:chardata/0">IO.chardata</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Takes a compiled format and injects the, level, timestamp, message and
+metadata listdict and returns a properly formatted string.</p>
+
+  </section>
+</div>
+<div class="detail" id="prune/1">
+  
+  <div class="detail-header">
+    <a href="#prune/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">prune(binary)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/logger/lib/logger/formatter.ex#L55" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>prune(<a href="http://elixir-lang.org/docs/stable/elixir/IO.html#t:chardata/0">IO.chardata</a>) :: <a href="http://elixir-lang.org/docs/stable/elixir/IO.html#t:chardata/0">IO.chardata</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Prune non-valid UTF-8 codepoints.</p>
+<p>Typically called after formatting when the data cannot be printed.</p>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+
+      
+          <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.14.2),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle" />
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  <script src="dist/app-f0381555b5.js"></script>
+  </body>
+</html>
+

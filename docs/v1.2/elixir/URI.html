@@ -1,0 +1,633 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.11.4">
+    <title>URI – Elixir v1.2.6</title>
+    <link rel="stylesheet" href="dist/app-ddd9717ad9.css" />
+    
+      <link rel="canonical" href="https://hexdocs.pm/elixir/URI.html" />
+    
+    <script src="dist/sidebar_items.js"></script>
+  </head>
+  <body data-type="modules">
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+  <button class="sidebar-toggle">
+    <i class="icon-menu"></i>
+  </button>
+
+  
+  <a href="http://elixir-lang.org/docs.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        Elixir
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v1.2.6
+      </h2>
+    </div>
+    
+      <img src="assets/logo.png" alt="Elixir" class="sidebar-projectImage">
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+      <li><a id="exceptions-list" href="#full-list">Exceptions</a></li>
+    
+
+    
+      <li><a id="protocols-list" href="#full-list">Protocols</a></li>
+    
+  </ul>
+
+  <ul id="full-list" class="sidebar-fullList"></ul>
+  <div class="sidebar-noResults"></div>
+</section>
+
+<section class="content">
+  <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">Elixir v1.2.6</small>
+        URI
+        
+        
+          <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/uri.ex#L1" title="View Source" class="view-source" rel="help">
+            <i class="icon-code"></i>
+          </a>
+        
+      </h1>
+
+      
+        <section id="moduledoc" class="docstring">
+          <p>Utilities for working with and creating URIs.</p>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <i class="icon-link"></i>
+            </a>
+            Summary
+          </h1>
+          
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:t/0">t()</a>
+  </div>
+  
+</div>
+
+  </div>
+
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#char_reserved?/1">char_reserved?(c)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Checks if the character is a “reserved” character in a URI</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#char_unescaped?/1">char_unescaped?(c)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Checks if the character is allowed unescaped in a URI</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#char_unreserved?/1">char_unreserved?(c)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Checks if the character is a “unreserved” character in a URI</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#decode/1">decode(uri)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Percent-unescapes a URI</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#decode_query/2">decode_query(q, dict \\ %{})</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Decodes a query string into a dictionary (by default uses a map)</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#decode_www_form/1">decode_www_form(str)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Decodes a string as “x-www-form-urlencoded”</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#default_port/1">default_port(scheme)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns the default port for a given scheme</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#default_port/2">default_port(scheme, port)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Registers a scheme with a default port</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#encode/2">encode(str, predicate \\ &amp;char_unescaped?/1)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Percent-escapes a URI.
+Accepts <code class="inline">predicate</code> function as an argument to specify if char can be left as is</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#encode_query/1">encode_query(l)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Encodes an enumerable into a query string</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#encode_www_form/1">encode_www_form(str)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Encodes a string as “x-www-form-urlencoded”</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#parse/1">parse(uri)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Parses a well-formed URI reference into its components</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#query_decoder/1">query_decoder(q)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns an iterator function over the query string that decodes
+the query string in steps</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#to_string/1">to_string(uri)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Converts the URI to string</p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+
+          
+
+        </section>
+      
+
+      
+        <section id="types" class="types details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <i class="icon-link"></i>
+            </a>
+            Types
+          </h1>
+          <div class="types-list">
+            <div id="t:t/0" class="type-detail">
+  <pre><code class="elixir"><a href="#t:t/0">t</a> :: %URI{authority: term, fragment: term, host: term, path: term, port: term, query: term, scheme: term, userinfo: term}</code></pre>
+  
+</div>
+
+          </div>
+        </section>
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <i class="icon-link"></i>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="char_reserved?/1">
+  <div class="detail-header">
+    <a href="#char_reserved?/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">char_reserved?(c)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/uri.ex#L140" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Checks if the character is a “reserved” character in a URI.</p>
+<p>Reserved characters are specified in <a href="http://tools.ietf.org/html/rfc3986#section-2.2">RFC3986, section 2.2</a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="char_unescaped?/1">
+  <div class="detail-header">
+    <a href="#char_unescaped?/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">char_unescaped?(c)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/uri.ex#L162" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Checks if the character is allowed unescaped in a URI.</p>
+<p>This is the default used by <a href="URI.html#encode/2"><code class="inline">URI.encode/2</code></a> where both
+reserved and unreserved characters are kept unescaped.</p>
+
+  </section>
+</div>
+<div class="detail" id="char_unreserved?/1">
+  <div class="detail-header">
+    <a href="#char_unreserved?/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">char_unreserved?(c)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/uri.ex#L149" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Checks if the character is a “unreserved” character in a URI.</p>
+<p>Unreserved characters are specified in <a href="http://tools.ietf.org/html/rfc3986#section-2.3">RFC3986, section 2.3</a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="decode/1">
+  <div class="detail-header">
+    <a href="#decode/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">decode(uri)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/uri.ex#L218" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Percent-unescapes a URI.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; URI.decode(&quot;http%3A%2F%2Felixir-lang.org&quot;)
+&quot;http://elixir-lang.org&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="decode_query/2">
+  <div class="detail-header">
+    <a href="#decode_query/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">decode_query(q, dict \\ %{})</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/uri.ex#L79" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Decodes a query string into a dictionary (by default uses a map).</p>
+<p>Given a query string of the form “key1=value1&amp;key2=value2…”, produces a
+map with one entry for each key-value pair. Each key and value will be a
+binary. Keys and values will be percent-unescaped.</p>
+<p>Use <a href="#query_decoder/1"><code class="inline">query_decoder/1</code></a> if you want to iterate over each value manually.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; URI.decode_query(&quot;foo=1&amp;bar=2&quot;)
+%{&quot;bar&quot; =&gt; &quot;2&quot;, &quot;foo&quot; =&gt; &quot;1&quot;}</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="decode_www_form/1">
+  <div class="detail-header">
+    <a href="#decode_www_form/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">decode_www_form(str)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/uri.ex#L234" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Decodes a string as “x-www-form-urlencoded”.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; URI.decode_www_form(&quot;%3Call+in%2F&quot;)
+&quot;&lt;all in/&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="default_port/1">
+  <div class="detail-header">
+    <a href="#default_port/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">default_port(scheme)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/uri.ex#L29" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Returns the default port for a given scheme.</p>
+<p>If the scheme is unknown to URI, returns <code class="inline">nil</code>.
+Any scheme may be registered via <a href="#default_port/2"><code class="inline">default_port/2</code></a>.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; URI.default_port(&quot;ftp&quot;)
+21
+
+iex&gt; URI.default_port(&quot;ponzi&quot;)
+nil</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="default_port/2">
+  <div class="detail-header">
+    <a href="#default_port/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">default_port(scheme, port)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/uri.ex#L40" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Registers a scheme with a default port.</p>
+<p>It is recommended for this function to be invoked in your
+application start callback in case you want to register
+new URIs.</p>
+
+  </section>
+</div>
+<div class="detail" id="encode/2">
+  <div class="detail-header">
+    <a href="#encode/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">encode(str, predicate \\ &amp;char_unescaped?/1)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/uri.ex#L176" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Percent-escapes a URI.
+Accepts <code class="inline">predicate</code> function as an argument to specify if char can be left as is.</p>
+<h2>Example</h2>
+<pre><code class="iex elixir">iex&gt; URI.encode(&quot;ftp://s-ite.tld/?value=put it+й&quot;)
+&quot;ftp://s-ite.tld/?value=put%20it+%D0%B9&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="encode_query/1">
+  <div class="detail-header">
+    <a href="#encode_query/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">encode_query(l)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/uri.ex#L61" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Encodes an enumerable into a query string.</p>
+<p>Takes an enumerable (containing a sequence of two-item tuples)
+and returns a string of the form “key1=value1&amp;key2=value2…” where
+keys and values are URL encoded as per <a href="#encode/2"><code class="inline">encode/2</code></a>.</p>
+<p>Keys and values can be any term that implements the <a href="String.Chars.html"><code class="inline">String.Chars</code></a>
+protocol, except lists which are explicitly forbidden.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; hd = %{&quot;foo&quot; =&gt; 1, &quot;bar&quot; =&gt; 2}
+iex&gt; URI.encode_query(hd)
+&quot;bar=2&amp;foo=1&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="encode_www_form/1">
+  <div class="detail-header">
+    <a href="#encode_www_form/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">encode_www_form(str)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/uri.ex#L189" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Encodes a string as “x-www-form-urlencoded”.</p>
+<h2>Example</h2>
+<pre><code class="iex elixir">iex&gt; URI.encode_www_form(&quot;put: it+й&quot;)
+&quot;put%3A+it%2B%D0%B9&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="parse/1">
+  <div class="detail-header">
+    <a href="#parse/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">parse(uri)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/uri.ex#L293" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Parses a well-formed URI reference into its components.</p>
+<p>Note this function expects a well-formed URI and does not perform
+any validation. See the examples section below of how <a href="URI.html#parse/1"><code class="inline">URI.parse/1</code></a>
+can be used to parse a wide range of relative URIs.</p>
+<p>This function uses the parsing regular expression as defined
+in the <a href="http://tools.ietf.org/html/rfc3986#appendix-B">Appendix B of RFC3986</a>.</p>
+<p>When a URI is given without a port, the values registered via
+<a href="URI.html#default_port/1"><code class="inline">URI.default_port/1</code></a> and <a href="URI.html#default_port/2"><code class="inline">URI.default_port/2</code></a> are used.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; URI.parse(&quot;http://elixir-lang.org/&quot;)
+%URI{scheme: &quot;http&quot;, path: &quot;/&quot;, query: nil, fragment: nil,
+     authority: &quot;elixir-lang.org&quot;, userinfo: nil,
+     host: &quot;elixir-lang.org&quot;, port: 80}
+
+iex&gt; URI.parse(&quot;//elixir-lang.org/&quot;)
+%URI{authority: &quot;elixir-lang.org&quot;, fragment: nil, host: &quot;elixir-lang.org&quot;,
+     path: &quot;/&quot;, port: nil, query: nil, scheme: nil, userinfo: nil}
+
+iex&gt; URI.parse(&quot;/foo/bar&quot;)
+%URI{authority: nil, fragment: nil, host: nil, path: &quot;/foo/bar&quot;,
+     port: nil, query: nil, scheme: nil, userinfo: nil}
+
+iex&gt; URI.parse(&quot;foo/bar&quot;)
+%URI{authority: nil, fragment: nil, host: nil, path: &quot;foo/bar&quot;,
+     port: nil, query: nil, scheme: nil, userinfo: nil}</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="query_decoder/1">
+  <div class="detail-header">
+    <a href="#query_decoder/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">query_decoder(q)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/uri.ex#L96" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Returns an iterator function over the query string that decodes
+the query string in steps.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; URI.query_decoder(&quot;foo=1&amp;bar=2&quot;) |&gt; Enum.map(&amp;(&amp;1))
+[{&quot;foo&quot;, &quot;1&quot;}, {&quot;bar&quot;, &quot;2&quot;}]</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="to_string/1">
+  <div class="detail-header">
+    <a href="#to_string/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">to_string(uri)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/uri.ex#L353" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Converts the URI to string.</p>
+<pre><code class="iex elixir">iex&gt; URI.to_string(URI.parse(&quot;http://google.com&quot;))
+&quot;http://google.com&quot;</code></pre>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+
+      
+        <footer class="footer">
+      <p>
+        <span class="line">
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.11.4),
+        </span>
+        <span class="line">
+          designed by
+          <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+      </p>
+      <button class="night-mode-toggle" />
+    </footer>
+  </div>
+</section>
+</div>
+  <script src="dist/app-918614602f.js"></script>
+  </body>
+</html>
+

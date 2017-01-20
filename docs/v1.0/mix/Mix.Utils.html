@@ -1,0 +1,641 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.11.4">
+    <title>Mix.Utils – Mix v1.0.5</title>
+    <link rel="stylesheet" href="dist/app-ddd9717ad9.css" />
+    
+      <link rel="canonical" href="https://hexdocs.pm/mix/Mix.Utils.html" />
+    
+    <script src="dist/sidebar_items.js"></script>
+  </head>
+  <body data-type="modules">
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+  <button class="sidebar-toggle">
+    <i class="icon-menu"></i>
+  </button>
+
+  
+  <a href="http://elixir-lang.org/docs.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        Mix
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v1.0.5
+      </h2>
+    </div>
+    
+      <img src="assets/logo.png" alt="Mix" class="sidebar-projectImage">
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+      <li><a id="exceptions-list" href="#full-list">Exceptions</a></li>
+    
+
+    
+  </ul>
+
+  <ul id="full-list" class="sidebar-fullList"></ul>
+  <div class="sidebar-noResults"></div>
+</section>
+
+<section class="content">
+  <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">Mix v1.0.5</small>
+        Mix.Utils
+        
+        
+          <a href="https://github.com/elixir-lang/elixir/blob/v1.0.5/lib/mix/lib/mix/utils.ex#L1" title="View Source" class="view-source" rel="help">
+            <i class="icon-code"></i>
+          </a>
+        
+      </h1>
+
+      
+        <section id="moduledoc" class="docstring">
+          <p>Utilities used throughout Mix and tasks.</p>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <i class="icon-link"></i>
+            </a>
+            Summary
+          </h1>
+          
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#camelize/1">camelize(arg1)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Converts the given string to CamelCase format</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#command_to_module/2">command_to_module(command, at \\ Elixir)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Take a <code class="inline">command</code> name and attempts to load a module
+with the command name converted to a module name
+in the given <code class="inline">at</code> scope</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#command_to_module_name/1">command_to_module_name(s)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Takes a command and converts it to the module name format</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#copy_path!/3">copy_path!(source, target, opts \\ [])</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Copies content from either a URL or a local filesystem path to
+target path</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#extract_files/2">extract_files(paths, exts_or_pattern)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Extract files from a list of paths</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#extract_stale/2">extract_stale(sources, targets)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Extract all stale <code class="inline">sources</code> compared to the given <code class="inline">targets</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#last_modified/1">last_modified(path)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns the date the given path was last modified</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#mix_home/0">mix_home()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Get the mix home</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#mix_paths/0">mix_paths()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Get all paths defined in the MIX_PATH env variable</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#module_name_to_command/2">module_name_to_command(module, nesting \\ 0)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Takes a module and converts it to a command</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#overwriting?/1">overwriting?(path)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Prompts the user to overwrite the file if it exists. Returns
+the user input</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#read_path!/2">read_path!(path, opts \\ [])</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Opens and reads content from either a URL or a local filesystem path
+and returns the contents as a binary</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#stale?/2">stale?(sources, targets)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns <code class="inline">true</code> if any of the <code class="inline">sources</code> are stale
+compared to the given <code class="inline">targets</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#symlink_or_copy/2">symlink_or_copy(source, target)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Symlink directory <code class="inline">source</code> to <code class="inline">target</code> or copy it recursively
+in case symlink fails</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#underscore/1">underscore(atom)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Converts the given atom or binary to underscore format</p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+
+          
+
+        </section>
+      
+
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <i class="icon-link"></i>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="camelize/1">
+  <div class="detail-header">
+    <a href="#camelize/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">camelize(arg1)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.0.5/lib/mix/lib/mix/utils.ex#L213" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Converts the given string to CamelCase format.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; Mix.Utils.camelize &quot;foo_bar&quot;
+&quot;FooBar&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="command_to_module/2">
+  <div class="detail-header">
+    <a href="#command_to_module/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">command_to_module(command, at \\ Elixir)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.0.5/lib/mix/lib/mix/utils.ex#L58" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Take a <code class="inline">command</code> name and attempts to load a module
+with the command name converted to a module name
+in the given <code class="inline">at</code> scope.</p>
+<p>Returns <code class="inline">{:module, module}</code> in case a module
+exists and is loaded, <code class="inline">{:error, reason}</code> otherwise.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; Mix.Utils.command_to_module(&quot;compile&quot;, Mix.Tasks)
+{:module, Mix.Tasks.Compile}</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="command_to_module_name/1">
+  <div class="detail-header">
+    <a href="#command_to_module_name/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">command_to_module_name(s)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.0.5/lib/mix/lib/mix/utils.ex#L282" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Takes a command and converts it to the module name format.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; Mix.Utils.command_to_module_name(&quot;compile.elixir&quot;)
+&quot;Compile.Elixir&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="copy_path!/3">
+  <div class="detail-header">
+    <a href="#copy_path!/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">copy_path!(source, target, opts \\ [])</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.0.5/lib/mix/lib/mix/utils.ex#L390" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Copies content from either a URL or a local filesystem path to
+target path.</p>
+<p>Used by tasks like <code class="inline">archive.install</code> and <code class="inline">local.rebar</code> that support
+installation either from a URL or a local file.</p>
+<p>Raises if the given path is not a URL, nor a file or if the
+file or URL are invalid.</p>
+<h2>Options</h2>
+<ul>
+<li><p><code class="inline">:shell</code> - Forces the use of <code class="inline">wget</code> or <code class="inline">curl</code> to fetch the file if the
+given path is a URL.</p>
+</li>
+<li><code class="inline">:force</code> - Forces overwriting target file without a shell prompt.
+</li>
+</ul>
+
+  </section>
+</div>
+<div class="detail" id="extract_files/2">
+  <div class="detail-header">
+    <a href="#extract_files/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">extract_files(paths, exts_or_pattern)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.0.5/lib/mix/lib/mix/utils.ex#L127" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Extract files from a list of paths.</p>
+<p><code class="inline">exts_or_pattern</code> may be a list of extensions or a
+<code class="inline">Path.wildcard/1</code> pattern.</p>
+<p>If the path in <code class="inline">paths</code> is a file, it is included in
+the return result. If it is a directory, it is searched
+recursively for files with the given extensions or matching
+the given patterns.</p>
+
+  </section>
+</div>
+<div class="detail" id="extract_stale/2">
+  <div class="detail-header">
+    <a href="#extract_stale/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">extract_stale(sources, targets)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.0.5/lib/mix/lib/mix/utils.ex#L74" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Extract all stale <code class="inline">sources</code> compared to the given <code class="inline">targets</code>.</p>
+
+  </section>
+</div>
+<div class="detail" id="last_modified/1">
+  <div class="detail-header">
+    <a href="#last_modified/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">last_modified(path)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.0.5/lib/mix/lib/mix/utils.ex#L95" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Returns the date the given path was last modified.</p>
+<p>If the path does not exist, it returns the unix epoch
+(1970-01-01 00:00:00).</p>
+
+  </section>
+</div>
+<div class="detail" id="mix_home/0">
+  <div class="detail-header">
+    <a href="#mix_home/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">mix_home()</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.0.5/lib/mix/lib/mix/utils.ex#L19" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Get the mix home.</p>
+<p>It defaults to <code class="inline">~/.mix</code> unless the <code class="inline">MIX_HOME</code>
+environment variable is set.</p>
+<p>Developers should only store entries in the
+<code class="inline">MIX_HOME</code> directory which are guaranteed to
+work across multiple Elixir versions, as it is
+not recommended to swap the <code class="inline">MIX_HOME</code> directory
+as configuration and other important data may be
+stored there.</p>
+
+  </section>
+</div>
+<div class="detail" id="mix_paths/0">
+  <div class="detail-header">
+    <a href="#mix_paths/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">mix_paths()</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.0.5/lib/mix/lib/mix/utils.ex#L29" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Get all paths defined in the MIX_PATH env variable.</p>
+<p><code class="inline">MIX_PATH</code> may contain multiple paths. If on Windows, those
+paths should be separated by <code class="inline">;</code>, if on unix systems, use <code class="inline">:</code>.</p>
+
+  </section>
+</div>
+<div class="detail" id="module_name_to_command/2">
+  <div class="detail-header">
+    <a href="#module_name_to_command/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">module_name_to_command(module, nesting \\ 0)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.0.5/lib/mix/lib/mix/utils.ex#L262" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Takes a module and converts it to a command.</p>
+<p>The nesting argument can be given in order to remove
+the nesting of a module.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; Mix.Utils.module_name_to_command(Mix.Tasks.Compile, 2)
+&quot;compile&quot;
+
+iex&gt; Mix.Utils.module_name_to_command(&quot;Mix.Tasks.Compile.Elixir&quot;, 2)
+&quot;compile.elixir&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="overwriting?/1">
+  <div class="detail-header">
+    <a href="#overwriting?/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">overwriting?(path)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.0.5/lib/mix/lib/mix/utils.ex#L413" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Prompts the user to overwrite the file if it exists. Returns
+the user input.</p>
+
+  </section>
+</div>
+<div class="detail" id="read_path!/2">
+  <div class="detail-header">
+    <a href="#read_path!/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">read_path!(path, opts \\ [])</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.0.5/lib/mix/lib/mix/utils.ex#L360" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Opens and reads content from either a URL or a local filesystem path
+and returns the contents as a binary.</p>
+<p>Raises if the given path is not a URL, nor a file or if the
+file or URL are invalid.</p>
+<h2>Options</h2>
+<ul>
+<li><code class="inline">:shell</code> - Forces the use of <code class="inline">wget</code> or <code class="inline">curl</code> to fetch the file if the
+given path is a URL.
+</li>
+</ul>
+
+  </section>
+</div>
+<div class="detail" id="stale?/2">
+  <div class="detail-header">
+    <a href="#stale?/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">stale?(sources, targets)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.0.5/lib/mix/lib/mix/utils.ex#L67" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Returns <code class="inline">true</code> if any of the <code class="inline">sources</code> are stale
+compared to the given <code class="inline">targets</code>.</p>
+
+  </section>
+</div>
+<div class="detail" id="symlink_or_copy/2">
+  <div class="detail-header">
+    <a href="#symlink_or_copy/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">symlink_or_copy(source, target)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.0.5/lib/mix/lib/mix/utils.ex#L301" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Symlink directory <code class="inline">source</code> to <code class="inline">target</code> or copy it recursively
+in case symlink fails.</p>
+<p>Expect source and target to be absolute paths as it generates
+a relative symlink.</p>
+
+  </section>
+</div>
+<div class="detail" id="underscore/1">
+  <div class="detail-header">
+    <a href="#underscore/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">underscore(atom)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.0.5/lib/mix/lib/mix/utils.ex#L163" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Converts the given atom or binary to underscore format.</p>
+<p>If an atom is given, it is assumed to be an Elixir module,
+so it is converted to a binary and then processed.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; Mix.Utils.underscore &quot;FooBar&quot;
+&quot;foo_bar&quot;
+
+iex&gt; Mix.Utils.underscore &quot;Foo.Bar&quot;
+&quot;foo/bar&quot;
+
+iex&gt; Mix.Utils.underscore Foo.Bar
+&quot;foo/bar&quot;</code></pre>
+<p>In general, <code class="inline">underscore</code> can be thought of as the reverse of
+<code class="inline">camelize</code>, however, in some cases formatting may be lost:</p>
+<pre><code class="elixir">Mix.Utils.underscore &quot;SAPExample&quot;  #=&gt; &quot;sap_example&quot;
+Mix.Utils.camelize   &quot;sap_example&quot; #=&gt; &quot;SapExample&quot;</code></pre>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+
+      
+        <footer class="footer">
+      <p>
+        <span class="line">
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.11.4),
+        </span>
+        <span class="line">
+          designed by
+          <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+      </p>
+      <button class="night-mode-toggle" />
+    </footer>
+  </div>
+</section>
+</div>
+  <script src="dist/app-6d2e071366.js"></script>
+  </body>
+</html>
+

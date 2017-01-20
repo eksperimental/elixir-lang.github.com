@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.14.2">
+    <title>Typespecs – Elixir v1.3.4</title>
+    <link rel="stylesheet" href="dist/app-23e810f3fe.css" />
+    
+      <link rel="canonical" href="https://hexdocs.pm/elixir/typespecs" />
+    
+    <script src="dist/sidebar_items.js"></script>
+  </head>
+  <body data-type="extras">
+    <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
+
+<div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+
+  
+  <a href="http://elixir-lang.org/docs.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        Elixir
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v1.3.4
+      </h2>
+    </div>
+    
+      <img src="assets/logo.png" alt="Elixir" class="sidebar-projectImage">
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+      <li><a id="exceptions-list" href="#full-list">Exceptions</a></li>
+    
+
+    
+      <li><a id="protocols-list" href="#full-list">Protocols</a></li>
+    
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+
+<h1>Typespecs</h1>
+<p>Elixir comes with a notation for declaring types and specifications. Elixir is a dynamically typed language, and as such, type specifications are never used by the compiler to optimize or modify code. Still, using type specifications is useful because</p>
+<ul>
+<li>they provide documentation (for example, tools such as <a href="https://github.com/elixir-lang/ex_doc">ExDoc</a> show type specifications in the documentation)
+</li>
+<li>they’re used by tools sych as <a href="http://www.erlang.org/doc/man/dialyzer.html">Dialyzer</a>, that can analyze code with typespec to find type inconsistencies and possible bugs
+</li>
+</ul>
+<p>Type specifications (sometimes referred to as <em>typespecs</em>) are defined in different contexts using the following attributes:</p>
+<ul>
+<li><code class="inline">@type</code>
+</li>
+<li><code class="inline">@opaque</code>
+</li>
+<li><code class="inline">@typep</code>
+</li>
+<li><code class="inline">@spec</code>
+</li>
+<li><code class="inline">@callback</code>
+</li>
+<li><code class="inline">@macrocallback</code>
+</li>
+</ul>
+<p>See the “Defining a type” and “Defining a specification” sub-sections below for more information on defining types and typespecs.</p>
+<h2 id="types-and-their-syntax" class="section-heading">
+  <a href="#types-and-their-syntax" class="hover-link"><i class="icon-link"></i></a>
+  Types and their syntax
+</h2>
+
+<p>The syntax Elixir provides for type specifications is similar to <a href="http://www.erlang.org/doc/reference_manual/typespec.html">the one in Erlang</a>. Most of the built-in types provided in Erlang (for example, <code class="inline">pid()</code>) are expressed in the same way: <code class="inline">pid()</code> (or simply <code class="inline">pid</code>). Parametrized types (such as <code class="inline">list(integer)</code>) are supported as well and so are remote types (such as <code class="inline">Enum.t</code>). Integers and atom literals are allowed as types (e.g., <code class="inline">1</code>, <code class="inline">:atom</code>, or <code class="inline">false</code>). All other types are built out of unions of predefined types. Some shorthands are allowed, such as <code class="inline">[...]</code>, <code class="inline">&lt;&lt;&gt;&gt;</code>, and <code class="inline">{...}</code>.</p>
+<h3>Basic types</h3>
+<pre><code class="elixir">type :: any()                   # the top type, the set of all terms
+      | none()                  # the bottom type, contains no terms
+      | pid()
+      | port()
+      | reference()
+      | tuple()
+      | atom()
+      | integer()
+      | non_neg_integer()       # 0, 1, 2, 3, ...
+      | pos_integer()           # 1, 2, 3, ...
+      | neg_integer()           # ..., -3, -2, -1
+      | float()
+      | map()                   # any map
+      | struct()                # any struct
+      | list(type)
+      | nonempty_list(type)
+      | improper_list(type1, type2)
+      | maybe_improper_list(type1, type2)
+      | Literals                # Described in section &quot;Literals&quot;
+      | Builtin                 # Described in section &quot;Built-in types&quot;
+      | Remotes                 # Described in section &quot;Remote types&quot;</code></pre>
+<h3>Literals</h3>
+<p>The following literals are also supported in typespecs:</p>
+<pre><code class="elixir">type :: :atom                         ## Atoms
+      | 1                             ## Integers
+      | 1..10                         ## Integers from 1 to 10
+      | 1.0                           ## Floats
+
+                                      ## Bitstrings
+      | &lt;&lt;&gt;&gt;                          # empty bitstring
+      | &lt;&lt;_::size&gt;&gt;                   # size is 0 or a positive integer
+      | &lt;&lt;_::_ * unit&gt;&gt;               # unit is an integer from 1 to 256
+      | &lt;&lt;_::size, _::_*unit&gt;&gt;
+
+                                      ## Lists
+      | [type]                        # list with any number of type elements
+      | []                            # empty list
+      | [...]                         # shorthand for nonempty_list(any())
+      | [type, ...]                   # shorthand for nonempty_list(type)
+      | [key: type]                   # keyword lists
+
+                                      ## Functions
+      | (... -&gt; type)                 # any arity, returns type
+      | (() -&gt; type)                  # 0-arity, returns type
+      | (type1, type2 -&gt; type)        # 2-arity, returns type
+
+                                      ## Maps
+      | %{}                           # empty map
+      | %{...}                        # any map
+      | %{key: type}                  # map with required key :key with value of type
+      | %{required(type1) =&gt; type2}   # map with required keys of type1 with values of type2
+      | %{optional(type1) =&gt; type2}   # map with optional keys of type1 with values of type2
+      | %SomeStruct{}                 # struct with all fields of any type
+      | %SomeStruct{key: type}        # struct with :key field of type
+
+                                      ## Tuples
+      | {}                            # empty tuple
+      | {:ok, type}                   # two element tuple with an atom and any type</code></pre>
+<h3>Built-in types</h3>
+<p>The following types are also provided by Elixir as shortcuts on top of the basic and literal types described above.</p>
+<table>
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left">Built-in type</th><th style="text-align: left">Defined as</th>
+</tr>
+</thead>
+<tr>
+<td style="text-align: left"><code class="inline">term()</code></td><td style="text-align: left"><code class="inline">any()</code></td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">binary()</code></td><td style="text-align: left"><code class="inline">&lt;&lt;_::_ * 8&gt;&gt;</code></td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">bitstring()</code></td><td style="text-align: left"><code class="inline">&lt;&lt;_::_ * 1&gt;&gt;</code></td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">boolean()</code></td><td style="text-align: left"><code class="inline">false</code> | <code class="inline">true</code></td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">byte()</code></td><td style="text-align: left"><code class="inline">0..255</code></td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">char()</code></td><td style="text-align: left"><code class="inline">0..0x10FFFF</code></td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">number()</code></td><td style="text-align: left"><code class="inline">integer()</code> | <code class="inline">float()</code></td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">charlist()</code></td><td style="text-align: left"><code class="inline">[char()]</code></td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">list()</code></td><td style="text-align: left"><code class="inline">[any()]</code></td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">maybe_improper_list()</code></td><td style="text-align: left"><code class="inline">maybe_improper_list(any(), any())</code></td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">nonempty_list()</code></td><td style="text-align: left"><code class="inline">nonempty_list(any())</code></td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">iolist()</code></td><td style="text-align: left"><code class="inline">maybe_improper_list(byte() | binary() | iolist(), binary() | [])</code></td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">iodata()</code></td><td style="text-align: left"><code class="inline">iolist()</code> | <code class="inline">binary()</code></td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">module()</code></td><td style="text-align: left"><code class="inline">atom()</code> | <code class="inline">tuple()</code></td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">arity()</code></td><td style="text-align: left"><code class="inline">0..255</code></td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">mfa()</code></td><td style="text-align: left"><code class="inline">{atom(), atom(), arity()}</code></td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">identifier()</code></td><td style="text-align: left"><code class="inline">pid()</code> | <code class="inline">port()</code> | <code class="inline">reference()</code></td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">node()</code></td><td style="text-align: left"><code class="inline">atom()</code></td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">timeout()</code></td><td style="text-align: left"><code class="inline">:infinity</code> | <code class="inline">non_neg_integer()</code></td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">no_return()</code></td><td style="text-align: left"><code class="inline">none()</code></td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">fun()</code></td><td style="text-align: left"><code class="inline">(... -&gt; any)</code></td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">struct()</code></td><td style="text-align: left"><code class="inline">%{__struct__: atom()}</code></td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">as_boolean(t)</code></td><td style="text-align: left"><code class="inline">t</code></td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">keyword()</code></td><td style="text-align: left"><code class="inline">[{atom(), any()}]</code></td>
+</tr>
+<tr>
+<td style="text-align: left"><code class="inline">keyword(t)</code></td><td style="text-align: left"><code class="inline">[{atom(), t}]</code></td>
+</tr>
+</table>
+<h3>Remote types</h3>
+<p>Any module is also able to define its own types and the modules in Elixir are no exception. For example, the <a href="Range.html"><code class="inline">Range</code></a> module defines a <code class="inline">t</code> type that represents a range: this type can be referred to as <code class="inline">Range.t</code>. In a similar fashion, a string is <code class="inline">String.t</code>, any enumerable can be <code class="inline">Enum.t</code>, and so on.</p>
+<h3>Maps</h3>
+<p>The key types in maps are allowed to overlap, and if they do, the leftmost key takes precedence. A map value does not belong to this type if it contains a key that is not in the maps allowed keys.</p>
+<p>Because it is common to end a map type with <code class="inline">optional(any) =&gt; any</code> to denote that keys that do not belong to any other key in the map type are allowed, and may map to any value, the shorthand notation <code class="inline">...</code> is allowed as the last element of a map type.</p>
+<p>Notice that the syntactic representation of <code class="inline">map()</code> is <code class="inline">%{...}</code> (or <code class="inline">%{optional(any) =&gt; any}</code>), not <code class="inline">%{}</code>. The notation <code class="inline">%{}</code> specifies the singleton type for the empty map.</p>
+<h2 id="defining-a-type" class="section-heading">
+  <a href="#defining-a-type" class="hover-link"><i class="icon-link"></i></a>
+  Defining a type
+</h2>
+
+<p>The <code class="inline">@type</code>, <code class="inline">@typep</code>, and <code class="inline">@opaque</code> module attributes can be used to define new types:</p>
+<pre><code class="elixir">@type type_name :: type
+@typep type_name :: type
+@opaque type_name :: type</code></pre>
+<p>A type defined with <code class="inline">@typep</code> is private. An opaque type, defined with <code class="inline">@opaque</code> is a type where the internal structure of the type will not be visible, but the type is still public.</p>
+<p>Types can be parameterized by defining variables as parameters; these variables can then be used to define the type.</p>
+<pre><code class="elixir">@type dict(key, value) :: [{key, value}]</code></pre>
+<h2 id="defining-a-specification" class="section-heading">
+  <a href="#defining-a-specification" class="hover-link"><i class="icon-link"></i></a>
+  Defining a specification
+</h2>
+
+<pre><code class="elixir">@spec function_name(type1, type2) :: return_type
+@callback function_name(type1, type2) :: return_type
+@macrocallback macro_name(type1, type2) :: Macro.t</code></pre>
+<p>Callbacks are used to define the callbacks functions of behaviours (see the <a href="behaviours.html">“Behaviours”</a> page in the documentation for more information on behaviours).</p>
+<p>Guards can be used to restrict type variables given as arguments to the function.</p>
+<pre><code class="elixir">@spec function(arg) :: [arg] when arg: atom</code></pre>
+<p>Type variables with no restriction can also be defined.</p>
+<pre><code class="elixir">@spec function(arg) :: [arg] when arg: var</code></pre>
+<p>You can also name your arguments in a typespec using <code class="inline">arg_name :: arg_type</code> syntax. This is particularly useful in documentation as a way to differentiate multiple arguments of the same type (or multiple elements of the same type in a type definition):</p>
+<pre><code class="elixir">@spec days_since_epoch(year :: integer, month :: integer, day :: integer) :: integer
+@type color :: {red :: integer, green :: integer, blue :: integer}</code></pre>
+<p>Specifications can be overloaded just like ordinary functions.</p>
+<pre><code class="elixir">@spec function(integer) :: atom
+@spec function(atom) :: integer</code></pre>
+<h2 id="notes" class="section-heading">
+  <a href="#notes" class="hover-link"><i class="icon-link"></i></a>
+  Notes
+</h2>
+
+<p>Elixir discourages the use of type <code class="inline">string</code> as it might be confused with binaries which are referred to as “strings” in Elixir (as opposed to character lists). In order to use the type that is called <code class="inline">string</code> in Erlang, one has to use the <code class="inline">charlist</code> type which is a synonym for <code class="inline">string</code>. If you use <code class="inline">string</code>, you’ll get a warning from the compiler.</p>
+<p>If you want to refer to the “string” type (the one operated on by functions in the <a href="String.html"><code class="inline">String</code></a> module), use <code class="inline">String.t</code> type instead.</p>
+
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.14.2),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle" />
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  <script src="dist/app-f0381555b5.js"></script>
+  </body>
+</html>
+

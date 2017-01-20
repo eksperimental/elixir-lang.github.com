@@ -1,0 +1,482 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.11.4">
+    <title>MapSet – Elixir v1.1.1</title>
+    <link rel="stylesheet" href="dist/app-ddd9717ad9.css" />
+    
+      <link rel="canonical" href="https://hexdocs.pm/elixir/MapSet.html" />
+    
+    <script src="dist/sidebar_items.js"></script>
+  </head>
+  <body data-type="modules">
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+  <button class="sidebar-toggle">
+    <i class="icon-menu"></i>
+  </button>
+
+  
+  <a href="http://elixir-lang.org/docs.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        Elixir
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v1.1.1
+      </h2>
+    </div>
+    
+      <img src="assets/logo.png" alt="Elixir" class="sidebar-projectImage">
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+      <li><a id="exceptions-list" href="#full-list">Exceptions</a></li>
+    
+
+    
+      <li><a id="protocols-list" href="#full-list">Protocols</a></li>
+    
+  </ul>
+
+  <ul id="full-list" class="sidebar-fullList"></ul>
+  <div class="sidebar-noResults"></div>
+</section>
+
+<section class="content">
+  <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">Elixir v1.1.1</small>
+        MapSet
+        
+        
+          <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/map_set.ex#L1" title="View Source" class="view-source" rel="help">
+            <i class="icon-code"></i>
+          </a>
+        
+      </h1>
+
+      
+        <section id="moduledoc" class="docstring">
+          <p>A set store.</p>
+<p>The <a href="MapSet.html#content"><code class="inline">MapSet</code></a> is represented internally as a struct, therefore
+<code class="inline">%MapSet{}</code> can be used whenever there is a need to match
+on any <a href="MapSet.html#content"><code class="inline">MapSet</code></a>. Note though the struct fields are private and
+must not be accessed directly. Instead, use the functions on this
+or in the <a href="Set.html"><code class="inline">Set</code></a> module.</p>
+<p>The <a href="MapSet.html#content"><code class="inline">MapSet</code></a> is implemented using <a href="Map.html"><code class="inline">Map</code></a> data type.
+For more information about the functions
+and their APIs, please consult the <a href="Set.html"><code class="inline">Set</code></a> module.</p>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <i class="icon-link"></i>
+            </a>
+            Summary
+          </h1>
+          
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#delete/2">delete(set, term)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Callback implementation for <a href="Set.html#c:delete/2"><code class="inline">Set.delete/2</code></a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#difference/2">difference(set1, set2)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Callback implementation for <a href="Set.html#c:difference/2"><code class="inline">Set.difference/2</code></a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#disjoint?/2">disjoint?(set1, set2)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Callback implementation for <a href="Set.html#c:disjoint?/2"><code class="inline">Set.disjoint?/2</code></a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#equal?/2">equal?(map_set1, map_set2)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Callback implementation for <a href="Set.html#c:equal?/2"><code class="inline">Set.equal?/2</code></a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#intersection/2">intersection(set1, set2)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Callback implementation for <a href="Set.html#c:intersection/2"><code class="inline">Set.intersection/2</code></a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#member?/2">member?(map_set, value)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Callback implementation for <a href="Set.html#c:member?/2"><code class="inline">Set.member?/2</code></a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#new/0">new()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Callback implementation for <a href="Set.html#c:new/0"><code class="inline">Set.new/0</code></a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#put/2">put(set, value)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Callback implementation for <a href="Set.html#c:put/2"><code class="inline">Set.put/2</code></a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#size/1">size(map_set)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Callback implementation for <a href="Set.html#c:size/1"><code class="inline">Set.size/1</code></a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#subset?/2">subset?(set1, set2)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Callback implementation for <a href="Set.html#c:subset?/2"><code class="inline">Set.subset?/2</code></a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#to_list/1">to_list(map_set)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Callback implementation for <a href="Set.html#c:to_list/1"><code class="inline">Set.to_list/1</code></a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#union/2">union(map_set1, map_set2)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Callback implementation for <a href="Set.html#c:union/2"><code class="inline">Set.union/2</code></a></p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+
+          
+
+        </section>
+      
+
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <i class="icon-link"></i>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="delete/2">
+  <div class="detail-header">
+    <a href="#delete/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">delete(set, term)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/map_set.ex#L22" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Callback implementation for <a href="Set.html#c:delete/2"><code class="inline">Set.delete/2</code></a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="difference/2">
+  <div class="detail-header">
+    <a href="#difference/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">difference(set1, set2)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/map_set.ex#L26" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Callback implementation for <a href="Set.html#c:difference/2"><code class="inline">Set.difference/2</code></a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="disjoint?/2">
+  <div class="detail-header">
+    <a href="#disjoint?/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">disjoint?(set1, set2)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/map_set.ex#L32" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Callback implementation for <a href="Set.html#c:disjoint?/2"><code class="inline">Set.disjoint?/2</code></a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="equal?/2">
+  <div class="detail-header">
+    <a href="#equal?/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">equal?(map_set1, map_set2)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/map_set.ex#L43" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Callback implementation for <a href="Set.html#c:equal?/2"><code class="inline">Set.equal?/2</code></a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="intersection/2">
+  <div class="detail-header">
+    <a href="#intersection/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">intersection(set1, set2)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/map_set.ex#L47" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Callback implementation for <a href="Set.html#c:intersection/2"><code class="inline">Set.intersection/2</code></a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="member?/2">
+  <div class="detail-header">
+    <a href="#member?/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">member?(map_set, value)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/map_set.ex#L58" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Callback implementation for <a href="Set.html#c:member?/2"><code class="inline">Set.member?/2</code></a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="new/0">
+  <div class="detail-header">
+    <a href="#new/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">new()</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/map_set.ex#L20" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Callback implementation for <a href="Set.html#c:new/0"><code class="inline">Set.new/0</code></a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="put/2">
+  <div class="detail-header">
+    <a href="#put/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">put(set, value)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/map_set.ex#L62" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Callback implementation for <a href="Set.html#c:put/2"><code class="inline">Set.put/2</code></a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="size/1">
+  <div class="detail-header">
+    <a href="#size/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">size(map_set)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/map_set.ex#L66" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Callback implementation for <a href="Set.html#c:size/1"><code class="inline">Set.size/1</code></a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="subset?/2">
+  <div class="detail-header">
+    <a href="#subset?/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">subset?(set1, set2)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/map_set.ex#L70" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Callback implementation for <a href="Set.html#c:subset?/2"><code class="inline">Set.subset?/2</code></a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="to_list/1">
+  <div class="detail-header">
+    <a href="#to_list/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">to_list(map_set)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/map_set.ex#L85" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Callback implementation for <a href="Set.html#c:to_list/1"><code class="inline">Set.to_list/1</code></a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="union/2">
+  <div class="detail-header">
+    <a href="#union/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">union(map_set1, map_set2)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/map_set.ex#L89" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Callback implementation for <a href="Set.html#c:union/2"><code class="inline">Set.union/2</code></a>.</p>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+
+      
+        <footer class="footer">
+      <p>
+        <span class="line">
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.11.4),
+        </span>
+        <span class="line">
+          designed by
+          <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+      </p>
+      <button class="night-mode-toggle" />
+    </footer>
+  </div>
+</section>
+</div>
+  <script src="dist/app-6d2e071366.js"></script>
+  </body>
+</html>
+

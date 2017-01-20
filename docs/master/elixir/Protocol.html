@@ -1,0 +1,493 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.14.3">
+    <title>Protocol – Elixir v1.4.0-dev</title>
+    <link rel="stylesheet" href="dist/app-6c3a9fd2f7.css" />
+    
+      <link rel="canonical" href="https://hexdocs.pm/elixir/master/Protocol.html" />
+    
+    <script src="dist/sidebar_items-40d065029c.js"></script>
+  </head>
+  <body data-type="modules">
+    <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+
+  
+  <a href="http://elixir-lang.org/docs.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        Elixir
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v1.4.0-dev
+      </h2>
+    </div>
+    
+      <img src="assets/logo.png" alt="Elixir" class="sidebar-projectImage">
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+      <li><a id="exceptions-list" href="#full-list">Exceptions</a></li>
+    
+
+    
+      <li><a id="protocols-list" href="#full-list">Protocols</a></li>
+    
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">Elixir v1.4.0-dev</small>
+        Protocol
+        
+        
+          <a href="https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/protocol.ex#L1" title="View Source" class="view-source" rel="help">
+            <i class="icon-code"></i>
+          </a>
+        
+      </h1>
+
+      
+        <section id="moduledoc">
+          <p>Functions for working with protocols.</p>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <i class="icon-link"></i>
+            </a>
+            Summary
+          </h1>
+          
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#assert_impl!/2">assert_impl!(protocol, base)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Checks if the given module is loaded and is an implementation
+of the given protocol</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#assert_protocol!/1">assert_protocol!(module)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Checks if the given module is loaded and is protocol</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#consolidate/2">consolidate(protocol, types)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Receives a protocol and a list of implementations and
+consolidates the given protocol</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#consolidated?/1">consolidated?(protocol)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns <code class="inline">true</code> if the protocol was consolidated</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#extract_impls/2">extract_impls(protocol, paths)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Extracts all types implemented for the given protocol from
+the given paths</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#extract_protocols/1">extract_protocols(paths)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Extracts all protocols from the given paths</p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+  <div class="summary-macros summary">
+    <h2>
+      <a href="#macros">Macros</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#def/1">def(signature)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Defines a new protocol function</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#derive/3">derive(protocol, module, options \\ [])</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Derives the <code class="inline">protocol</code> for <code class="inline">module</code> with the given options</p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+
+        </section>
+      
+
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <i class="icon-link"></i>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="assert_impl!/2">
+  
+  <div class="detail-header">
+    <a href="#assert_impl!/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">assert_impl!(protocol, base)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/protocol.ex#L89" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>assert_impl!(module, module) :: :ok | no_return</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Checks if the given module is loaded and is an implementation
+of the given protocol.</p>
+<p>Returns <code class="inline">:ok</code> if so, otherwise raises <a href="ArgumentError.html"><code class="inline">ArgumentError</code></a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="assert_protocol!/1">
+  
+  <div class="detail-header">
+    <a href="#assert_protocol!/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">assert_protocol!(module)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/protocol.ex#L62" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>assert_protocol!(module) :: :ok | no_return</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Checks if the given module is loaded and is protocol.</p>
+<p>Returns <code class="inline">:ok</code> if so, otherwise raises <a href="ArgumentError.html"><code class="inline">ArgumentError</code></a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="consolidate/2">
+  
+  <div class="detail-header">
+    <a href="#consolidate/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">consolidate(protocol, types)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/protocol.ex#L256" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>consolidate(module, [module]) ::
+  {:ok, binary} |
+  {:error, :not_a_protocol} |
+  {:error, :no_beam_info}</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Receives a protocol and a list of implementations and
+consolidates the given protocol.</p>
+<p>Consolidation happens by changing the protocol <code class="inline">impl_for</code>
+in the abstract format to have fast lookup rules. Usually
+the list of implementations to use during consolidation
+are retrieved with the help of <a href="#extract_impls/2"><code class="inline">extract_impls/2</code></a>.</p>
+<p>It returns the updated version of the protocol bytecode.
+A given bytecode or protocol implementation can be checked
+to be consolidated or not by analyzing the protocol
+attribute:</p>
+<pre><code class="elixir">Protocol.consolidated?(Enumerable)</code></pre>
+<p>If the first element of the tuple is <code class="inline">true</code>, it means
+the protocol was consolidated.</p>
+<p>This function does not load the protocol at any point
+nor loads the new bytecode for the compiled module.
+However each implementation must be available and
+it will be loaded.</p>
+
+  </section>
+</div>
+<div class="detail" id="consolidated?/1">
+  
+  <div class="detail-header">
+    <a href="#consolidated?/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">consolidated?(protocol)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/protocol.ex#L224" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>consolidated?(module) :: boolean</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Returns <code class="inline">true</code> if the protocol was consolidated.</p>
+
+  </section>
+</div>
+<div class="detail" id="extract_impls/2">
+  
+  <div class="detail-header">
+    <a href="#extract_impls/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">extract_impls(protocol, paths)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/protocol.ex#L178" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>extract_impls(module, [charlist | <a href="String.html#t:t/0">String.t</a>]) :: [atom]</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Extracts all types implemented for the given protocol from
+the given paths.</p>
+<p>The paths can be either a charlist or a string. Internally
+they are worked on as charlists, so passing them as lists
+avoid extra conversion.</p>
+<p>Does not load any of the implementations.</p>
+<h2 id="extract_impls/2-examples" class="section-heading">
+  <a href="#extract_impls/2-examples" class="hover-link"><i class="icon-link"></i></a>
+  Examples
+</h2>
+
+<pre><code class="elixir"># Get Elixir&#39;s ebin and retrieve all protocols
+iex&gt; path = :code.lib_dir(:elixir, :ebin)
+iex&gt; mods = Protocol.extract_impls(Enumerable, [path])
+iex&gt; List in mods
+true</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="extract_protocols/1">
+  
+  <div class="detail-header">
+    <a href="#extract_protocols/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">extract_protocols(paths)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/protocol.ex#L148" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>extract_protocols([charlist | <a href="String.html#t:t/0">String.t</a>]) :: [atom]</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Extracts all protocols from the given paths.</p>
+<p>The paths can be either a charlist or a string. Internally
+they are worked on as charlists, so passing them as lists
+avoid extra conversion.</p>
+<p>Does not load any of the protocols.</p>
+<h2 id="extract_protocols/1-examples" class="section-heading">
+  <a href="#extract_protocols/1-examples" class="hover-link"><i class="icon-link"></i></a>
+  Examples
+</h2>
+
+<pre><code class="elixir"># Get Elixir&#39;s ebin and retrieve all protocols
+iex&gt; path = :code.lib_dir(:elixir, :ebin)
+iex&gt; mods = Protocol.extract_protocols([path])
+iex&gt; Enumerable in mods
+true</code></pre>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+        <section id="macros" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#macros">
+              <i class="icon-link"></i>
+            </a>
+            Macros
+          </h1>
+          <div class="detail" id="def/1">
+  
+  <div class="detail-header">
+    <a href="#def/1" class="detail-link" title="Link to this macro">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">def(signature)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/protocol.ex#L13" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Defines a new protocol function.</p>
+<p>Protocols do not allow functions to be defined directly, instead, the
+regular <code class="inline">Kernel.def/*</code> macros are replaced by this macro which
+defines the protocol functions with the appropriate callbacks.</p>
+
+  </section>
+</div>
+<div class="detail" id="derive/3">
+  
+    <span id="derive/2" />
+  
+  <div class="detail-header">
+    <a href="#derive/3" class="detail-link" title="Link to this macro">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">derive(protocol, module, options \\ [])</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/master/lib/elixir/lib/protocol.ex#L120" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Derives the <code class="inline">protocol</code> for <code class="inline">module</code> with the given options.</p>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+          <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.14.3),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle" />
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  <script src="dist/app-4aef34ad5f.js"></script>
+  </body>
+</html>
+

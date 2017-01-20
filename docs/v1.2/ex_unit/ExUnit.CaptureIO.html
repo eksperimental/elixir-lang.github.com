@@ -1,0 +1,281 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.11.4">
+    <title>ExUnit.CaptureIO – ExUnit v1.2.6</title>
+    <link rel="stylesheet" href="dist/app-ddd9717ad9.css" />
+    
+      <link rel="canonical" href="https://hexdocs.pm/ex_unit/ExUnit.CaptureIO.html" />
+    
+    <script src="dist/sidebar_items.js"></script>
+  </head>
+  <body data-type="modules">
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+  <button class="sidebar-toggle">
+    <i class="icon-menu"></i>
+  </button>
+
+  
+  <a href="http://elixir-lang.org/docs.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        ExUnit
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v1.2.6
+      </h2>
+    </div>
+    
+      <img src="assets/logo.png" alt="ExUnit" class="sidebar-projectImage">
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+      <li><a id="exceptions-list" href="#full-list">Exceptions</a></li>
+    
+
+    
+  </ul>
+
+  <ul id="full-list" class="sidebar-fullList"></ul>
+  <div class="sidebar-noResults"></div>
+</section>
+
+<section class="content">
+  <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">ExUnit v1.2.6</small>
+        ExUnit.CaptureIO
+        
+        
+          <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/ex_unit/lib/ex_unit/capture_io.ex#L1" title="View Source" class="view-source" rel="help">
+            <i class="icon-code"></i>
+          </a>
+        
+      </h1>
+
+      
+        <section id="moduledoc" class="docstring">
+          <p>Functionality to capture IO for testing.</p>
+<h2>Examples</h2>
+<pre><code class="elixir">defmodule AssertionTest do
+  use ExUnit.Case
+
+  import ExUnit.CaptureIO
+
+  test &quot;example&quot; do
+    assert capture_io(fn -&gt;
+      IO.puts &quot;a&quot;
+    end) == &quot;a\n&quot;
+  end
+
+  test &quot;checking the return value and the IO output&quot; do
+    fun = fn -&gt;
+      assert Enum.each([&quot;some&quot;, &quot;example&quot;], &amp;(IO.puts &amp;1)) == :ok
+    end
+    assert capture_io(fun) == &quot;some\nexample\n&quot;
+    # tip: or use only: &quot;capture_io(fun)&quot; to silence the IO output (so only assert the return value)
+  end
+end</code></pre>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <i class="icon-link"></i>
+            </a>
+            Summary
+          </h1>
+          
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#capture_io/1">capture_io(fun)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Captures IO generated when evaluating <code class="inline">fun</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#capture_io/2">capture_io(device, fun)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#capture_io/3">capture_io(device, input, fun)</a>
+  </div>
+  
+</div>
+
+  </div>
+
+
+          
+
+          
+
+        </section>
+      
+
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <i class="icon-link"></i>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="capture_io/1">
+  <div class="detail-header">
+    <a href="#capture_io/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">capture_io(fun)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/ex_unit/lib/ex_unit/capture_io.ex#L83" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Captures IO generated when evaluating <code class="inline">fun</code>.</p>
+<p>Returns the binary which is the captured output.</p>
+<p>By default, <code class="inline">capture_io</code> replaces the <code class="inline">group_leader</code> (<code class="inline">:stdio</code>)
+for the current process. However, the capturing of any other
+named device, such as <code class="inline">:stderr</code>, is also possible globally by
+giving the registered device name explicitly as an argument.</p>
+<p>Note that when capturing something other than <code class="inline">:stdio</code>,
+the test should run with async false.</p>
+<p>When capturing <code class="inline">:stdio</code>, if the <code class="inline">:capture_prompt</code> option is <code class="inline">false</code>,
+prompts (specified as arguments to <code class="inline">IO.get*</code> functions) are not
+captured.</p>
+<p>A developer can set a string as an input. The default input is <code class="inline">:eof</code>.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; capture_io(fn -&gt; IO.write &quot;john&quot; end) == &quot;john&quot;
+true
+
+iex&gt; capture_io(:stderr, fn -&gt; IO.write(:stderr, &quot;john&quot;) end) == &quot;john&quot;
+true
+
+iex&gt; capture_io(&quot;this is input&quot;, fn -&gt;
+...&gt;   input = IO.gets &quot;&gt;&quot;
+...&gt;   IO.write input
+...&gt; end) == &quot;&gt;this is input&quot;
+true
+
+iex&gt; capture_io([input: &quot;this is input&quot;, capture_prompt: false], fn -&gt;
+...&gt;   input = IO.gets &quot;&gt;&quot;
+...&gt;   IO.write input
+...&gt; end) == &quot;this is input&quot;
+true</code></pre>
+<h2>Returning values</h2>
+<p>As seen in the examples above, <code class="inline">capture_io</code> returns the captured output.
+If you want to also capture the result of the function executed inside
+the <code class="inline">capture_io</code>, you can use <code class="inline">Kernel.send/2</code> to send yourself a message
+and use <code class="inline">ExUnit.Assertions.assert_received/1</code> to match on the results:</p>
+<pre><code class="elixir">capture_io([input: &quot;this is input&quot;, capture_prompt: false], fn -&gt;
+  send self(), {:block_result, 42}
+  # ...
+end)
+
+assert_received {:block_result, 42}</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="capture_io/2">
+  <div class="detail-header">
+    <a href="#capture_io/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">capture_io(device, fun)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/ex_unit/lib/ex_unit/capture_io.ex#L87" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="capture_io/3">
+  <div class="detail-header">
+    <a href="#capture_io/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">capture_io(device, input, fun)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/ex_unit/lib/ex_unit/capture_io.ex#L99" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    
+  </section>
+</div>
+
+        </section>
+      
+
+      
+
+      
+        <footer class="footer">
+      <p>
+        <span class="line">
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.11.4),
+        </span>
+        <span class="line">
+          designed by
+          <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+      </p>
+      <button class="night-mode-toggle" />
+    </footer>
+  </div>
+</section>
+</div>
+  <script src="dist/app-918614602f.js"></script>
+  </body>
+</html>
+

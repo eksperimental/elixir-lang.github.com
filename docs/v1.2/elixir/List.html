@@ -1,0 +1,1448 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.11.4">
+    <title>List – Elixir v1.2.6</title>
+    <link rel="stylesheet" href="dist/app-ddd9717ad9.css" />
+    
+      <link rel="canonical" href="https://hexdocs.pm/elixir/List.html" />
+    
+    <script src="dist/sidebar_items.js"></script>
+  </head>
+  <body data-type="modules">
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+  <button class="sidebar-toggle">
+    <i class="icon-menu"></i>
+  </button>
+
+  
+  <a href="http://elixir-lang.org/docs.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        Elixir
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v1.2.6
+      </h2>
+    </div>
+    
+      <img src="assets/logo.png" alt="Elixir" class="sidebar-projectImage">
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+      <li><a id="exceptions-list" href="#full-list">Exceptions</a></li>
+    
+
+    
+      <li><a id="protocols-list" href="#full-list">Protocols</a></li>
+    
+  </ul>
+
+  <ul id="full-list" class="sidebar-fullList"></ul>
+  <div class="sidebar-noResults"></div>
+</section>
+
+<section class="content">
+  <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">Elixir v1.2.6</small>
+        List
+        
+        
+          <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/list.ex#L1" title="View Source" class="view-source" rel="help">
+            <i class="icon-code"></i>
+          </a>
+        
+      </h1>
+
+      
+        <section id="moduledoc" class="docstring">
+          <p>Specialized functions that only work on lists.</p>
+<p>In general, favor using the <a href="Enum.html"><code class="inline">Enum</code></a> API instead of <a href="List.html#content"><code class="inline">List</code></a>.</p>
+<p>Index access for list is linear. Negative indexes are also
+supported but they imply the list will be iterated twice,
+one to calculate the proper index and another to perform the
+operation.</p>
+<p>A decision was taken to delegate most functions to
+Erlang’s standard library but follow Elixir’s convention
+of receiving the subject (in this case, a list) as the
+first argument.</p>
+<h2>Char lists</h2>
+<p>If a list is made of non-negative integers, it can also
+be called as a char list. Elixir uses single quotes to
+define char lists:</p>
+<pre><code class="iex elixir">iex&gt; &#39;héllo&#39;
+[104, 233, 108, 108, 111]</code></pre>
+<p>In particular, char lists may be printed back in single
+quotes if they contain only ASCII-printable codepoints:</p>
+<pre><code class="iex elixir">iex&gt; &#39;abc&#39;
+&#39;abc&#39;</code></pre>
+<p>The rationale behind this behaviour is to better support
+Erlang libraries which may return text as char lists
+instead of Elixir strings. One example of such functions
+is <code class="inline">Application.loaded_applications</code>:</p>
+<pre><code class="elixir">Application.loaded_applications
+#=&gt;  [{:stdlib, &#39;ERTS  CXC 138 10&#39;, &#39;2.6&#39;},
+      {:compiler, &#39;ERTS  CXC 138 10&#39;, &#39;6.0.1&#39;},
+      {:elixir, &#39;elixir&#39;, &#39;1.0.0&#39;},
+      {:kernel, &#39;ERTS  CXC 138 10&#39;, &#39;4.1&#39;},
+      {:logger, &#39;logger&#39;, &#39;1.0.0&#39;}]</code></pre>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <i class="icon-link"></i>
+            </a>
+            Summary
+          </h1>
+          
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#delete/2">delete(list, item)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Deletes the given item from the list. Returns a list without
+the item. If the item occurs more than once in the list, just
+the first occurrence is removed</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#delete_at/2">delete_at(list, index)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Produces a new list by removing the value at the specified <code class="inline">index</code>.
+Negative indices indicate an offset from the end of the list.
+If <code class="inline">index</code> is out of bounds, the original <code class="inline">list</code> is returned</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#duplicate/2">duplicate(elem, n)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Duplicates the given element <code class="inline">n</code> times in a list</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#first/1">first(list)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns the first element in <code class="inline">list</code> or <code class="inline">nil</code> if <code class="inline">list</code> is empty</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#flatten/1">flatten(list)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Flattens the given <code class="inline">list</code> of nested lists</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#flatten/2">flatten(list, tail)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Flattens the given <code class="inline">list</code> of nested lists.
+The list <code class="inline">tail</code> will be added at the end of
+the flattened list</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#foldl/3">foldl(list, acc, function)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Folds (reduces) the given list from the left with
+a function. Requires an accumulator</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#foldr/3">foldr(list, acc, function)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Folds (reduces) the given list from the right with
+a function. Requires an accumulator</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#insert_at/3">insert_at(list, index, value)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns a list with <code class="inline">value</code> inserted at the specified <code class="inline">index</code>.
+Note that <code class="inline">index</code> is capped at the list length. Negative indices
+indicate an offset from the end of the list</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#keydelete/3">keydelete(list, key, position)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Receives a list of tuples and deletes the first tuple
+where the item at <code class="inline">position</code> matches the
+given <code class="inline">key</code>. Returns the new list</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#keyfind/4">keyfind(list, key, position, default \\ nil)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Receives a list of tuples and returns the first tuple
+where the item at <code class="inline">position</code> in the tuple matches the
+given <code class="inline">key</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#keymember?/3">keymember?(list, key, position)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Receives a list of tuples and returns <code class="inline">true</code> if there is
+a tuple where the item at <code class="inline">position</code> in the tuple matches
+the given <code class="inline">key</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#keyreplace/4">keyreplace(list, key, position, new_tuple)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Receives a list of tuples and replaces the item
+identified by <code class="inline">key</code> at <code class="inline">position</code> if it exists</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#keysort/2">keysort(list, position)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Receives a list of tuples and sorts the items
+at <code class="inline">position</code> of the tuples. The sort is stable</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#keystore/4">keystore(list, key, position, new_tuple)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Receives a list of tuples and replaces the item
+identified by <code class="inline">key</code> at <code class="inline">position</code>. If the item
+does not exist, it is added to the end of the list</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#keytake/3">keytake(list, key, position)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Receives a <code class="inline">list</code> of tuples and returns the first tuple
+where the element at <code class="inline">position</code> in the tuple matches the
+given <code class="inline">key</code>, as well as the <code class="inline">list</code> without found tuple</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#last/1">last(list)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns the last element in <code class="inline">list</code> or <code class="inline">nil</code> if <code class="inline">list</code> is empty</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#replace_at/3">replace_at(list, index, value)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns a list with a replaced value at the specified <code class="inline">index</code>.
+Negative indices indicate an offset from the end of the list.
+If <code class="inline">index</code> is out of bounds, the original <code class="inline">list</code> is returned</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#to_atom/1">to_atom(char_list)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Converts a char list to an atom</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#to_existing_atom/1">to_existing_atom(char_list)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Converts a char list to an existing atom. Raises an <a href="ArgumentError.html"><code class="inline">ArgumentError</code></a>
+if the atom does not exist</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#to_float/1">to_float(char_list)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns the float whose text representation is <code class="inline">char_list</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#to_integer/1">to_integer(char_list)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns an integer whose text representation is <code class="inline">char_list</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#to_integer/2">to_integer(char_list, base)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns an integer whose text representation is <code class="inline">char_list</code> in base <code class="inline">base</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#to_string/1">to_string(list)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Converts a list of integers representing codepoints, lists or
+strings into a string</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#to_tuple/1">to_tuple(list)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Converts a list to a tuple</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#update_at/3">update_at(list, index, fun)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns a list with an updated value at the specified <code class="inline">index</code>.
+Negative indices indicate an offset from the end of the list.
+If <code class="inline">index</code> is out of bounds, the original <code class="inline">list</code> is returned</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#wrap/1">wrap(list)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Wraps the argument in a list.
+If the argument is already a list, returns the list.
+If the argument is <code class="inline">nil</code>, returns an empty list</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#zip/1">zip(list_of_lists)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Zips corresponding elements from each list in <code class="inline">list_of_lists</code></p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+
+          
+
+        </section>
+      
+
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <i class="icon-link"></i>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="delete/2">
+  <div class="detail-header">
+    <a href="#delete/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">delete(list, item)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/list.ex#L62" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">delete(list, any) :: list</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Deletes the given item from the list. Returns a list without
+the item. If the item occurs more than once in the list, just
+the first occurrence is removed.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; List.delete([1, 2, 3], 1)
+[2, 3]
+
+iex&gt; List.delete([1, 2, 2, 3], 2)
+[1, 2, 3]</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="delete_at/2">
+  <div class="detail-header">
+    <a href="#delete_at/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">delete_at(list, index)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/list.ex#L486" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">delete_at(list, integer) :: list</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Produces a new list by removing the value at the specified <code class="inline">index</code>.
+Negative indices indicate an offset from the end of the list.
+If <code class="inline">index</code> is out of bounds, the original <code class="inline">list</code> is returned.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; List.delete_at([1, 2, 3], 0)
+[2, 3]
+
+iex&gt; List.delete_at([1, 2, 3], 10)
+[1, 2, 3]
+
+iex&gt; List.delete_at([1, 2, 3], -1)
+[1, 2]</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="duplicate/2">
+  <div class="detail-header">
+    <a href="#duplicate/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">duplicate(elem, n)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/list.ex#L80" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">duplicate(elem, non_neg_integer) :: [elem] when elem: var</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Duplicates the given element <code class="inline">n</code> times in a list.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; List.duplicate(&quot;hello&quot;, 3)
+[&quot;hello&quot;, &quot;hello&quot;, &quot;hello&quot;]
+
+iex&gt; List.duplicate([1, 2], 2)
+[[1, 2], [1, 2]]</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="first/1">
+  <div class="detail-header">
+    <a href="#first/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">first(list)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/list.ex#L163" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">first([elem]) :: nil | elem when elem: var</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Returns the first element in <code class="inline">list</code> or <code class="inline">nil</code> if <code class="inline">list</code> is empty.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; List.first([])
+nil
+
+iex&gt; List.first([1])
+1
+
+iex&gt; List.first([1, 2, 3])
+1</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="flatten/1">
+  <div class="detail-header">
+    <a href="#flatten/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">flatten(list)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/list.ex#L94" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">flatten(deep_list) :: list when deep_list: [any | deep_list]</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Flattens the given <code class="inline">list</code> of nested lists.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; List.flatten([1, [[2], 3]])
+[1, 2, 3]</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="flatten/2">
+  <div class="detail-header">
+    <a href="#flatten/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">flatten(list, tail)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/list.ex#L110" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">flatten(deep_list, [elem]) :: [elem] when deep_list: [elem | deep_list], elem: var</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Flattens the given <code class="inline">list</code> of nested lists.
+The list <code class="inline">tail</code> will be added at the end of
+the flattened list.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; List.flatten([1, [[2], 3]], [4, 5])
+[1, 2, 3, 4, 5]</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="foldl/3">
+  <div class="detail-header">
+    <a href="#foldl/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">foldl(list, acc, function)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/list.ex#L128" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">foldl([elem], acc, (elem, acc -> acc)) :: acc when elem: var, acc: var</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Folds (reduces) the given list from the left with
+a function. Requires an accumulator.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; List.foldl([5, 5], 10, fn (x, acc) -&gt; x + acc end)
+20
+
+iex&gt; List.foldl([1, 2, 3, 4], 0, fn (x, acc) -&gt; x - acc end)
+2</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="foldr/3">
+  <div class="detail-header">
+    <a href="#foldr/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">foldr(list, acc, function)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/list.ex#L143" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">foldr([elem], acc, (elem, acc -> acc)) :: acc when elem: var, acc: var</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Folds (reduces) the given list from the right with
+a function. Requires an accumulator.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; List.foldr([1, 2, 3, 4], 0, fn (x, acc) -&gt; x - acc end)
+-2</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="insert_at/3">
+  <div class="detail-header">
+    <a href="#insert_at/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">insert_at(list, index, value)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/list.ex#L402" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">insert_at(list, integer, any) :: list</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Returns a list with <code class="inline">value</code> inserted at the specified <code class="inline">index</code>.
+Note that <code class="inline">index</code> is capped at the list length. Negative indices
+indicate an offset from the end of the list.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; List.insert_at([1, 2, 3, 4], 2, 0)
+[1, 2, 0, 3, 4]
+
+iex&gt; List.insert_at([1, 2, 3], 10, 0)
+[1, 2, 3, 0]
+
+iex&gt; List.insert_at([1, 2, 3], -1, 0)
+[1, 2, 3, 0]
+
+iex&gt; List.insert_at([1, 2, 3], -10, 0)
+[0, 1, 2, 3]</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="keydelete/3">
+  <div class="detail-header">
+    <a href="#keydelete/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">keydelete(list, key, position)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/list.ex#L300" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">keydelete([tuple], any, non_neg_integer) :: [tuple]</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Receives a list of tuples and deletes the first tuple
+where the item at <code class="inline">position</code> matches the
+given <code class="inline">key</code>. Returns the new list.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; List.keydelete([a: 1, b: 2], :a, 0)
+[b: 2]
+
+iex&gt; List.keydelete([a: 1, b: 2], 2, 1)
+[a: 1]
+
+iex&gt; List.keydelete([a: 1, b: 2], :c, 0)
+[a: 1, b: 2]</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="keyfind/4">
+  <div class="detail-header">
+    <a href="#keyfind/4" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">keyfind(list, key, position, default \\ nil)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/list.ex#L204" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">keyfind([tuple], any, non_neg_integer, any) :: any</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Receives a list of tuples and returns the first tuple
+where the item at <code class="inline">position</code> in the tuple matches the
+given <code class="inline">key</code>.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; List.keyfind([a: 1, b: 2], :a, 0)
+{:a, 1}
+
+iex&gt; List.keyfind([a: 1, b: 2], 2, 1)
+{:b, 2}
+
+iex&gt; List.keyfind([a: 1, b: 2], :c, 0)
+nil</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="keymember?/3">
+  <div class="detail-header">
+    <a href="#keymember?/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">keymember?(list, key, position)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/list.ex#L226" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">keymember?([tuple], any, non_neg_integer) :: any</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Receives a list of tuples and returns <code class="inline">true</code> if there is
+a tuple where the item at <code class="inline">position</code> in the tuple matches
+the given <code class="inline">key</code>.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; List.keymember?([a: 1, b: 2], :a, 0)
+true
+
+iex&gt; List.keymember?([a: 1, b: 2], 2, 1)
+true
+
+iex&gt; List.keymember?([a: 1, b: 2], :c, 0)
+false</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="keyreplace/4">
+  <div class="detail-header">
+    <a href="#keyreplace/4" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">keyreplace(list, key, position, new_tuple)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/list.ex#L241" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">keyreplace([tuple], any, non_neg_integer, tuple) :: [tuple]</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Receives a list of tuples and replaces the item
+identified by <code class="inline">key</code> at <code class="inline">position</code> if it exists.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; List.keyreplace([a: 1, b: 2], :a, 0, {:a, 3})
+[a: 3, b: 2]</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="keysort/2">
+  <div class="detail-header">
+    <a href="#keysort/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">keysort(list, position)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/list.ex#L259" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">keysort([tuple], non_neg_integer) :: [tuple]</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Receives a list of tuples and sorts the items
+at <code class="inline">position</code> of the tuples. The sort is stable.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; List.keysort([a: 5, b: 1, c: 3], 1)
+[b: 1, c: 3, a: 5]
+
+iex&gt; List.keysort([a: 5, c: 1, b: 3], 0)
+[a: 5, b: 3, c: 1]</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="keystore/4">
+  <div class="detail-header">
+    <a href="#keystore/4" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">keystore(list, key, position, new_tuple)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/list.ex#L278" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">keystore([tuple], any, non_neg_integer, tuple) :: [tuple, ...]</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Receives a list of tuples and replaces the item
+identified by <code class="inline">key</code> at <code class="inline">position</code>. If the item
+does not exist, it is added to the end of the list.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; List.keystore([a: 1, b: 2], :a, 0, {:a, 3})
+[a: 3, b: 2]
+
+iex&gt; List.keystore([a: 1, b: 2], :c, 0, {:c, 3})
+[a: 1, b: 2, c: 3]</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="keytake/3">
+  <div class="detail-header">
+    <a href="#keytake/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">keytake(list, key, position)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/list.ex#L324" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">keytake([tuple], any, non_neg_integer) ::
+  {tuple, [tuple]} |
+  nil</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Receives a <code class="inline">list</code> of tuples and returns the first tuple
+where the element at <code class="inline">position</code> in the tuple matches the
+given <code class="inline">key</code>, as well as the <code class="inline">list</code> without found tuple.</p>
+<p>If such a tuple is not found, <code class="inline">nil</code> will be returned.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; List.keytake([a: 1, b: 2], :a, 0)
+{{:a, 1}, [b: 2]}
+
+iex&gt; List.keytake([a: 1, b: 2], 2, 1)
+{{:b, 2}, [a: 1]}
+
+iex&gt; List.keytake([a: 1, b: 2], :c, 0)
+nil</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="last/1">
+  <div class="detail-header">
+    <a href="#last/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">last(list)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/list.ex#L182" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">last([elem]) :: nil | elem when elem: var</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Returns the last element in <code class="inline">list</code> or <code class="inline">nil</code> if <code class="inline">list</code> is empty.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; List.last([])
+nil
+
+iex&gt; List.last([1])
+1
+
+iex&gt; List.last([1, 2, 3])
+3</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="replace_at/3">
+  <div class="detail-header">
+    <a href="#replace_at/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">replace_at(list, index, value)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/list.ex#L431" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">replace_at(list, integer, any) :: list</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Returns a list with a replaced value at the specified <code class="inline">index</code>.
+Negative indices indicate an offset from the end of the list.
+If <code class="inline">index</code> is out of bounds, the original <code class="inline">list</code> is returned.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; List.replace_at([1, 2, 3], 0, 0)
+[0, 2, 3]
+
+iex&gt; List.replace_at([1, 2, 3], 10, 0)
+[1, 2, 3]
+
+iex&gt; List.replace_at([1, 2, 3], -1, 0)
+[1, 2, 0]
+
+iex&gt; List.replace_at([1, 2, 3], -10, 0)
+[1, 2, 3]</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="to_atom/1">
+  <div class="detail-header">
+    <a href="#to_atom/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">to_atom(char_list)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/list.ex#L509" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">to_atom(char_list) :: atom</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Converts a char list to an atom.</p>
+<p>Currently Elixir does not support conversions from char lists
+which contains Unicode codepoints greater than 0xFF.</p>
+<p>Inlined by the compiler.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; List.to_atom(&#39;elixir&#39;)
+:elixir</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="to_existing_atom/1">
+  <div class="detail-header">
+    <a href="#to_existing_atom/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">to_existing_atom(char_list)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/list.ex#L533" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">to_existing_atom(char_list) :: atom</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Converts a char list to an existing atom. Raises an <a href="ArgumentError.html"><code class="inline">ArgumentError</code></a>
+if the atom does not exist.</p>
+<p>Currently Elixir does not support conversions from char lists
+which contains Unicode codepoints greater than 0xFF.</p>
+<p>Inlined by the compiler.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; _ = :my_atom
+iex&gt; List.to_existing_atom(&#39;my_atom&#39;)
+:my_atom
+
+iex&gt; List.to_existing_atom(&#39;this_atom_will_never_exist&#39;)
+** (ArgumentError) argument error</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="to_float/1">
+  <div class="detail-header">
+    <a href="#to_float/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">to_float(char_list)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/list.ex#L549" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">to_float(char_list) :: float</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Returns the float whose text representation is <code class="inline">char_list</code>.</p>
+<p>Inlined by the compiler.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; List.to_float(&#39;2.2017764e+0&#39;)
+2.2017764</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="to_integer/1">
+  <div class="detail-header">
+    <a href="#to_integer/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">to_integer(char_list)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/list.ex#L565" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">to_integer(char_list) :: integer</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Returns an integer whose text representation is <code class="inline">char_list</code>.</p>
+<p>Inlined by the compiler.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; List.to_integer(&#39;123&#39;)
+123</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="to_integer/2">
+  <div class="detail-header">
+    <a href="#to_integer/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">to_integer(char_list, base)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/list.ex#L581" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">to_integer(char_list, 2..36) :: integer</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Returns an integer whose text representation is <code class="inline">char_list</code> in base <code class="inline">base</code>.</p>
+<p>Inlined by the compiler.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; List.to_integer(&#39;3FF&#39;, 16)
+1023</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="to_string/1">
+  <div class="detail-header">
+    <a href="#to_string/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">to_string(list)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/list.ex#L619" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">to_string(:unicode.charlist) :: <a href="String.html#t:t/0">String.t</a></code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Converts a list of integers representing codepoints, lists or
+strings into a string.</p>
+<p>Notice that this function expects a list of integers representing
+UTF-8 codepoints. If you have a list of bytes, you must instead use
+the <a href="http://www.erlang.org/doc/man/binary.html"><code class="inline">:binary</code> module</a>.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; List.to_string([0x00E6, 0x00DF])
+&quot;æß&quot;
+
+iex&gt; List.to_string([0x0061, &quot;bc&quot;])
+&quot;abc&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="to_tuple/1">
+  <div class="detail-header">
+    <a href="#to_tuple/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">to_tuple(list)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/list.ex#L597" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">to_tuple(list) :: tuple</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Converts a list to a tuple.</p>
+<p>Inlined by the compiler.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; List.to_tuple([:share, [:elixir, 163]])
+{:share, [:elixir, 163]}</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="update_at/3">
+  <div class="detail-header">
+    <a href="#update_at/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">update_at(list, index, fun)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/list.ex#L460" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">update_at([elem], integer, (elem -> any)) :: list when elem: var</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Returns a list with an updated value at the specified <code class="inline">index</code>.
+Negative indices indicate an offset from the end of the list.
+If <code class="inline">index</code> is out of bounds, the original <code class="inline">list</code> is returned.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; List.update_at([1, 2, 3], 0, &amp;(&amp;1 + 10))
+[11, 2, 3]
+
+iex&gt; List.update_at([1, 2, 3], 10, &amp;(&amp;1 + 10))
+[1, 2, 3]
+
+iex&gt; List.update_at([1, 2, 3], -1, &amp;(&amp;1 + 10))
+[1, 2, 13]
+
+iex&gt; List.update_at([1, 2, 3], -10, &amp;(&amp;1 + 10))
+[1, 2, 3]</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="wrap/1">
+  <div class="detail-header">
+    <a href="#wrap/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">wrap(list)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/list.ex#L349" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">wrap(list | any) :: list</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Wraps the argument in a list.
+If the argument is already a list, returns the list.
+If the argument is <code class="inline">nil</code>, returns an empty list.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; List.wrap(&quot;hello&quot;)
+[&quot;hello&quot;]
+
+iex&gt; List.wrap([1, 2, 3])
+[1, 2, 3]
+
+iex&gt; List.wrap(nil)
+[]</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="zip/1">
+  <div class="detail-header">
+    <a href="#zip/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">zip(list_of_lists)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.2.6/lib/elixir/lib/list.ex#L376" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">zip([list]) :: [tuple]</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Zips corresponding elements from each list in <code class="inline">list_of_lists</code>.</p>
+<p>The zipping finishes as soon as any list terminates.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; List.zip([[1, 2], [3, 4], [5, 6]])
+[{1, 3, 5}, {2, 4, 6}]
+
+iex&gt; List.zip([[1, 2], [3], [5, 6]])
+[{1, 3, 5}]</code></pre>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+
+      
+        <footer class="footer">
+      <p>
+        <span class="line">
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.11.4),
+        </span>
+        <span class="line">
+          designed by
+          <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+      </p>
+      <button class="night-mode-toggle" />
+    </footer>
+  </div>
+</section>
+</div>
+  <script src="dist/app-918614602f.js"></script>
+  </body>
+</html>
+

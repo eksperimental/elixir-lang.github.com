@@ -1,0 +1,912 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.14.2">
+    <title>Access – Elixir v1.3.4</title>
+    <link rel="stylesheet" href="dist/app-23e810f3fe.css" />
+    
+      <link rel="canonical" href="https://hexdocs.pm/elixir/Access.html" />
+    
+    <script src="dist/sidebar_items.js"></script>
+  </head>
+  <body data-type="modules">
+    <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+
+  
+  <a href="http://elixir-lang.org/docs.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        Elixir
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v1.3.4
+      </h2>
+    </div>
+    
+      <img src="assets/logo.png" alt="Elixir" class="sidebar-projectImage">
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+      <li><a id="exceptions-list" href="#full-list">Exceptions</a></li>
+    
+
+    
+      <li><a id="protocols-list" href="#full-list">Protocols</a></li>
+    
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">Elixir v1.3.4</small>
+        Access
+        
+          <small>behaviour</small>
+        
+        
+          <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/access.ex#L1" title="View Source" class="view-source" rel="help">
+            <i class="icon-code"></i>
+          </a>
+        
+      </h1>
+
+      
+        <section id="moduledoc">
+          <p>Key-based access to data structures using the <code class="inline">data[key]</code> syntax.</p>
+<p>Elixir provides two syntaxes for accessing values. <code class="inline">user[:name]</code>
+is used by dynamic structures, like maps and keywords, while
+<code class="inline">user.name</code> is used by structs. The main difference is that
+<code class="inline">user[:name]</code> won’t raise if the key <code class="inline">:name</code> is missing but
+<code class="inline">user.name</code> will raise if there is no <code class="inline">:name</code> key.</p>
+<p>Besides the cases above, this module provides convenience
+functions for accessing other structures, like <a href="#at/1"><code class="inline">at/1</code></a> for
+lists and <a href="#elem/1"><code class="inline">elem/1</code></a> for tuples. Those functions can be used
+by the nested update functions in <a href="Kernel.html"><code class="inline">Kernel</code></a>, such as
+<a href="Kernel.html#get_in/2"><code class="inline">Kernel.get_in/2</code></a>, <a href="Kernel.html#put_in/3"><code class="inline">Kernel.put_in/3</code></a>, <a href="Kernel.html#update_in/3"><code class="inline">Kernel.update_in/3</code></a>,
+<a href="Kernel.html#get_and_update_in/3"><code class="inline">Kernel.get_and_update_in/3</code></a> and friends.</p>
+<h2 id="module-dynamic-lookups" class="section-heading">
+  <a href="#module-dynamic-lookups" class="hover-link"><i class="icon-link"></i></a>
+  Dynamic lookups
+</h2>
+
+<p>Out of the box, Access works with <a href="Keyword.html"><code class="inline">Keyword</code></a> and <a href="Map.html"><code class="inline">Map</code></a>:</p>
+<pre><code class="iex elixir">iex&gt; keywords = [a: 1, b: 2]
+iex&gt; keywords[:a]
+1
+
+iex&gt; map = %{a: 1, b: 2}
+iex&gt; map[:a]
+1
+
+iex&gt; star_ratings = %{1.0 =&gt; &quot;★&quot;, 1.5 =&gt; &quot;★☆&quot;, 2.0 =&gt; &quot;★★&quot;}
+iex&gt; star_ratings[1.5]
+&quot;★☆&quot;</code></pre>
+<p>Access can be combined with <a href="Kernel.html#put_in/3"><code class="inline">Kernel.put_in/3</code></a> to put a value
+in a given key:</p>
+<pre><code class="iex elixir">iex&gt; map = %{a: 1, b: 2}
+iex&gt; put_in map[:a], 3
+%{a: 3, b: 2}</code></pre>
+<p>This syntax is very convenient as it can be nested arbitrarily:</p>
+<pre><code class="iex elixir">iex&gt; users = %{&quot;john&quot; =&gt; %{age: 27}, &quot;meg&quot; =&gt; %{age: 23}}
+iex&gt; put_in users[&quot;john&quot;][:age], 28
+%{&quot;john&quot; =&gt; %{age: 28}, &quot;meg&quot; =&gt; %{age: 23}}</code></pre>
+<p>Furthermore, Access transparently ignores <code class="inline">nil</code> values:</p>
+<pre><code class="iex elixir">iex&gt; keywords = [a: 1, b: 2]
+iex&gt; keywords[:c][:unknown]
+nil</code></pre>
+<p>Since Access is a behaviour, it can be implemented to key-value
+data structures. The implementation should be added to the
+module that defines the struct being access. Access requires the
+key comparison to be implemented using the <code class="inline">===</code> operator.</p>
+<h2 id="module-static-lookups" class="section-heading">
+  <a href="#module-static-lookups" class="hover-link"><i class="icon-link"></i></a>
+  Static lookups
+</h2>
+
+<p>The Access syntax (<code class="inline">foo[bar]</code>) cannot be used to access fields in
+structs, since structs do not implement the Access behaviour by
+default. It is also design decision: the dynamic access lookup
+is meant to be used for dynamic key-value structures, like maps
+and keywords, and not by static ones like structs.</p>
+<p>Therefore Elixir provides a static lookup for map and structs
+fields. Imagine a struct named <code class="inline">User</code> with name and age fields.
+The following would raise:</p>
+<pre><code class="elixir">user = %User{name: &quot;john&quot;}
+user[:name]
+** (UndefinedFunctionError) undefined function User.fetch/2
+   (User does not implement the Access behaviour)</code></pre>
+<p>Structs instead use the <code class="inline">user.name</code> syntax:</p>
+<pre><code class="elixir">user.name
+#=&gt; &quot;john&quot;</code></pre>
+<p>The same <code class="inline">user.name</code> syntax can also be used by <a href="Kernel.html#put_in/2"><code class="inline">Kernel.put_in/2</code></a>
+to for updating structs fields:</p>
+<pre><code class="elixir">put_in user.name, &quot;mary&quot;
+%User{name: &quot;mary&quot;}</code></pre>
+<p>Differently from <code class="inline">user[:name]</code>, <code class="inline">user.name</code> is not extensible via
+a behaviour and is restricted to only maps and structs.</p>
+<p>Summing up:</p>
+<ul>
+<li><code class="inline">user[:name]</code> is used by dynamic structures, is extensible and
+does not raise on missing keys
+</li>
+<li><code class="inline">user.name</code> is used by static structures, it is not extensible
+and it will raise on missing keys
+</li>
+</ul>
+<h2 id="module-accessors" class="section-heading">
+  <a href="#module-accessors" class="hover-link"><i class="icon-link"></i></a>
+  Accessors
+</h2>
+
+<p>While Elixir provides built-in syntax only for traversing dynamic
+and static key-value structures, this module provides convenience
+functions for traversing other structures, like tuples and lists,
+to be used alongside <a href="Kernel.html#put_in/2"><code class="inline">Kernel.put_in/2</code></a> in others.</p>
+<p>For instance, given a user with a list of languages, here is how to
+deeply traverse the map and convert all language names to uppercase:</p>
+<pre><code class="iex elixir">iex&gt; user = %{name: &quot;john&quot;,
+...&gt;          languages: [%{name: &quot;elixir&quot;, type: :functional},
+...&gt;                      %{name: &quot;c&quot;, type: :procedural}]}
+iex&gt; update_in user, [:languages, Access.all(), :name], &amp;String.upcase/1
+%{name: &quot;john&quot;,
+  languages: [%{name: &quot;ELIXIR&quot;, type: :functional},
+              %{name: &quot;C&quot;, type: :procedural}]}</code></pre>
+<p>See the functions <code class="inline">key/1</code>, <a href="#key!/1"><code class="inline">key!/1</code></a>, <a href="#elem/1"><code class="inline">elem/1</code></a> and <a href="#all/0"><code class="inline">all/0</code></a> for the current
+accessors.</p>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <i class="icon-link"></i>
+            </a>
+            Summary
+          </h1>
+          
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:key/0">key()</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:t/0">t()</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:value/0">value()</a>
+  </div>
+  
+</div>
+
+  </div>
+
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#all/0">all()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Accesses all the elements in a list</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#at/1">at(index)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Accesses the element at <code class="inline">index</code> (zero based) of a list</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#elem/1">elem(index)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Accesses the element at the given index in a tuple</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#fetch/2">fetch(container, key)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Fetches the container’s value for the given key</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get/3">get(container, key, default \\ nil)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Gets the container’s value for the given key</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_and_update/3">get_and_update(container, key, fun)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Gets and updates the container’s value for the given key, in a single pass</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#key/2">key(key, default \\ nil)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Accesses the given key in a map/struct</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#key!/1">key!(key)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Accesses the given key in a map/struct</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#pop/2">pop(container, key)</a>
+  </div>
+  
+</div>
+
+  </div>
+
+
+          
+
+          
+  <div class="summary-callbacks summary">
+    <h2>
+      <a href="#callbacks">Callbacks</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:fetch/2">fetch(t, key)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:get/3">get(t, key, value)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:get_and_update/3">get_and_update(t, key, list)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:pop/2">pop(t, key)</a>
+  </div>
+  
+</div>
+
+  </div>
+
+
+        </section>
+      
+
+      
+        <section id="types" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <i class="icon-link"></i>
+            </a>
+            Types
+          </h1>
+          <div class="types-list">
+            <div class="detail" id="t:key/0">
+  
+  <div class="detail-header">
+    <a href="#t:key/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">key()</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/access.ex#L119" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre><a href="#t:key/0">key</a> :: any</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="t:t/0">
+  
+  <div class="detail-header">
+    <a href="#t:t/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">t()</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/access.ex#L118" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre><a href="#t:t/0">t</a> :: list | map | nil</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="t:value/0">
+  
+  <div class="detail-header">
+    <a href="#t:value/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">value()</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/access.ex#L120" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre><a href="#t:value/0">value</a> :: any</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+
+          </div>
+        </section>
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <i class="icon-link"></i>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="all/0">
+  
+  <div class="detail-header">
+    <a href="#all/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">all()</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/access.ex#L399" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Accesses all the elements in a list.</p>
+<h2 id="all/0-examples" class="section-heading">
+  <a href="#all/0-examples" class="hover-link"><i class="icon-link"></i></a>
+  Examples
+</h2>
+
+<pre><code class="iex elixir">iex&gt; list = [%{name: &quot;john&quot;}, %{name: &quot;mary&quot;}]
+iex&gt; get_in(list, [Access.all(), :name])
+[&quot;john&quot;, &quot;mary&quot;]
+iex&gt; get_and_update_in(list, [Access.all(), :name], fn
+...&gt;   prev -&gt; {prev, String.upcase(prev)}
+...&gt; end)
+{[&quot;john&quot;, &quot;mary&quot;], [%{name: &quot;JOHN&quot;}, %{name: &quot;MARY&quot;}]}
+iex&gt; pop_in(list, [Access.all(), :name])
+{[&quot;john&quot;, &quot;mary&quot;], [%{}, %{}]}</code></pre>
+<p>Here is an example that traverses the list dropping even
+numbers and multipling odd numbers by 2:</p>
+<pre><code class="iex elixir">iex&gt; require Integer
+iex&gt; get_and_update_in([1, 2, 3, 4, 5], [Access.all], fn
+...&gt;   num -&gt; if Integer.is_even(num), do: :pop, else: {num, num * 2}
+...&gt; end)
+{[1, 2, 3, 4, 5], [2, 6, 10]}</code></pre>
+<p>An error is raised if the accessed structure is not a list:</p>
+<pre><code class="iex elixir">iex&gt; get_in(%{}, [Access.all()])
+** (RuntimeError) Access.all/0 expected a list, got: %{}</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="at/1">
+  
+  <div class="detail-header">
+    <a href="#at/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">at(index)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/access.ex#L468" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Accesses the element at <code class="inline">index</code> (zero based) of a list.</p>
+<h2 id="at/1-examples" class="section-heading">
+  <a href="#at/1-examples" class="hover-link"><i class="icon-link"></i></a>
+  Examples
+</h2>
+
+<pre><code class="iex elixir">iex&gt; list = [%{name: &quot;john&quot;}, %{name: &quot;mary&quot;}]
+iex&gt; get_in(list, [Access.at(1), :name])
+&quot;mary&quot;
+iex&gt; get_and_update_in(list, [Access.at(0), :name], fn
+...&gt;   prev -&gt; {prev, String.upcase(prev)}
+...&gt; end)
+{&quot;john&quot;, [%{name: &quot;JOHN&quot;}, %{name: &quot;mary&quot;}]}</code></pre>
+<p><a href="#at/1"><code class="inline">at/1</code></a> can also be used to pop elements out of a list or
+a key inside of a list:</p>
+<pre><code class="iex elixir">iex&gt; list = [%{name: &quot;john&quot;}, %{name: &quot;mary&quot;}]
+iex&gt; pop_in(list, [Access.at(0)])
+{%{name: &quot;john&quot;}, [%{name: &quot;mary&quot;}]}
+iex&gt; pop_in(list, [Access.at(0), :name])
+{&quot;john&quot;, [%{}, %{name: &quot;mary&quot;}]}</code></pre>
+<p>When the index is out of bounds, <code class="inline">nil</code> is returned and the update function is never called:</p>
+<pre><code class="iex elixir">iex&gt; list = [%{name: &quot;john&quot;}, %{name: &quot;mary&quot;}]
+iex&gt; get_in(list, [Access.at(10), :name])
+nil
+iex&gt; get_and_update_in(list, [Access.at(10), :name], fn
+...&gt;   prev -&gt; {prev, String.upcase(prev)}
+...&gt; end)
+{nil, [%{name: &quot;john&quot;}, %{name: &quot;mary&quot;}]}</code></pre>
+<p>An error is raised for negative indexes:</p>
+<pre><code class="iex elixir">iex&gt; get_in([], [Access.at(-1)])
+** (FunctionClauseError) no function clause matching in Access.at/1</code></pre>
+<p>An error is raised if the accessed structure is not a list:</p>
+<pre><code class="iex elixir">iex&gt; get_in(%{}, [Access.at(1)])
+** (RuntimeError) Access.at/1 expected a list, got: %{}</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="elem/1">
+  
+  <div class="detail-header">
+    <a href="#elem/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">elem(index)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/access.ex#L352" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Accesses the element at the given index in a tuple.</p>
+<p>Raises if the index is out of bounds.</p>
+<h2 id="elem/1-examples" class="section-heading">
+  <a href="#elem/1-examples" class="hover-link"><i class="icon-link"></i></a>
+  Examples
+</h2>
+
+<pre><code class="iex elixir">iex&gt; map = %{user: {&quot;john&quot;, 27}}
+iex&gt; get_in(map, [:user, Access.elem(0)])
+&quot;john&quot;
+iex&gt; get_and_update_in(map, [:user, Access.elem(0)], fn
+...&gt;   prev -&gt; {prev, String.upcase(prev)}
+...&gt; end)
+{&quot;john&quot;, %{user: {&quot;JOHN&quot;, 27}}}
+iex&gt; pop_in(map, [:user, Access.elem(0)])
+** (RuntimeError) cannot pop data from a tuple</code></pre>
+<p>An error is raised if the accessed structure is not a tuple:</p>
+<pre><code class="iex elixir">iex&gt; get_in(%{}, [Access.elem(0)])
+** (RuntimeError) Access.elem/1 expected a tuple, got: %{}</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="fetch/2">
+  
+  <div class="detail-header">
+    <a href="#fetch/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">fetch(container, key)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/access.ex#L145" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>fetch(<a href="#t:t/0">t</a>, term) :: {:ok, term} | :error</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Fetches the container’s value for the given key.</p>
+
+  </section>
+</div>
+<div class="detail" id="get/3">
+  
+    <span id="get/2" />
+  
+  <div class="detail-header">
+    <a href="#get/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">get(container, key, default \\ nil)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/access.ex#L178" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>get(<a href="#t:t/0">t</a>, term, term) :: term</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Gets the container’s value for the given key.</p>
+
+  </section>
+</div>
+<div class="detail" id="get_and_update/3">
+  
+  <div class="detail-header">
+    <a href="#get_and_update/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">get_and_update(container, key, fun)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/access.ex#L199" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>get_and_update(<a href="#t:t/0">t</a>, <a href="#t:key/0">key</a>, (<a href="#t:value/0">value</a> -> {get, <a href="#t:value/0">value</a>})) :: {get, <a href="#t:t/0">t</a>} when get: var</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Gets and updates the container’s value for the given key, in a single pass.</p>
+<p>This <code class="inline">fun</code> argument receives the value of <code class="inline">key</code> (or <code class="inline">nil</code> if <code class="inline">key</code>
+is not present) and must return a two-element tuple: the “get” value
+(the retrieved value, which can be operated on before being returned)
+and the new value to be stored under <code class="inline">key</code>. The <code class="inline">fun</code> may also
+return <code class="inline">:pop</code>, implying the current value shall be removed
+from the map and returned.</p>
+<p>The returned value is a tuple with the “get” value returned by
+<code class="inline">fun</code> and a new map with the updated value under <code class="inline">key</code>.</p>
+
+  </section>
+</div>
+<div class="detail" id="key/2">
+  
+    <span id="key/1" />
+  
+  <div class="detail-header">
+    <a href="#key/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">key(key, default \\ nil)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/access.ex#L272" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Accesses the given key in a map/struct.</p>
+<p>Uses the default value if the key does not exist
+or if the value being accessed is <code class="inline">nil</code>.</p>
+<h2 id="key/2-examples" class="section-heading">
+  <a href="#key/2-examples" class="hover-link"><i class="icon-link"></i></a>
+  Examples
+</h2>
+
+<pre><code class="iex elixir">iex&gt; get_in(%{}, [Access.key(:unknown), Access.key(:name)])
+nil
+iex&gt; get_in(%{}, [Access.key(:unknown, %{name: &quot;john&quot;}), Access.key(:name)])
+&quot;john&quot;
+iex&gt; get_in(%{}, [Access.key(:unknown), Access.key(:name, &quot;john&quot;)])
+&quot;john&quot;
+
+iex&gt; map = %{user: %{name: &quot;john&quot;}}
+iex&gt; get_in(map, [Access.key(:unknown), Access.key(:name, &quot;john&quot;)])
+&quot;john&quot;
+iex&gt; get_and_update_in(map, [Access.key(:user), Access.key(:name)], fn
+...&gt;   prev -&gt; {prev, String.upcase(prev)}
+...&gt; end)
+{&quot;john&quot;, %{user: %{name: &quot;JOHN&quot;}}}
+iex&gt; pop_in(map, [Access.key(:user), Access.key(:name)])
+{&quot;john&quot;, %{user: %{}}}</code></pre>
+<p>An error is raised if the accessed structure is not a map/struct/nil:</p>
+<pre><code class="iex elixir">iex&gt; get_in([], [Access.key(:foo)])
+** (RuntimeError) Access.key/1 expected a map/struct or nil, got: []</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="key!/1">
+  
+  <div class="detail-header">
+    <a href="#key!/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">key!(key)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/access.ex#L314" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Accesses the given key in a map/struct.</p>
+<p>Raises if the key does not exist.</p>
+<h2 id="key!/1-examples" class="section-heading">
+  <a href="#key!/1-examples" class="hover-link"><i class="icon-link"></i></a>
+  Examples
+</h2>
+
+<pre><code class="iex elixir">iex&gt; map = %{user: %{name: &quot;john&quot;}}
+iex&gt; get_in(map, [Access.key!(:user), Access.key!(:name)])
+&quot;john&quot;
+iex&gt; get_and_update_in(map, [Access.key!(:user), Access.key!(:name)], fn
+...&gt;   prev -&gt; {prev, String.upcase(prev)}
+...&gt; end)
+{&quot;john&quot;, %{user: %{name: &quot;JOHN&quot;}}}
+iex&gt; pop_in(map, [Access.key!(:user), Access.key!(:name)])
+{&quot;john&quot;, %{user: %{}}}
+iex&gt; get_in(map, [Access.key!(:user), Access.key!(:unknown)])
+** (KeyError) key :unknown not found in: %{name: &quot;john&quot;}</code></pre>
+<p>An error is raised if the accessed structure is not a map/struct:</p>
+<pre><code class="iex elixir">iex&gt; get_in([], [Access.key!(:foo)])
+** (RuntimeError) Access.key!/1 expected a map/struct, got: []</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="pop/2">
+  
+  <div class="detail-header">
+    <a href="#pop/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">pop(container, key)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/access.ex#L221" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+
+        </section>
+      
+
+      
+
+      
+        <section id="callbacks" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#callbacks">
+              <i class="icon-link"></i>
+            </a>
+            Callbacks
+          </h1>
+          <div class="detail" id="c:fetch/2">
+  
+  <div class="detail-header">
+    <a href="#c:fetch/2" class="detail-link" title="Link to this callback">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">fetch(t, key)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/access.ex#L122" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>fetch(<a href="#t:t/0">t</a>, <a href="#t:key/0">key</a>) :: {:ok, <a href="#t:value/0">value</a>} | :error</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="c:get/3">
+  
+  <div class="detail-header">
+    <a href="#c:get/3" class="detail-link" title="Link to this callback">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">get(t, key, value)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/access.ex#L123" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>get(<a href="#t:t/0">t</a>, <a href="#t:key/0">key</a>, <a href="#t:value/0">value</a>) :: <a href="#t:value/0">value</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="c:get_and_update/3">
+  
+  <div class="detail-header">
+    <a href="#c:get_and_update/3" class="detail-link" title="Link to this callback">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">get_and_update(t, key, list)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/access.ex#L124" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>get_and_update(<a href="#t:t/0">t</a>, <a href="#t:key/0">key</a>, (<a href="#t:value/0">value</a> -> {<a href="#t:value/0">value</a>, <a href="#t:value/0">value</a>} | :pop)) :: {<a href="#t:value/0">value</a>, <a href="#t:t/0">t</a>}</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="c:pop/2">
+  
+  <div class="detail-header">
+    <a href="#c:pop/2" class="detail-link" title="Link to this callback">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">pop(t, key)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/access.ex#L125" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>pop(<a href="#t:t/0">t</a>, <a href="#t:key/0">key</a>) :: {<a href="#t:value/0">value</a>, <a href="#t:t/0">t</a>}</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+
+        </section>
+      
+          <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.14.2),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle" />
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  <script src="dist/app-f0381555b5.js"></script>
+  </body>
+</html>
+

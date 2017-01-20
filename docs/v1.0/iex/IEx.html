@@ -1,0 +1,703 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.11.4">
+    <title>IEx – IEx v1.0.5</title>
+    <link rel="stylesheet" href="dist/app-ddd9717ad9.css" />
+    
+      <link rel="canonical" href="https://hexdocs.pm/iex/IEx.html" />
+    
+    <script src="dist/sidebar_items.js"></script>
+  </head>
+  <body data-type="modules">
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+  <button class="sidebar-toggle">
+    <i class="icon-menu"></i>
+  </button>
+
+  
+  <a href="http://elixir-lang.org/docs.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        IEx
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v1.0.5
+      </h2>
+    </div>
+    
+      <img src="assets/logo.png" alt="IEx" class="sidebar-projectImage">
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+
+    
+  </ul>
+
+  <ul id="full-list" class="sidebar-fullList"></ul>
+  <div class="sidebar-noResults"></div>
+</section>
+
+<section class="content">
+  <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">IEx v1.0.5</small>
+        IEx
+        
+        
+          <a href="https://github.com/elixir-lang/elixir/blob/v1.0.5/lib/iex/lib/iex.ex#L1" title="View Source" class="view-source" rel="help">
+            <i class="icon-code"></i>
+          </a>
+        
+      </h1>
+
+      
+        <section id="moduledoc" class="docstring">
+          <p>Elixir’s interactive shell.</p>
+<p>This module is the main entry point for Interactive Elixir and
+in this documentation we will talk a bit about how IEx works.</p>
+<p>Notice that some of the functionality described here will not be available
+depending on your terminal. In particular, if you get a message
+saying that the smart terminal could not be run, some of the
+features described here won’t work.</p>
+<h2>Helpers</h2>
+<p>IEx provides a bunch of helpers. They can be accessed by typing
+<code class="inline">h()</code> into the shell or as a documentation for the <a href="IEx.Helpers.html"><code class="inline">IEx.Helpers</code></a> module.</p>
+<h2>The Break command</h2>
+<p>Inside IEx, hitting <code class="inline">Ctrl+C</code> will open up the <code class="inline">BREAK</code> menu. In this
+menu you can quit the shell, see process and ets tables information
+and much more.</p>
+<h2>The User Switch command</h2>
+<p>Besides the break command, one can type <code class="inline">Ctrl+G</code> to get to the
+user switch command menu. When reached, you can type <code class="inline">h</code> to
+get more information.</p>
+<p>In this menu, developers are able to start new shells and
+alternate between them. Let’s give it a try:</p>
+<pre><code class="elixir">User switch command
+ --&gt; s &#39;Elixir.IEx&#39;
+ --&gt; c</code></pre>
+<p>The command above will start a new shell and connect to it.
+Create a new variable called <code class="inline">hello</code> and assign some value to it:</p>
+<pre><code class="elixir">hello = :world</code></pre>
+<p>Now, let’s roll back to the first shell:</p>
+<pre><code class="elixir">User switch command
+ --&gt; c 1</code></pre>
+<p>Now, try to access the <code class="inline">hello</code> variable again:</p>
+<pre><code class="elixir">hello
+** (UndefinedFunctionError) undefined function: hello/0</code></pre>
+<p>The command above fails because we have switched shells.
+Since shells are isolated from each other, you can’t access the
+variables defined in one shell from the other one.</p>
+<p>The user switch command menu also allows developers to connect to remote
+shells using the <code class="inline">r</code> command. A topic which we will discuss next.</p>
+<h2>Remote shells</h2>
+<p>IEx allows you to connect to another node in two fashions.
+First of all, we can only connect to a shell if we give names
+both to the current shell and the shell we want to connect to.</p>
+<p>Let’s give it a try. First start a new shell:</p>
+<pre><code class="elixir">$ iex --sname foo
+iex(foo@HOST)1&gt;</code></pre>
+<p>The string in between parenthesis in the prompt is the name
+of your node. We can retrieve it by calling the <code class="inline">node()</code>
+function:</p>
+<pre><code class="elixir">iex(foo@HOST)1&gt; node()
+:&quot;foo@HOST&quot;
+iex(foo@HOST)2&gt; Node.alive?()
+true</code></pre>
+<p>For fun, let’s define a simple module in this shell too:</p>
+<pre><code class="elixir">iex(foo@HOST)3&gt; defmodule Hello do
+...(foo@HOST)3&gt;   def world, do: &quot;it works!&quot;
+...(foo@HOST)3&gt; end</code></pre>
+<p>Now, let’s start another shell, giving it a name as well:</p>
+<pre><code class="elixir">$ iex --sname bar
+iex(bar@HOST)1&gt;</code></pre>
+<p>If we try to dispatch to <code class="inline">Hello.world</code>, it won’t be available
+as it was defined only in the other shell:</p>
+<pre><code class="elixir">iex(bar@HOST)1&gt; Hello.world
+** (UndefinedFunctionError) undefined function: Hello.world/0</code></pre>
+<p>However, we can connect to the other shell remotely. Open up
+the User Switch prompt (Ctrl+G) and type:</p>
+<pre><code class="elixir">User switch command
+ --&gt; r &#39;foo@HOST&#39; &#39;Elixir.IEx&#39;
+ --&gt; c</code></pre>
+<p>Now we are connected into the remote node, as the prompt shows us,
+and we can access the information and modules defined over there:</p>
+<pre><code class="elixir">rem(foo@macbook)1&gt; Hello.world
+&quot;it works&quot;</code></pre>
+<p>In fact, connecting to remote shells is so common that we provide
+a shortcut via the command line as well:</p>
+<pre><code class="elixir">$ iex --sname baz --remsh foo@HOST</code></pre>
+<p>Where “remsh” means “remote shell”. In general, Elixir supports:</p>
+<ul>
+<li>remsh from an elixir node to an elixir node
+</li>
+<li>remsh from a plain erlang node to an elixir node (through the ^G menu)
+</li>
+<li>remsh from an elixir node to a plain erlang node (and get an erl shell there)
+</li>
+</ul>
+<p>Connecting an Elixir shell to a remote node without Elixir is
+<strong>not</strong> supported.</p>
+<h2>The .iex.exs file</h2>
+<p>When starting IEx, it will look for a local <code class="inline">.iex.exs</code> file (located in the current
+working directory), then a global one (located at <code class="inline">~/.iex.exs</code>) and will load the
+first one it finds (if any). The code in the chosen .iex.exs file will be
+evaluated in the shell’s context. So, for instance, any modules that are
+loaded or variables that are bound in the .iex.exs file will be available in the
+shell after it has booted.</p>
+<p>Sample contents of a local .iex.exs file:</p>
+<pre><code class="elixir"># source another `.iex.exs` file
+import_file &quot;~/.iex.exs&quot;
+
+# print something before the shell starts
+IO.puts &quot;hello world&quot;
+
+# bind a variable that&#39;ll be accessible in the shell
+value = 13</code></pre>
+<p>Running the shell in the directory where the above .iex.exs file is located
+results in:</p>
+<pre><code class="elixir">$ iex
+Erlang 17 [...]
+
+hello world
+Interactive Elixir - press Ctrl+C to exit (type h() ENTER for help)
+iex(1)&gt; value
+13</code></pre>
+<p>It is possible to load another file by supplying the <code class="inline">--dot-iex</code>
+option to iex. See <code class="inline">iex --help</code>.</p>
+<h2>Configuring the shell</h2>
+<p>There are a number of customization options provided by the shell. Take a look
+at the docs for the <a href="IEx.html#configure/1"><code class="inline">IEx.configure/1</code></a> function by typing <code class="inline">h IEx.configure/1</code>.</p>
+<p>Those options can be configured in your project configuration file or globally
+by calling <a href="IEx.html#configure/1"><code class="inline">IEx.configure/1</code></a> from your <code class="inline">~/.iex.exs</code> file like this:</p>
+<pre><code class="elixir"># .iex.exs
+IEx.configure(inspect: [limit: 3])
+
+### now run the shell ###
+
+$ iex
+Erlang 17 (erts-5.10.1) [...]
+
+Interactive Elixir - press Ctrl+C to exit (type h() ENTER for help)
+iex(1)&gt; [1, 2, 3, 4, 5]
+[1,2,3,...]</code></pre>
+<h2>Expressions in IEx</h2>
+<p>As an interactive shell, IEx evaluates expressions. This has some
+interesting consequences that are worth discussing.</p>
+<p>The first one is that the code is truly evaluated and not compiled.
+This means that any benchmarking done in the shell is going to have
+skewed results. So never run any profiling nor benchmarks in the shell.</p>
+<p>Second, IEx allows you to break an expression into many lines,
+since this is common in Elixir. For example:</p>
+<pre><code class="elixir">iex(1)&gt; &quot;ab
+...(1)&gt; c&quot;
+&quot;ab\nc&quot;</code></pre>
+<p>In the example above, the shell will be expecting more input until it
+finds the closing quote. Sometimes it is not obvious which character
+the shell is expecting, and the user may find themselves trapped in
+the state of incomplete expression with no ability to terminate it other
+than by exiting the shell.</p>
+<p>For such cases, there is a special break-trigger (<code class="inline">#iex:break</code>) that when
+encountered on a line by itself will force the shell to break out of any
+pending expression and return to its normal state:</p>
+<pre><code class="elixir">iex(1)&gt; [&quot;ab
+...(1)&gt; c&quot;
+...(1)&gt; &quot;
+...(1)&gt; ]
+...(1)&gt; #iex:break
+** (TokenMissingError) iex:1: incomplete expression</code></pre>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <i class="icon-link"></i>
+            </a>
+            Summary
+          </h1>
+          
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#after_spawn/0">after_spawn()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns registered <code class="inline">after_spawn</code> callbacks</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#after_spawn/1">after_spawn(fun)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Registers a function to be invoked after the IEx process is spawned</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#color/2">color(color, string)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns <code class="inline">string</code> escaped using the specified <code class="inline">color</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#configuration/0">configuration()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns IEx configuration</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#configure/1">configure(options)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Configures IEx</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#inspect_opts/0">inspect_opts()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Gets the options used for inspecting</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#pry/3">pry(binding, env, timeout)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Callback for <a href="IEx.html#pry/1"><code class="inline">IEx.pry/1</code></a></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#started?/0">started?()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns <code class="inline">true</code> if IEx was started</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#width/0">width()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Gets the IEx width for printing</p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+  <div class="summary-macros summary">
+    <h2>
+      <a href="#macros">Macros</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#pry/1">pry(timeout \\ 5000)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Pries into the process environment</p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+
+        </section>
+      
+
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <i class="icon-link"></i>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="after_spawn/0">
+  <div class="detail-header">
+    <a href="#after_spawn/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">after_spawn()</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.0.5/lib/iex/lib/iex.ex#L296" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Returns registered <code class="inline">after_spawn</code> callbacks.</p>
+
+  </section>
+</div>
+<div class="detail" id="after_spawn/1">
+  <div class="detail-header">
+    <a href="#after_spawn/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">after_spawn(fun)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.0.5/lib/iex/lib/iex.ex#L289" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Registers a function to be invoked after the IEx process is spawned.</p>
+
+  </section>
+</div>
+<div class="detail" id="color/2">
+  <div class="detail-header">
+    <a href="#color/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">color(color, string)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.0.5/lib/iex/lib/iex.ex#L312" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Returns <code class="inline">string</code> escaped using the specified <code class="inline">color</code>.</p>
+<p>ANSI escapes in <code class="inline">string</code> are not processed in any way.</p>
+
+  </section>
+</div>
+<div class="detail" id="configuration/0">
+  <div class="detail-header">
+    <a href="#configuration/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">configuration()</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.0.5/lib/iex/lib/iex.ex#L282" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Returns IEx configuration.</p>
+
+  </section>
+</div>
+<div class="detail" id="configure/1">
+  <div class="detail-header">
+    <a href="#configure/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">configure(options)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.0.5/lib/iex/lib/iex.ex#L275" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Configures IEx.</p>
+<p>The supported options are: <code class="inline">:colors</code>, <code class="inline">:inspect</code>,
+<code class="inline">:default_prompt</code>, <code class="inline">:alive_prompt</code> and <code class="inline">:history_size</code>.</p>
+<h2>Colors</h2>
+<p>A keyword list that encapsulates all color settings used by the
+shell. See documentation for the <code class="inline">IO.ANSI</code> module for the list of
+supported colors and attributes.</p>
+<p>The value is a keyword list. List of supported keys:</p>
+<ul>
+<li><code class="inline">:enabled</code>      - boolean value that allows for switching the coloring on and off
+</li>
+<li><code class="inline">:eval_result</code>  - color for an expression’s resulting value
+</li>
+<li><code class="inline">:eval_info</code>    - … various informational messages
+</li>
+<li><code class="inline">:eval_error</code>   - … error messages
+</li>
+<li><code class="inline">:stack_app</code>    - … the app in stack traces
+</li>
+<li><code class="inline">:stack_info</code>   - … the remaining info in stacktraces
+</li>
+<li><code class="inline">:ls_directory</code> - … for directory entries (ls helper)
+</li>
+<li><code class="inline">:ls_device</code>    - … device entries (ls helper)
+</li>
+</ul>
+<p>When printing documentation, IEx will convert the markdown
+documentation to ANSI as well. Those can be configured via:</p>
+<ul>
+<li><code class="inline">:doc_code</code>        — the attributes for code blocks (cyan, bright)
+</li>
+<li><code class="inline">:doc_inline_code</code> - inline code (cyan)
+</li>
+<li><code class="inline">:doc_headings</code>    - h1 and h2 (yellow, bright)
+</li>
+<li><code class="inline">:doc_title</code>       — the overall heading for the output (reverse,yellow,bright)
+</li>
+<li><code class="inline">:doc_bold</code>        - (bright)
+</li>
+<li><code class="inline">:doc_underline</code>   - (underline)
+</li>
+</ul>
+<h2>Inspect</h2>
+<p>A keyword list containing inspect options used by the shell
+when printing results of expression evaluation. Defailt to
+pretty formatting with a limit of 50 entries.</p>
+<p>See <code class="inline">Inspect.Opts</code> for the full list of options.</p>
+<h2>History size</h2>
+<p>Number of expressions and their results to keep in the history.
+The value is an integer. When it is negative, the history is unlimited.</p>
+<h2>Prompt</h2>
+<p>This is an option determining the prompt displayed to the user
+when awaiting input.</p>
+<p>The value is a keyword list. Two prompt types:</p>
+<ul>
+<li><code class="inline">:default_prompt</code> - used when <code class="inline">Node.alive?</code> returns false
+</li>
+<li><code class="inline">:alive_prompt</code>   - used when <code class="inline">Node.alive?</code> returns true
+</li>
+</ul>
+<p>The part of the listed in the following of the prompt string is replaced.</p>
+<ul>
+<li><code class="inline">%counter</code> - the index of the history
+</li>
+<li><code class="inline">%prefix</code>  - a prefix given by <code class="inline">IEx.Server</code>
+</li>
+<li><code class="inline">%node</code>    - the name of the local node
+</li>
+</ul>
+
+  </section>
+</div>
+<div class="detail" id="inspect_opts/0">
+  <div class="detail-header">
+    <a href="#inspect_opts/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">inspect_opts()</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.0.5/lib/iex/lib/iex.ex#L333" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Gets the options used for inspecting.</p>
+
+  </section>
+</div>
+<div class="detail" id="pry/3">
+  <div class="detail-header">
+    <a href="#pry/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">pry(binding, env, timeout)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.0.5/lib/iex/lib/iex.ex#L408" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Callback for <a href="IEx.html#pry/1"><code class="inline">IEx.pry/1</code></a>.</p>
+<p>You can invoke this function directly when you are not able to invoke
+<a href="IEx.html#pry/1"><code class="inline">IEx.pry/1</code></a> as a macro. This function expects the binding (from
+<code class="inline">Kernel.binding/0</code>), the environment (from <code class="inline">__ENV__</code>) and the timeout
+(a sensible default is 5000).</p>
+
+  </section>
+</div>
+<div class="detail" id="started?/0">
+  <div class="detail-header">
+    <a href="#started?/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">started?()</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.0.5/lib/iex/lib/iex.ex#L303" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Returns <code class="inline">true</code> if IEx was started.</p>
+
+  </section>
+</div>
+<div class="detail" id="width/0">
+  <div class="detail-header">
+    <a href="#width/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">width()</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.0.5/lib/iex/lib/iex.ex#L326" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Gets the IEx width for printing.</p>
+<p>Used by helpers and it has a maximum cap of 80 chars.</p>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+        <section id="macros" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#macros">
+              <i class="icon-link"></i>
+            </a>
+            Macros
+          </h1>
+          <div class="detail" id="pry/1">
+  <div class="detail-header">
+    <a href="#pry/1" class="detail-link" title="Link to this macro">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">pry(timeout \\ 5000)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.0.5/lib/iex/lib/iex.ex#L394" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Pries into the process environment.</p>
+<p>This is useful for debugging a particular chunk of code
+and inspect the state of a particular process. The process
+is temporarily changed to trap exits (i.e. the process flag
+<code class="inline">:trap_exit</code> is set to true) and has the <code class="inline">group_leader</code> changed
+to support ANSI escape codes. Those values are reverted by
+calling <code class="inline">respawn</code>, which starts a new IEx shell, freeing up
+the pried one.</p>
+<p>When a process is pried, all code runs inside IEx and, as
+such, it is evaluated and cannot access private functions
+of the module being pried. Module functions still need to be
+accessed via <code class="inline">Mod.fun(args)</code>.</p>
+<h2>Examples</h2>
+<p>Let’s suppose you want to investigate what is happening
+with some particular function. By invoking <code class="inline">IEx.pry</code> from
+the function, IEx will allow you to access its binding
+(variables), verify its lexical information and access
+the process information. Let’s see an example:</p>
+<pre><code class="elixir">import Enum, only: [map: 2]
+require IEx
+
+defmodule Adder do
+  def add(a, b) do
+    c = a + b
+    IEx.pry
+  end
+end</code></pre>
+<p>When invoking <code class="inline">Adder.add(1, 2)</code>, you will receive a message in
+your shell to pry the given environment. By allowing it,
+the shell will be reset and you gain access to all variables
+and the lexical scope from above:</p>
+<pre><code class="elixir">pry(1)&gt; map([a,b,c], &amp;IO.inspect(&amp;1))
+1
+2
+3</code></pre>
+<p>Keep in mind that <code class="inline">IEx.pry</code> runs in the caller process,
+blocking the caller during the evaluation cycle. The caller
+process can be freed by calling <code class="inline">respawn</code>, which starts a
+new IEx evaluation cycle, letting this one go:</p>
+<pre><code class="elixir">pry(2)&gt; respawn
+true
+
+Interactive Elixir - press Ctrl+C to exit (type h() ENTER for help)</code></pre>
+<p>Setting variables or importing modules in IEx does not
+affect the caller the environment (hence it is called <code class="inline">pry</code>).</p>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+        <footer class="footer">
+      <p>
+        <span class="line">
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.11.4),
+        </span>
+        <span class="line">
+          designed by
+          <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+      </p>
+      <button class="night-mode-toggle" />
+    </footer>
+  </div>
+</section>
+</div>
+  <script src="dist/app-6d2e071366.js"></script>
+  </body>
+</html>
+

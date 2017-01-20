@@ -1,0 +1,978 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.11.4">
+    <title>System – Elixir v1.1.1</title>
+    <link rel="stylesheet" href="dist/app-ddd9717ad9.css" />
+    
+      <link rel="canonical" href="https://hexdocs.pm/elixir/System.html" />
+    
+    <script src="dist/sidebar_items.js"></script>
+  </head>
+  <body data-type="modules">
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+  <button class="sidebar-toggle">
+    <i class="icon-menu"></i>
+  </button>
+
+  
+  <a href="http://elixir-lang.org/docs.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        Elixir
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v1.1.1
+      </h2>
+    </div>
+    
+      <img src="assets/logo.png" alt="Elixir" class="sidebar-projectImage">
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+      <li><a id="exceptions-list" href="#full-list">Exceptions</a></li>
+    
+
+    
+      <li><a id="protocols-list" href="#full-list">Protocols</a></li>
+    
+  </ul>
+
+  <ul id="full-list" class="sidebar-fullList"></ul>
+  <div class="sidebar-noResults"></div>
+</section>
+
+<section class="content">
+  <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">Elixir v1.1.1</small>
+        System
+        
+        
+          <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/system.ex#L1" title="View Source" class="view-source" rel="help">
+            <i class="icon-code"></i>
+          </a>
+        
+      </h1>
+
+      
+        <section id="moduledoc" class="docstring">
+          <p>The System module provides access to variables used or
+maintained by the VM and to functions that interact directly
+with the VM or the host system.</p>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <i class="icon-link"></i>
+            </a>
+            Summary
+          </h1>
+          
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#argv/0">argv()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Lists command line arguments</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#argv/1">argv(args)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Modifies command line arguments</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#at_exit/1">at_exit(fun)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Registers a program exit handler function</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#build_info/0">build_info()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Elixir build information</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#cmd/3">cmd(command, args, opts \\ [])</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Executes the given <code class="inline">command</code> with <code class="inline">args</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#cwd/0">cwd()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Current working directory</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#cwd!/0">cwd!()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Current working directory, exception on error</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#delete_env/1">delete_env(varname)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Deletes an environment variable</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#find_executable/1">find_executable(program)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Locates an executable on the system</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_env/0">get_env()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>System environment variables</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_env/1">get_env(varname)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Environment variable value</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_pid/0">get_pid()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Erlang VM process identifier</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#halt/1">halt(status \\ 0)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Halts the Erlang runtime system</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#put_env/1">put_env(dict)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Sets multiple environment variables</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#put_env/2">put_env(varname, value)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Sets an environment variable value</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#stacktrace/0">stacktrace()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Last exception stacktrace</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#tmp_dir/0">tmp_dir()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Writable temporary directory</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#tmp_dir!/0">tmp_dir!()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Writable temporary directory, exception on error</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#user_home/0">user_home()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>User home directory</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#user_home!/0">user_home!()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>User home directory, exception on error</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#version/0">version()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Elixir version information</p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+
+          
+
+        </section>
+      
+
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <i class="icon-link"></i>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="argv/0">
+  <div class="detail-header">
+    <a href="#argv/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">argv()</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/system.ex#L74" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">argv :: [<a href="String.html#t:t/0">String.t</a>]</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Lists command line arguments.</p>
+<p>Returns the list of command line arguments passed to the program.</p>
+
+  </section>
+</div>
+<div class="detail" id="argv/1">
+  <div class="detail-header">
+    <a href="#argv/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">argv(args)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/system.ex#L85" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">argv([<a href="String.html#t:t/0">String.t</a>]) :: :ok</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Modifies command line arguments.</p>
+<p>Changes the list of command line arguments. Use it with caution,
+as it destroys any previous argv information.</p>
+
+  </section>
+</div>
+<div class="detail" id="at_exit/1">
+  <div class="detail-header">
+    <a href="#at_exit/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">at_exit(fun)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/system.ex#L208" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Registers a program exit handler function.</p>
+<p>Registers a function that will be invoked at the end of program execution.
+Useful for invoking a hook in “script” mode.</p>
+<p>The handler always executes in a different process from the one it was
+registered in. As a consequence, any resources managed by the calling process
+(ETS tables, open files, etc.) won’t be available by the time the handler
+function is invoked.</p>
+<p>The function must receive the exit status code as an argument.</p>
+
+  </section>
+</div>
+<div class="detail" id="build_info/0">
+  <div class="detail-header">
+    <a href="#build_info/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">build_info()</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/system.ex#L64" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">build_info :: map</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Elixir build information.</p>
+<p>Returns a keyword list with Elixir version, git tag info and compilation date.</p>
+
+  </section>
+</div>
+<div class="detail" id="cmd/3">
+  <div class="detail-header">
+    <a href="#cmd/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">cmd(command, args, opts \\ [])</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/system.ex#L428" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">cmd(binary, [binary], <a href="Keyword.html#t:t/0">Keyword.t</a>) :: {<a href="Collectable.html#t:t/0">Collectable.t</a>, exit_status :: non_neg_integer}</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Executes the given <code class="inline">command</code> with <code class="inline">args</code>.</p>
+<p><code class="inline">command</code> is expected to be an executable available in PATH
+unless an absolute path is given.</p>
+<p><code class="inline">args</code> must be a list of strings which are not expanded
+in any way. For example, this means wildcard expansion will
+not happen unless <a href="Path.html#wildcard/2"><code class="inline">Path.wildcard/2</code></a> is used. On Windows though,
+wildcard expansion is up to the program.</p>
+<p>This function returns a tuple containing the collected result
+and the command exit status.</p>
+<h2>Examples</h2>
+<pre><code class="iex elixir">iex&gt; System.cmd &quot;echo&quot;, [&quot;hello&quot;]
+{&quot;hello\n&quot;, 0}
+
+iex&gt; System.cmd &quot;echo&quot;, [&quot;hello&quot;], env: [{&quot;MIX_ENV&quot;, &quot;test&quot;}]
+{&quot;hello\n&quot;, 0}
+
+iex&gt; System.cmd &quot;echo&quot;, [&quot;hello&quot;], into: IO.stream(:stdio, :line)
+hello
+{%IO.Stream{}, 0}</code></pre>
+<h2>Options</h2>
+<ul>
+<li><code class="inline">:into</code> - injects the result into the given collectable, defaults to <code class="inline">&quot;&quot;</code>
+</li>
+<li><code class="inline">:cd</code> - the directory to run the command in
+</li>
+<li><code class="inline">:env</code> - an enumerable of tuples containing environment key-value as binary
+</li>
+<li><code class="inline">:arg0</code> - set the command arg0
+</li>
+<li><code class="inline">:stderr_to_stdout</code> - redirects stderr to stdout when <code class="inline">true</code>
+</li>
+<li><code class="inline">:parallelism</code> - when <code class="inline">true</code>, the VM will schedule port tasks to improve
+parallelism in the system. If set to <code class="inline">false</code>, the VM will try to perform
+commands immediately, improving latency at the expense of parallelism.
+The default can be set on system startup by passing the “+spp” argument
+to <code class="inline">--erl</code>.
+</li>
+</ul>
+<h2>Error reasons</h2>
+<p>If invalid arguments are given, <a href="ArgumentError.html"><code class="inline">ArgumentError</code></a> is raised by
+<a href="System.html#cmd/3"><code class="inline">System.cmd/3</code></a>. <a href="System.html#cmd/3"><code class="inline">System.cmd/3</code></a> also expects a strict set of
+options and will raise if unknown or invalid options are given.</p>
+<p>Furthermore, <a href="System.html#cmd/3"><code class="inline">System.cmd/3</code></a> may fail with one of the POSIX reasons
+detailed below:</p>
+<ul>
+<li><p><code class="inline">:system_limit</code> - all available ports in the Erlang emulator are in use</p>
+</li>
+<li><p><code class="inline">:enomem</code> - there was not enough memory to create the port</p>
+</li>
+<li><p><code class="inline">:eagain</code> - there are no more available operating system processes</p>
+</li>
+<li><p><code class="inline">:enametoolong</code> - the external command given was too long</p>
+</li>
+<li><p><code class="inline">:emfile</code> - there are no more available file descriptors
+(for the operating system process that the Erlang emulator runs in)</p>
+</li>
+<li><p><code class="inline">:enfile</code> - the file table is full (for the entire operating system)</p>
+</li>
+<li><p><code class="inline">:eacces</code> - the command does not point to an executable file</p>
+</li>
+<li><code class="inline">:enoent</code> - the command does not point to an existing file
+</li>
+</ul>
+<h2>Shell commands</h2>
+<p>If you desire to execute a trusted command inside a shell, with pipes,
+redirecting and so on, please check
+<a href="http://www.erlang.org/doc/man/os.html#cmd-1"><code class="inline">:os.cmd/1</code></a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="cwd/0">
+  <div class="detail-header">
+    <a href="#cwd/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">cwd()</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/system.ex#L95" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Current working directory.</p>
+<p>Returns the current working directory or <code class="inline">nil</code> if one
+is not available.</p>
+
+  </section>
+</div>
+<div class="detail" id="cwd!/0">
+  <div class="detail-header">
+    <a href="#cwd!/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">cwd!()</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/system.ex#L116" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Current working directory, exception on error.</p>
+<p>Returns the current working directory or raises <a href="RuntimeError.html"><code class="inline">RuntimeError</code></a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="delete_env/1">
+  <div class="detail-header">
+    <a href="#delete_env/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">delete_env(varname)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/system.ex#L298" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">delete_env(<a href="String.html#t:t/0">String.t</a>) :: :ok</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Deletes an environment variable.</p>
+<p>Removes the variable <code class="inline">varname</code> from the environment.</p>
+
+  </section>
+</div>
+<div class="detail" id="find_executable/1">
+  <div class="detail-header">
+    <a href="#find_executable/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">find_executable(program)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/system.ex#L222" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">find_executable(binary) :: binary | nil</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Locates an executable on the system.</p>
+<p>This function looks up an executable program given
+its name using the environment variable PATH on Unix
+and Windows. It also considers the proper executable
+extension for each OS, so for Windows it will try to
+lookup files with <code class="inline">.com</code>, <code class="inline">.cmd</code> or similar extensions.</p>
+
+  </section>
+</div>
+<div class="detail" id="get_env/0">
+  <div class="detail-header">
+    <a href="#get_env/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">get_env()</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/system.ex#L236" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">get_env :: %{<a href="String.html#t:t/0">String.t</a> => <a href="String.html#t:t/0">String.t</a>}</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>System environment variables.</p>
+<p>Returns a list of all environment variables. Each variable is given as a
+<code class="inline">{name, value}</code> tuple where both <code class="inline">name</code> and <code class="inline">value</code> are strings.</p>
+
+  </section>
+</div>
+<div class="detail" id="get_env/1">
+  <div class="detail-header">
+    <a href="#get_env/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">get_env(varname)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/system.ex#L252" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">get_env(binary) :: binary | nil</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Environment variable value.</p>
+<p>Returns the value of the environment variable
+<code class="inline">varname</code> as a binary, or <code class="inline">nil</code> if the environment
+variable is undefined.</p>
+
+  </section>
+</div>
+<div class="detail" id="get_pid/0">
+  <div class="detail-header">
+    <a href="#get_pid/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">get_pid()</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/system.ex#L268" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">get_pid :: binary</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Erlang VM process identifier.</p>
+<p>Returns the process identifier of the current Erlang emulator
+in the format most commonly used by the operating system environment.</p>
+<p>For more information, see <a href="http://www.erlang.org/doc/man/os.html#getpid-0"><code class="inline">:os.getpid/0</code></a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="halt/1">
+  <div class="detail-header">
+    <a href="#halt/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">halt(status \\ 0)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/system.ex#L345" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">halt(non_neg_integer | binary | :abort) :: no_return</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Halts the Erlang runtime system.</p>
+<p>Halts the Erlang runtime system where the argument <code class="inline">status</code> must be a
+non-negative integer, the atom <code class="inline">:abort</code> or a binary.</p>
+<ul>
+<li><p>If an integer, the runtime system exits with the integer value which
+is returned to the operating system.</p>
+</li>
+<li><p>If <code class="inline">:abort</code>, the runtime system aborts producing a core dump, if that is
+enabled in the operating system.</p>
+</li>
+<li>If a string, an Erlang crash dump is produced with status as slogan,
+and then the runtime system exits with status code 1.
+</li>
+</ul>
+<p>Note that on many platforms, only the status codes 0-255 are supported
+by the operating system.</p>
+<p>For more information, see <a href="http://www.erlang.org/doc/man/erlang.html#halt-1"><code class="inline">:erlang.halt/1</code></a>.</p>
+<h2>Examples</h2>
+<pre><code class="elixir">System.halt(0)
+System.halt(1)
+System.halt(:abort)</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="put_env/1">
+  <div class="detail-header">
+    <a href="#put_env/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">put_env(dict)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/system.ex#L288" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">put_env(<a href="Dict.html#t:t/0">Dict.t</a>) :: :ok</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Sets multiple environment variables.</p>
+<p>Sets a new value for each environment variable corresponding
+to each key in <code class="inline">dict</code>.</p>
+
+  </section>
+</div>
+<div class="detail" id="put_env/2">
+  <div class="detail-header">
+    <a href="#put_env/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">put_env(varname, value)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/system.ex#L276" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">put_env(binary, binary) :: :ok</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Sets an environment variable value.</p>
+<p>Sets a new <code class="inline">value</code> for the environment variable <code class="inline">varname</code>.</p>
+
+  </section>
+</div>
+<div class="detail" id="stacktrace/0">
+  <div class="detail-header">
+    <a href="#stacktrace/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">stacktrace()</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/system.ex#L312" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Last exception stacktrace.</p>
+<p>Note that the Erlang VM (and therefore this function) does not
+return the current stacktrace but rather the stacktrace of the
+latest exception.</p>
+<p>Inlined by the compiler into <a href="http://www.erlang.org/doc/man/erlang.html#get_stacktrace-0"><code class="inline">:erlang.get_stacktrace/0</code></a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="tmp_dir/0">
+  <div class="detail-header">
+    <a href="#tmp_dir/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">tmp_dir()</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/system.ex#L155" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Writable temporary directory.</p>
+<p>Returns a writable temporary directory.
+Searches for directories in the following order:</p>
+<ol>
+<li>the directory named by the TMPDIR environment variable
+</li>
+<li>the directory named by the TEMP environment variable
+</li>
+<li>the directory named by the TMP environment variable
+</li>
+<li><code class="inline">C:\TMP</code> on Windows or <code class="inline">/tmp</code> on Unix
+</li>
+<li>as a last resort, the current working directory
+</li>
+</ol>
+<p>Returns <code class="inline">nil</code> if none of the above are writable.</p>
+
+  </section>
+</div>
+<div class="detail" id="tmp_dir!/0">
+  <div class="detail-header">
+    <a href="#tmp_dir!/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">tmp_dir!()</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/system.ex#L169" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Writable temporary directory, exception on error.</p>
+<p>Same as <a href="#tmp_dir/0"><code class="inline">tmp_dir/0</code></a> but raises <a href="RuntimeError.html"><code class="inline">RuntimeError</code></a>
+instead of returning <code class="inline">nil</code> if no temp dir is set.</p>
+
+  </section>
+</div>
+<div class="detail" id="user_home/0">
+  <div class="detail-header">
+    <a href="#user_home/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">user_home()</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/system.ex#L126" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>User home directory.</p>
+<p>Returns the user home directory (platform independent).</p>
+
+  </section>
+</div>
+<div class="detail" id="user_home!/0">
+  <div class="detail-header">
+    <a href="#user_home!/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">user_home!()</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/system.ex#L136" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>User home directory, exception on error.</p>
+<p>Same as <a href="#user_home/0"><code class="inline">user_home/0</code></a> but raises <a href="RuntimeError.html"><code class="inline">RuntimeError</code></a>
+instead of returning <code class="inline">nil</code> if no user home is set.</p>
+
+  </section>
+</div>
+<div class="detail" id="version/0">
+  <div class="detail-header">
+    <a href="#version/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">version()</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/elixir/lib/system.ex#L56" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">version :: <a href="String.html#t:t/0">String.t</a></code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Elixir version information.</p>
+<p>Returns Elixir’s version as binary.</p>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+
+      
+        <footer class="footer">
+      <p>
+        <span class="line">
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.11.4),
+        </span>
+        <span class="line">
+          designed by
+          <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+      </p>
+      <button class="night-mode-toggle" />
+    </footer>
+  </div>
+</section>
+</div>
+  <script src="dist/app-6d2e071366.js"></script>
+  </body>
+</html>
+

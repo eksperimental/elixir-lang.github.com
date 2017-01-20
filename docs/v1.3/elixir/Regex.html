@@ -1,0 +1,1027 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.14.2">
+    <title>Regex – Elixir v1.3.4</title>
+    <link rel="stylesheet" href="dist/app-23e810f3fe.css" />
+    
+      <link rel="canonical" href="https://hexdocs.pm/elixir/Regex.html" />
+    
+    <script src="dist/sidebar_items.js"></script>
+  </head>
+  <body data-type="modules">
+    <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+
+  
+  <a href="http://elixir-lang.org/docs.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        Elixir
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v1.3.4
+      </h2>
+    </div>
+    
+      <img src="assets/logo.png" alt="Elixir" class="sidebar-projectImage">
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+      <li><a id="exceptions-list" href="#full-list">Exceptions</a></li>
+    
+
+    
+      <li><a id="protocols-list" href="#full-list">Protocols</a></li>
+    
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">Elixir v1.3.4</small>
+        Regex
+        
+        
+          <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/regex.ex#L1" title="View Source" class="view-source" rel="help">
+            <i class="icon-code"></i>
+          </a>
+        
+      </h1>
+
+      
+        <section id="moduledoc">
+          <p>Provides regular expressions for Elixir. Built on top of Erlang’s <code class="inline">:re</code>
+module.</p>
+<p>As the <code class="inline">:re</code> module, Regex is based on PCRE
+(Perl Compatible Regular Expressions). More information can be
+found in the <a href="http://www.erlang.org/doc/man/re.html"><code class="inline">:re</code> module documentation</a>.</p>
+<p>Regular expressions in Elixir can be created using <a href="Regex.html#compile!/2"><code class="inline">Regex.compile!/2</code></a>
+or using the special form with <a href="Kernel.html#sigil_r/2"><code class="inline">~r</code></a> or <a href="Kernel.html#sigil_R/2"><code class="inline">~R</code></a>:</p>
+<pre><code class="elixir"># A simple regular expressions that matches foo anywhere in the string
+~r/foo/
+
+# A regular expression with case insensitive and Unicode options
+~r/foo/iu</code></pre>
+<p>A Regex is represented internally as the <a href="Regex.html#content"><code class="inline">Regex</code></a> struct. Therefore,
+<code class="inline">%Regex{}</code> can be used whenever there is a need to match on them.</p>
+<h2 id="module-modifiers" class="section-heading">
+  <a href="#module-modifiers" class="hover-link"><i class="icon-link"></i></a>
+  Modifiers
+</h2>
+
+<p>The modifiers available when creating a Regex are:</p>
+<ul>
+<li><p><code class="inline">unicode</code> (u) - enables Unicode specific patterns like <code class="inline">\p</code> and change
+modifiers like <code class="inline">\w</code>, <code class="inline">\W</code>, <code class="inline">\s</code> and friends to also match on Unicode.
+It expects valid Unicode strings to be given on match</p>
+</li>
+<li><p><code class="inline">caseless</code> (i) - add case insensitivity</p>
+</li>
+<li><p><code class="inline">dotall</code> (s) - causes dot to match newlines and also set newline to
+anycrlf; the new line setting can be overridden by setting <code class="inline">(*CR)</code> or
+<code class="inline">(*LF)</code> or <code class="inline">(*CRLF)</code> or <code class="inline">(*ANY)</code> according to re documentation</p>
+</li>
+<li><p><code class="inline">multiline</code> (m) - causes <code class="inline">^</code> and <code class="inline">$</code> to mark the beginning and end of
+each line; use <code class="inline">\A</code> and <code class="inline">\z</code> to match the end or beginning of the string</p>
+</li>
+<li><p><code class="inline">extended</code> (x) - whitespace characters are ignored except when escaped
+and allow <code class="inline">#</code> to delimit comments</p>
+</li>
+<li><p><code class="inline">firstline</code> (f) - forces the unanchored pattern to match before or at the
+first newline, though the matched text may continue over the newline</p>
+</li>
+<li><code class="inline">ungreedy</code> (U) - inverts the “greediness” of the regexp
+(the previous <code class="inline">r</code> option is deprecated in favor of <code class="inline">U</code>)
+</li>
+</ul>
+<p>The options not available are:</p>
+<ul>
+<li><code class="inline">anchored</code> - not available, use <code class="inline">^</code> or <code class="inline">\A</code> instead
+</li>
+<li><code class="inline">dollar_endonly</code> - not available, use <code class="inline">\z</code> instead
+</li>
+<li><code class="inline">no_auto_capture</code> - not available, use <code class="inline">?:</code> instead
+</li>
+<li><code class="inline">newline</code> - not available, use <code class="inline">(*CR)</code> or <code class="inline">(*LF)</code> or <code class="inline">(*CRLF)</code> or
+<code class="inline">(*ANYCRLF)</code> or <code class="inline">(*ANY)</code> at the beginning of the regexp according to the
+re documentation
+</li>
+</ul>
+<h2 id="module-captures" class="section-heading">
+  <a href="#module-captures" class="hover-link"><i class="icon-link"></i></a>
+  Captures
+</h2>
+
+<p>Many functions in this module handle what to capture in a regex
+match via the <code class="inline">:capture</code> option. The supported values are:</p>
+<ul>
+<li><p><code class="inline">:all</code> - all captured subpatterns including the complete matching string
+(this is the default)</p>
+</li>
+<li><p><code class="inline">:first</code> - only the first captured subpattern, which is always the
+complete matching part of the string; all explicitly captured subpatterns
+are discarded</p>
+</li>
+<li><p><code class="inline">:all_but_first</code>- all but the first matching subpattern, i.e. all
+explicitly captured subpatterns, but not the complete matching part of
+the string</p>
+</li>
+<li><p><code class="inline">:none</code> - do not return matching subpatterns at all</p>
+</li>
+<li><p><code class="inline">:all_names</code> - captures all names in the Regex</p>
+</li>
+<li><code class="inline">list(binary)</code> - a list of named captures to capture
+</li>
+</ul>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <i class="icon-link"></i>
+            </a>
+            Summary
+          </h1>
+          
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:t/0">t()</a>
+  </div>
+  
+</div>
+
+  </div>
+
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#compile/2">compile(source, options \\ &quot;&quot;)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Compiles the regular expression</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#compile!/2">compile!(source, options \\ &quot;&quot;)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Compiles the regular expression according to the given options.
+Fails with <a href="Regex.CompileError.html"><code class="inline">Regex.CompileError</code></a> if the regex cannot be compiled</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#escape/1">escape(string)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Escapes a string to be literally matched in a regex</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#match?/2">match?(regex, string)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns a boolean indicating whether there was a match or not</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#named_captures/3">named_captures(regex, string, options \\ [])</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns the given captures as a map or <code class="inline">nil</code> if no captures are
+found. The option <code class="inline">:return</code> can be set to <code class="inline">:index</code> to get indexes
+back</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#names/1">names(regex)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns a list of names in the regex</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#opts/1">opts(regex)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns the regex options as a string</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#re_pattern/1">re_pattern(regex)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns the underlying <code class="inline">re_pattern</code> in the regular expression</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#regex?/1">regex?(term)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns <code class="inline">true</code> if the given <code class="inline">term</code> is a regex.
+Otherwise returns <code class="inline">false</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#replace/4">replace(regex, string, replacement, options \\ [])</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Receives a regex, a binary and a replacement, returns a new
+binary where all matches are replaced by the replacement</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#run/3">run(regex, string, options \\ [])</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Runs the regular expression against the given string until the first match.
+It returns a list with all captures or <code class="inline">nil</code> if no match occurred</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#scan/3">scan(regex, string, options \\ [])</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Same as <a href="#run/3"><code class="inline">run/3</code></a>, but scans the target several times collecting all
+matches of the regular expression</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#source/1">source(regex)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns the regex source as a binary</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#split/3">split(regex, string, options \\ [])</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Splits the given target based on the given pattern and in the given number of
+parts</p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+
+          
+
+        </section>
+      
+
+      
+        <section id="types" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <i class="icon-link"></i>
+            </a>
+            Types
+          </h1>
+          <div class="types-list">
+            <div class="detail" id="t:t/0">
+  
+  <div class="detail-header">
+    <a href="#t:t/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">t()</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/regex.ex#L83" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre><a href="#t:t/0">t</a> :: %Regex{opts: binary, re_pattern: term, source: binary}</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+
+          </div>
+        </section>
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <i class="icon-link"></i>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="compile/2">
+  
+    <span id="compile/1" />
+  
+  <div class="detail-header">
+    <a href="#compile/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">compile(source, options \\ &quot;&quot;)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/regex.ex#L109" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>compile(binary, binary | [term]) :: {:ok, <a href="#t:t/0">t</a>} | {:error, any}</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Compiles the regular expression.</p>
+<p>The given options can either be a binary with the characters
+representing the same regex options given to the <code class="inline">~r</code> sigil,
+or a list of options, as expected by the Erlang’s <a href="http://www.erlang.org/doc/man/re.html"><code class="inline">:re</code> module</a>.</p>
+<p>It returns <code class="inline">{:ok, regex}</code> in case of success,
+<code class="inline">{:error, reason}</code> otherwise.</p>
+<h2 id="compile/2-examples" class="section-heading">
+  <a href="#compile/2-examples" class="hover-link"><i class="icon-link"></i></a>
+  Examples
+</h2>
+
+<pre><code class="iex elixir">iex&gt; Regex.compile(&quot;foo&quot;)
+{:ok, ~r&quot;foo&quot;}
+
+iex&gt; Regex.compile(&quot;*foo&quot;)
+{:error, {&#39;nothing to repeat&#39;, 0}}</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="compile!/2">
+  
+    <span id="compile!/1" />
+  
+  <div class="detail-header">
+    <a href="#compile!/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">compile!(source, options \\ &quot;&quot;)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/regex.ex#L139" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>compile!(binary, binary | [term]) :: <a href="#t:t/0">t</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Compiles the regular expression according to the given options.
+Fails with <a href="Regex.CompileError.html"><code class="inline">Regex.CompileError</code></a> if the regex cannot be compiled.</p>
+
+  </section>
+</div>
+<div class="detail" id="escape/1">
+  
+  <div class="detail-header">
+    <a href="#escape/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">escape(string)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/regex.ex#L643" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>escape(<a href="String.html#t:t/0">String.t</a>) :: <a href="String.html#t:t/0">String.t</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Escapes a string to be literally matched in a regex.</p>
+<h2 id="escape/1-examples" class="section-heading">
+  <a href="#escape/1-examples" class="hover-link"><i class="icon-link"></i></a>
+  Examples
+</h2>
+
+<pre><code class="iex elixir">iex&gt; Regex.escape(&quot;.&quot;)
+&quot;\\.&quot;
+
+iex&gt; Regex.escape(&quot;\\what if&quot;)
+&quot;\\\\what\\ if&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="match?/2">
+  
+  <div class="detail-header">
+    <a href="#match?/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">match?(regex, string)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/regex.ex#L159" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>match?(<a href="#t:t/0">t</a>, <a href="String.html#t:t/0">String.t</a>) :: boolean</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Returns a boolean indicating whether there was a match or not.</p>
+<h2 id="match?/2-examples" class="section-heading">
+  <a href="#match?/2-examples" class="hover-link"><i class="icon-link"></i></a>
+  Examples
+</h2>
+
+<pre><code class="iex elixir">iex&gt; Regex.match?(~r/foo/, &quot;foo&quot;)
+true
+
+iex&gt; Regex.match?(~r/foo/, &quot;bar&quot;)
+false</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="named_captures/3">
+  
+    <span id="named_captures/2" />
+  
+  <div class="detail-header">
+    <a href="#named_captures/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">named_captures(regex, string, options \\ [])</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/regex.ex#L235" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>named_captures(<a href="#t:t/0">t</a>, <a href="String.html#t:t/0">String.t</a>, [term]) :: map | nil</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Returns the given captures as a map or <code class="inline">nil</code> if no captures are
+found. The option <code class="inline">:return</code> can be set to <code class="inline">:index</code> to get indexes
+back.</p>
+<h2 id="named_captures/3-examples" class="section-heading">
+  <a href="#named_captures/3-examples" class="hover-link"><i class="icon-link"></i></a>
+  Examples
+</h2>
+
+<pre><code class="iex elixir">iex&gt; Regex.named_captures(~r/c(?&lt;foo&gt;d)/, &quot;abcd&quot;)
+%{&quot;foo&quot; =&gt; &quot;d&quot;}
+
+iex&gt; Regex.named_captures(~r/a(?&lt;foo&gt;b)c(?&lt;bar&gt;d)/, &quot;abcd&quot;)
+%{&quot;bar&quot; =&gt; &quot;d&quot;, &quot;foo&quot; =&gt; &quot;b&quot;}
+
+iex&gt; Regex.named_captures(~r/a(?&lt;foo&gt;b)c(?&lt;bar&gt;d)/, &quot;efgh&quot;)
+nil</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="names/1">
+  
+  <div class="detail-header">
+    <a href="#names/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">names(regex)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/regex.ex#L288" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>names(<a href="#t:t/0">t</a>) :: [<a href="String.html#t:t/0">String.t</a>]</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Returns a list of names in the regex.</p>
+<h2 id="names/1-examples" class="section-heading">
+  <a href="#names/1-examples" class="hover-link"><i class="icon-link"></i></a>
+  Examples
+</h2>
+
+<pre><code class="iex elixir">iex&gt; Regex.names(~r/(?&lt;foo&gt;bar)/)
+[&quot;foo&quot;]</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="opts/1">
+  
+  <div class="detail-header">
+    <a href="#opts/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">opts(regex)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/regex.ex#L274" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>opts(<a href="#t:t/0">t</a>) :: <a href="String.html#t:t/0">String.t</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Returns the regex options as a string.</p>
+<h2 id="opts/1-examples" class="section-heading">
+  <a href="#opts/1-examples" class="hover-link"><i class="icon-link"></i></a>
+  Examples
+</h2>
+
+<pre><code class="iex elixir">iex&gt; Regex.opts(~r(foo)m)
+&quot;m&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="re_pattern/1">
+  
+  <div class="detail-header">
+    <a href="#re_pattern/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">re_pattern(regex)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/regex.ex#L246" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>re_pattern(<a href="#t:t/0">t</a>) :: term</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Returns the underlying <code class="inline">re_pattern</code> in the regular expression.</p>
+
+  </section>
+</div>
+<div class="detail" id="regex?/1">
+  
+  <div class="detail-header">
+    <a href="#regex?/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">regex?(term)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/regex.ex#L177" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>regex?(any) :: boolean</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Returns <code class="inline">true</code> if the given <code class="inline">term</code> is a regex.
+Otherwise returns <code class="inline">false</code>.</p>
+<h2 id="regex?/1-examples" class="section-heading">
+  <a href="#regex?/1-examples" class="hover-link"><i class="icon-link"></i></a>
+  Examples
+</h2>
+
+<pre><code class="iex elixir">iex&gt; Regex.regex?(~r/foo/)
+true
+
+iex&gt; Regex.regex?(0)
+false</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="replace/4">
+  
+    <span id="replace/3" />
+  
+  <div class="detail-header">
+    <a href="#replace/4" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">replace(regex, string, replacement, options \\ [])</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/regex.ex#L497" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>replace(<a href="#t:t/0">t</a>, <a href="String.html#t:t/0">String.t</a>, <a href="String.html#t:t/0">String.t</a> | (... -> <a href="String.html#t:t/0">String.t</a>), [term]) :: <a href="String.html#t:t/0">String.t</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Receives a regex, a binary and a replacement, returns a new
+binary where all matches are replaced by the replacement.</p>
+<p>The replacement can be either a string or a function. The string
+is used as a replacement for every match and it allows specific
+captures to be accessed via <code class="inline">\\N</code> or <code class="inline">\g{N}</code>, where <code class="inline">N</code> is the
+capture. In case <code class="inline">\\0</code> is used, the whole match is inserted.</p>
+<p>When the replacement is a function, the function may have arity
+N where each argument maps to a capture, with the first argument
+being the whole match. If the function expects more arguments
+than captures found, the remaining arguments will receive <code class="inline">&quot;&quot;</code>.</p>
+<h2 id="replace/4-options" class="section-heading">
+  <a href="#replace/4-options" class="hover-link"><i class="icon-link"></i></a>
+  Options
+</h2>
+
+<ul>
+<li><code class="inline">:global</code> - when <code class="inline">false</code>, replaces only the first occurrence
+(defaults to <code class="inline">true</code>)
+</li>
+</ul>
+<h2 id="replace/4-examples" class="section-heading">
+  <a href="#replace/4-examples" class="hover-link"><i class="icon-link"></i></a>
+  Examples
+</h2>
+
+<pre><code class="iex elixir">iex&gt; Regex.replace(~r/d/, &quot;abc&quot;, &quot;d&quot;)
+&quot;abc&quot;
+
+iex&gt; Regex.replace(~r/b/, &quot;abc&quot;, &quot;d&quot;)
+&quot;adc&quot;
+
+iex&gt; Regex.replace(~r/b/, &quot;abc&quot;, &quot;[\\0]&quot;)
+&quot;a[b]c&quot;
+
+iex&gt; Regex.replace(~r/a(b|d)c/, &quot;abcadc&quot;, &quot;[\\1]&quot;)
+&quot;[b][d]&quot;
+
+iex&gt; Regex.replace(~r/\.(\d)$/, &quot;500.5&quot;, &quot;.\\g{1}0&quot;)
+&quot;500.50&quot;
+
+iex&gt; Regex.replace(~r/a(b|d)c/, &quot;abcadc&quot;, fn _, x -&gt; &quot;[#{x}]&quot; end)
+&quot;[b][d]&quot;
+
+iex&gt; Regex.replace(~r/a/, &quot;abcadc&quot;, &quot;A&quot;, global: false)
+&quot;Abcadc&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="run/3">
+  
+    <span id="run/2" />
+  
+  <div class="detail-header">
+    <a href="#run/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">run(regex, string, options \\ [])</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/regex.ex#L204" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>run(<a href="#t:t/0">t</a>, binary, [term]) ::
+  nil |
+  [binary] |
+  [{integer, integer}]</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Runs the regular expression against the given string until the first match.
+It returns a list with all captures or <code class="inline">nil</code> if no match occurred.</p>
+<h2 id="run/3-options" class="section-heading">
+  <a href="#run/3-options" class="hover-link"><i class="icon-link"></i></a>
+  Options
+</h2>
+
+<ul>
+<li><code class="inline">:return</code>  - set to <code class="inline">:index</code> to return indexes. Defaults to <code class="inline">:binary</code>.
+</li>
+<li><code class="inline">:capture</code> - what to capture in the result. Check the moduledoc for <a href="Regex.html#content"><code class="inline">Regex</code></a>
+to see the possible capture values.
+</li>
+</ul>
+<h2 id="run/3-examples" class="section-heading">
+  <a href="#run/3-examples" class="hover-link"><i class="icon-link"></i></a>
+  Examples
+</h2>
+
+<pre><code class="iex elixir">iex&gt; Regex.run(~r/c(d)/, &quot;abcd&quot;)
+[&quot;cd&quot;, &quot;d&quot;]
+
+iex&gt; Regex.run(~r/e/, &quot;abcd&quot;)
+nil
+
+iex&gt; Regex.run(~r/c(d)/, &quot;abcd&quot;, return: :index)
+[{2, 2}, {3, 1}]</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="scan/3">
+  
+    <span id="scan/2" />
+  
+  <div class="detail-header">
+    <a href="#scan/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">scan(regex, string, options \\ [])</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/regex.ex#L319" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>scan(<a href="#t:t/0">t</a>, <a href="String.html#t:t/0">String.t</a>, [term]) :: [[<a href="String.html#t:t/0">String.t</a>]]</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Same as <a href="#run/3"><code class="inline">run/3</code></a>, but scans the target several times collecting all
+matches of the regular expression.</p>
+<p>A list of lists is returned, where each entry in the primary list represents a
+match and each entry in the secondary list represents the captured contents.</p>
+<h2 id="scan/3-options" class="section-heading">
+  <a href="#scan/3-options" class="hover-link"><i class="icon-link"></i></a>
+  Options
+</h2>
+
+<ul>
+<li><code class="inline">:return</code>  - set to <code class="inline">:index</code> to return indexes. Defaults to <code class="inline">:binary</code>.
+</li>
+<li><code class="inline">:capture</code> - what to capture in the result. Check the moduledoc for <a href="Regex.html#content"><code class="inline">Regex</code></a>
+to see the possible capture values.
+</li>
+</ul>
+<h2 id="scan/3-examples" class="section-heading">
+  <a href="#scan/3-examples" class="hover-link"><i class="icon-link"></i></a>
+  Examples
+</h2>
+
+<pre><code class="iex elixir">iex&gt; Regex.scan(~r/c(d|e)/, &quot;abcd abce&quot;)
+[[&quot;cd&quot;, &quot;d&quot;], [&quot;ce&quot;, &quot;e&quot;]]
+
+iex&gt; Regex.scan(~r/c(?:d|e)/, &quot;abcd abce&quot;)
+[[&quot;cd&quot;], [&quot;ce&quot;]]
+
+iex&gt; Regex.scan(~r/e/, &quot;abcd&quot;)
+[]</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="source/1">
+  
+  <div class="detail-header">
+    <a href="#source/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">source(regex)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/regex.ex#L260" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>source(<a href="#t:t/0">t</a>) :: <a href="String.html#t:t/0">String.t</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Returns the regex source as a binary.</p>
+<h2 id="source/1-examples" class="section-heading">
+  <a href="#source/1-examples" class="hover-link"><i class="icon-link"></i></a>
+  Examples
+</h2>
+
+<pre><code class="iex elixir">iex&gt; Regex.source(~r(foo))
+&quot;foo&quot;</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="split/3">
+  
+    <span id="split/2" />
+  
+  <div class="detail-header">
+    <a href="#split/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">split(regex, string, options \\ [])</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/elixir/lib/regex.ex#L381" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>split(<a href="#t:t/0">t</a>, <a href="String.html#t:t/0">String.t</a>, [term]) :: [<a href="String.html#t:t/0">String.t</a>]</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Splits the given target based on the given pattern and in the given number of
+parts.</p>
+<h2 id="split/3-options" class="section-heading">
+  <a href="#split/3-options" class="hover-link"><i class="icon-link"></i></a>
+  Options
+</h2>
+
+<ul>
+<li><p><code class="inline">:parts</code> - when specified, splits the string into the given number of
+parts. If not specified, <code class="inline">:parts</code> defaults to <code class="inline">:infinity</code>, which will
+split the string into the maximum number of parts possible based on the
+given pattern.</p>
+</li>
+<li><p><code class="inline">:trim</code> - when <code class="inline">true</code>, removes empty strings (<code class="inline">&quot;&quot;</code>) from the result.</p>
+</li>
+<li><p><code class="inline">:on</code> - specifies which captures to split the string on, and in what
+order. Defaults to <code class="inline">:first</code> which means captures inside the regex do not
+affect the splitting process.</p>
+</li>
+<li><code class="inline">:include_captures</code> - when <code class="inline">true</code>, includes in the result the matches of
+the regular expression. Defaults to <code class="inline">false</code>.
+</li>
+</ul>
+<h2 id="split/3-examples" class="section-heading">
+  <a href="#split/3-examples" class="hover-link"><i class="icon-link"></i></a>
+  Examples
+</h2>
+
+<pre><code class="iex elixir">iex&gt; Regex.split(~r/-/, &quot;a-b-c&quot;)
+[&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]
+
+iex&gt; Regex.split(~r/-/, &quot;a-b-c&quot;, [parts: 2])
+[&quot;a&quot;, &quot;b-c&quot;]
+
+iex&gt; Regex.split(~r/-/, &quot;abc&quot;)
+[&quot;abc&quot;]
+
+iex&gt; Regex.split(~r//, &quot;abc&quot;)
+[&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;&quot;]
+
+iex&gt; Regex.split(~r/a(?&lt;second&gt;b)c/, &quot;abc&quot;)
+[&quot;&quot;, &quot;&quot;]
+
+iex&gt; Regex.split(~r/a(?&lt;second&gt;b)c/, &quot;abc&quot;, on: [:second])
+[&quot;a&quot;, &quot;c&quot;]
+
+iex&gt; Regex.split(~r/(x)/, &quot;Elixir&quot;, include_captures: true)
+[&quot;Eli&quot;, &quot;x&quot;, &quot;ir&quot;]
+
+iex&gt; Regex.split(~r/a(?&lt;second&gt;b)c/, &quot;abc&quot;, on: [:second], include_captures: true)
+[&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]</code></pre>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+
+      
+          <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.14.2),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle" />
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  <script src="dist/app-f0381555b5.js"></script>
+  </body>
+</html>
+

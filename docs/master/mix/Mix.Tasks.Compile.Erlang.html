@@ -1,0 +1,284 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.14.3">
+    <title>Mix.Tasks.Compile.Erlang – Mix v1.4.0-dev</title>
+    <link rel="stylesheet" href="dist/app-6c3a9fd2f7.css" />
+    
+      <link rel="canonical" href="https://hexdocs.pm/mix/master/Mix.Tasks.Compile.Erlang.html" />
+    
+    <script src="dist/sidebar_items-c3824784f8.js"></script>
+  </head>
+  <body data-type="modules">
+    <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+
+  
+  <a href="http://elixir-lang.org/docs.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        Mix
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v1.4.0-dev
+      </h2>
+    </div>
+    
+      <img src="assets/logo.png" alt="Mix" class="sidebar-projectImage">
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+      <li><a id="exceptions-list" href="#full-list">Exceptions</a></li>
+    
+
+    
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">Mix v1.4.0-dev</small>
+        Mix.Tasks.Compile.Erlang
+        
+        
+          <a href="https://github.com/elixir-lang/elixir/blob/master/lib/mix/lib/mix/tasks/compile.erlang.ex#L1" title="View Source" class="view-source" rel="help">
+            <i class="icon-code"></i>
+          </a>
+        
+      </h1>
+
+      
+        <section id="moduledoc">
+          <p>Compiles Erlang source files.</p>
+<p>When this task runs, it will first check the modification times of
+all files to be compiled and if they haven’t been
+changed since the last compilation, it will not compile
+them. If any of them have changed, it compiles
+everything.</p>
+<p>For this reason, the task touches your <code class="inline">:compile_path</code>
+directory and sets the modification time to the current
+time and date at the end of each compilation. You can
+force compilation regardless of modification times by passing
+the <code class="inline">--force</code> option.</p>
+<h2 id="module-command-line-options" class="section-heading">
+  <a href="#module-command-line-options" class="hover-link"><i class="icon-link"></i></a>
+  Command line options
+</h2>
+
+<ul>
+<li><code class="inline">--force</code> - forces compilation regardless of modification times
+</li>
+</ul>
+<h2 id="module-configuration" class="section-heading">
+  <a href="#module-configuration" class="hover-link"><i class="icon-link"></i></a>
+  Configuration
+</h2>
+
+<ul>
+<li><p><code class="inline">ERL_COMPILER_OPTIONS</code> - can be used to give default compile options.
+The value must be a valid Erlang term. If the value is a list, it will
+be used as is. If it is not a list, it will be put into a list.</p>
+</li>
+<li><p><code class="inline">:erlc_paths</code> - directories to find source files.
+Defaults to <code class="inline">[&quot;src&quot;]</code>.</p>
+</li>
+<li><p><code class="inline">:erlc_include_path</code> - directory for adding include files.
+Defaults to <code class="inline">&quot;include&quot;</code>.</p>
+</li>
+<li><p><code class="inline">:erlc_options</code> - compilation options that apply to Erlang’s
+compiler. Defaults to <code class="inline">[:debug_info]</code>.</p>
+<p>For a complete list of options,
+see <a href="http://www.erlang.org/doc/man/compile.html#file-2"><code class="inline">:compile.file/2</code></a>.</p>
+</li>
+</ul>
+<p>For example, to configure the <code class="inline">erlc_options</code> for your Erlang project you
+may run:</p>
+<pre><code class="elixir">erlc_options: [:debug_info, {:i, &#39;path/to/include&#39;}]</code></pre>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <i class="icon-link"></i>
+            </a>
+            Summary
+          </h1>
+          
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#clean/0">clean()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Cleans up compilation artifacts</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#manifests/0">manifests()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Returns Erlang manifests</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#run/1">run(args)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Runs this task</p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+
+          
+
+        </section>
+      
+
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <i class="icon-link"></i>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="clean/0">
+  
+  <div class="detail-header">
+    <a href="#clean/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">clean()</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/master/lib/mix/lib/mix/tasks/compile.erlang.ex#L111" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Cleans up compilation artifacts.</p>
+
+  </section>
+</div>
+<div class="detail" id="manifests/0">
+  
+  <div class="detail-header">
+    <a href="#manifests/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">manifests()</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/master/lib/mix/lib/mix/tasks/compile.erlang.ex#L105" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Returns Erlang manifests.</p>
+
+  </section>
+</div>
+<div class="detail" id="run/1">
+  
+  <div class="detail-header">
+    <a href="#run/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">run(args)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/master/lib/mix/lib/mix/tasks/compile.erlang.ex#L56" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>run(<a href="http://elixir-lang.org/docs/stable/elixir/OptionParser.html#t:argv/0">OptionParser.argv</a>) :: :ok | :noop</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Runs this task.</p>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+
+      
+          <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.14.3),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle" />
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  <script src="dist/app-4aef34ad5f.js"></script>
+  </body>
+</html>
+

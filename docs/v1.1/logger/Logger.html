@@ -1,0 +1,1044 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.11.4">
+    <title>Logger – Logger v1.1.1</title>
+    <link rel="stylesheet" href="dist/app-ddd9717ad9.css" />
+    
+      <link rel="canonical" href="https://hexdocs.pm/logger/Logger.html" />
+    
+    <script src="dist/sidebar_items.js"></script>
+  </head>
+  <body data-type="modules">
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+  <button class="sidebar-toggle">
+    <i class="icon-menu"></i>
+  </button>
+
+  
+  <a href="http://elixir-lang.org/docs.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        Logger
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v1.1.1
+      </h2>
+    </div>
+    
+      <img src="assets/logo.png" alt="Logger" class="sidebar-projectImage">
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+
+    
+  </ul>
+
+  <ul id="full-list" class="sidebar-fullList"></ul>
+  <div class="sidebar-noResults"></div>
+</section>
+
+<section class="content">
+  <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">Logger v1.1.1</small>
+        Logger
+        
+        
+          <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/logger/lib/logger.ex#L1" title="View Source" class="view-source" rel="help">
+            <i class="icon-code"></i>
+          </a>
+        
+      </h1>
+
+      
+        <section id="moduledoc" class="docstring">
+          <p>A logger for Elixir applications.</p>
+<p>It includes many features:</p>
+<ul>
+<li><p>Provides debug, info, warn and error levels.</p>
+</li>
+<li><p>Supports multiple backends which are automatically
+supervised when plugged into Logger.</p>
+</li>
+<li><p>Formats and truncates messages on the client
+to avoid clogging Logger backends.</p>
+</li>
+<li><p>Alternates between sync and async modes to remain
+performant when required but also apply backpressure
+when under stress.</p>
+</li>
+<li>Wraps OTP’s <code class="inline">error_logger</code> to prevent it from
+overflowing.
+</li>
+</ul>
+<h2>Levels</h2>
+<p>The supported levels are:</p>
+<ul>
+<li><code class="inline">:debug</code> - for debug-related messages
+</li>
+<li><code class="inline">:info</code> - for information of any kind
+</li>
+<li><code class="inline">:warn</code> - for warnings
+</li>
+<li><code class="inline">:error</code> - for errors
+</li>
+</ul>
+<h2>Configuration</h2>
+<p>Logger supports a wide range of configurations.</p>
+<p>This configuration is split in three categories:</p>
+<ul>
+<li><p>Application configuration - must be set before the Logger
+application is started</p>
+</li>
+<li><p>Runtime configuration - can be set before the Logger
+application is started, but may be changed during runtime</p>
+</li>
+<li>Error logger configuration - configuration for the
+wrapper around OTP’s <code class="inline">error_logger</code>
+</li>
+</ul>
+<h3>Application configuration</h3>
+<p>The following configuration must be set via config files
+before the Logger application is started.</p>
+<ul>
+<li><p><code class="inline">:backends</code> - the backends to be used. Defaults to <code class="inline">[:console]</code>.
+See the “Backends” section for more information.</p>
+</li>
+<li><p><code class="inline">:compile_time_purge_level</code> - purge all calls that have log level
+lower than the configured value at compilation time. This means the
+Logger call will be completely removed at compile time, accruing
+no overhead at runtime. Defaults to <code class="inline">:debug</code> and only
+applies to the <a href="Logger.html#debug/2"><code class="inline">Logger.debug/2</code></a>, <a href="Logger.html#info/2"><code class="inline">Logger.info/2</code></a>, etc style of calls.</p>
+</li>
+<li><code class="inline">:compile_time_application</code> - sets the <code class="inline">:application</code> metadata value
+to the configured value at compilation time. This configuration is
+usually only useful for build tools to automatically add the
+application to the metadata for <a href="Logger.html#debug/2"><code class="inline">Logger.debug/2</code></a>, <a href="Logger.html#info/2"><code class="inline">Logger.info/2</code></a>, etc
+style of calls.
+</li>
+</ul>
+<p>For example, to configure the <code class="inline">:backends</code> and <code class="inline">compile_time_purge_level</code>
+in a <code class="inline">config/config.exs</code> file:</p>
+<pre><code class="elixir">config :logger,
+  backends: [:console],
+  compile_time_purge_level: :info</code></pre>
+<h3>Runtime Configuration</h3>
+<p>All configuration below can be set via config files but also
+changed dynamically during runtime via <a href="Logger.html#configure/1"><code class="inline">Logger.configure/1</code></a>.</p>
+<ul>
+<li><p><code class="inline">:level</code> - the logging level. Attempting to log any message
+with severity less than the configured level will simply
+cause the message to be ignored. Keep in mind that each backend
+may have its specific level, too.</p>
+</li>
+<li><p><code class="inline">:utc_log</code> - when <code class="inline">true</code>, uses UTC in logs. By default it uses
+local time (i.e. it defaults to <code class="inline">false</code>).</p>
+</li>
+<li><p><code class="inline">:truncate</code> - the maximum message size to be logged. Defaults
+to 8192 bytes. Note this configuration is approximate. Truncated
+messages will have <code class="inline">&quot; (truncated)&quot;</code> at the end.</p>
+</li>
+<li><p><code class="inline">:sync_threshold</code> - if the Logger manager has more than
+<code class="inline">sync_threshold</code> messages in its queue, Logger will change
+to sync mode, to apply backpressure to the clients.
+Logger will return to async mode once the number of messages
+in the queue is reduced to <code class="inline">sync_threshold * 0.75</code> messages.
+Defaults to 20 messages.</p>
+</li>
+<li><code class="inline">:translator_inspect_opts</code> - when translating OTP reports and
+errors, the last message and state must be inspected in the
+error reports. This configuration allow developers to change
+how much and how the data should be inspected.
+</li>
+</ul>
+<p>For example, to configure the <code class="inline">:level</code> and <code class="inline">:truncate</code> in a
+<code class="inline">config/config.exs</code> file:</p>
+<pre><code class="elixir">config :logger,
+  level: :warn,
+  truncate: 4096</code></pre>
+<h3>Error Logger configuration</h3>
+<p>The following configuration applies to the Logger wrapper around
+Erlang’s <code class="inline">error_logger</code>. All the configurations below must be set
+before the Logger application starts.</p>
+<ul>
+<li><p><code class="inline">:handle_otp_reports</code> - redirects OTP reports to Logger so
+they are formatted in Elixir terms. This uninstalls Erlang’s
+logger that prints terms to terminal. Defaults to <code class="inline">true</code>.</p>
+</li>
+<li><p><code class="inline">:handle_sasl_reports</code> - redirects supervisor, crash and
+progress reports to Logger so they are formatted in Elixir
+terms. This uninstalls <code class="inline">sasl</code>‘s logger that prints these
+reports to the terminal. Defaults to <code class="inline">false</code>.</p>
+</li>
+<li><code class="inline">:discard_threshold_for_error_logger</code> - a value that, when
+reached, triggers the error logger to discard messages. This
+value must be a positive number that represents the maximum
+number of messages accepted per second. Once above this
+threshold, the <code class="inline">error_logger</code> enters discard mode for the
+remainder of that second. Defaults to 500 messages.
+</li>
+</ul>
+<p>For example, to configure Logger to redirect all <code class="inline">error_logger</code> messages
+using a <code class="inline">config/config.exs</code> file:</p>
+<pre><code class="elixir">config :logger,
+  handle_otp_reports: true,
+  handle_sasl_reports: true</code></pre>
+<p>Furthermore, Logger allows messages sent by Erlang’s <code class="inline">error_logger</code>
+to be translated into an Elixir format via translators. Translators
+can be dynamically added at any time with the <a href="#add_translator/1"><code class="inline">add_translator/1</code></a>
+and <a href="#remove_translator/1"><code class="inline">remove_translator/1</code></a> APIs. Check <a href="Logger.Translator.html"><code class="inline">Logger.Translator</code></a> for more
+information.</p>
+<h2>Backends</h2>
+<p>Logger supports different backends where log messages are written to.</p>
+<p>The available backends by default are:</p>
+<ul>
+<li><code class="inline">:console</code> - logs messages to the console (enabled by default)
+</li>
+</ul>
+<p>Developers may also implement their own backends, an option that
+is explored with detail below.</p>
+<p>The initial backends are loaded via the <code class="inline">:backends</code> configuration,
+which must be set before the Logger application is started.</p>
+<h3>Console backend</h3>
+<p>The console backend logs message to the console. It supports the
+following options:</p>
+<ul>
+<li><p><code class="inline">:level</code> - the level to be logged by this backend.
+Note that messages are first filtered by the general
+<code class="inline">:level</code> configuration in <code class="inline">:logger</code></p>
+</li>
+<li><p><code class="inline">:format</code> - the format message used to print logs.
+Defaults to: <code class="inline">&quot;$time $metadata[$level] $levelpad$message\n&quot;</code></p>
+</li>
+<li><p><code class="inline">:metadata</code> - the metadata to be printed by <code class="inline">$metadata</code>.
+Defaults to an empty list (no metadata)</p>
+</li>
+<li><code class="inline">:colors</code> - a keyword list of coloring options.
+</li>
+</ul>
+<p>The supported keys in the <code class="inline">:colors</code> keyword list are:</p>
+<ul>
+<li><p><code class="inline">:enabled</code> - boolean value that allows for switching the
+coloring on and off. Defaults to: <code class="inline">IO.ANSI.enabled?</code></p>
+</li>
+<li><p><code class="inline">:debug</code> - color for debug messages. Defaults to: <code class="inline">:cyan</code></p>
+</li>
+<li><p><code class="inline">:info</code> - color for info messages. Defaults to: <code class="inline">:normal</code></p>
+</li>
+<li><p><code class="inline">:warn</code> - color for warn messages. Defaults to: <code class="inline">:yellow</code></p>
+</li>
+<li><code class="inline">:error</code> - color for error messages. Defaults to: <code class="inline">:red</code>
+</li>
+</ul>
+<p>See the <code class="inline">IO.ANSI</code> module for a list of colors and attributes.</p>
+<p>Here is an example of how to configure the <code class="inline">:console</code> backend in a
+<code class="inline">config/config.exs</code> file:</p>
+<pre><code class="elixir">config :logger, :console,
+  format: &quot;\n$time $metadata[$level] $levelpad$message\n&quot;
+  metadata: [:user_id]</code></pre>
+<p>You can read more about formatting in <a href="Logger.Formatter.html"><code class="inline">Logger.Formatter</code></a>.</p>
+<h3>Custom backends</h3>
+<p>Any developer can create their own backend for Logger.
+Since Logger is an event manager powered by <code class="inline">GenEvent</code>,
+writing a new backend is a matter of creating an event
+handler, as described in the <code class="inline">GenEvent</code> module.</p>
+<p>From now on, we will be using the term “event handler” to refer
+to your custom backend, as we head into implementation details.</p>
+<p>Once Logger starts, it installs all event handlers under
+the <code class="inline">:backends</code> configuration into the Logger event manager.
+The event manager and all added event handlers are
+automatically supervised by Logger.</p>
+<p>Once initialized, the handler should be designed to handle events
+in the following format:</p>
+<pre><code class="elixir">{level, group_leader,
+  {Logger, message, timestamp, metadata}}</code></pre>
+<p>The level is one of <code class="inline">:debug</code>, <code class="inline">:info</code>, <code class="inline">:warn</code> or <code class="inline">:error</code>,
+as previously described, the group leader is the group
+leader of the process who logged the message, followed by
+a tuple starting with the atom <a href="Logger.html#content"><code class="inline">Logger</code></a>, the message as
+chardata, the timestamp and a keyword list of metadata.</p>
+<p>It is recommended that handlers ignore messages where
+the group leader is in a different node than the one
+the handler is installed.</p>
+<p>Furthermore, backends can be configured via the
+<a href="#configure_backend/2"><code class="inline">configure_backend/2</code></a> function which requires event handlers
+to handle calls of the following format:</p>
+<pre><code class="elixir">{:configure, options}</code></pre>
+<p>where options is a keyword list. The result of the call is
+the result returned by <a href="#configure_backend/2"><code class="inline">configure_backend/2</code></a>. The recommended
+return value for successful configuration is <code class="inline">:ok</code>.</p>
+<p>It is recommended that backends support at least the following
+configuration values:</p>
+<ul>
+<li><code class="inline">level</code> - the logging level for that backend
+</li>
+<li><code class="inline">format</code> - the logging format for that backend
+</li>
+<li><code class="inline">metadata</code> - the metadata to include the backend
+</li>
+</ul>
+<p>Check the implementation for <code class="inline">Logger.Backends.Console</code>, for
+examples on how to handle the recommendations in this section
+and how to process the existing options.</p>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <i class="icon-link"></i>
+            </a>
+            Summary
+          </h1>
+          
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:backend/0">backend()</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:level/0">level()</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:message/0">message()</a>
+  </div>
+  
+</div>
+
+  </div>
+
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#add_backend/2">add_backend(backend, opts \\ [])</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Adds a new backend</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#add_translator/1">add_translator(translator)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Adds a new translator</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#bare_log/3">bare_log(level, chardata_or_fn, metadata \\ [])</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Logs a message dynamically</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#compare_levels/2">compare_levels(level, level)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Compares log levels</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#configure/1">configure(options)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Configures the logger</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#configure_backend/2">configure_backend(backend, options)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Configures the given backend</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#disable/1">disable(pid)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Disables logging for the current process</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#enable/1">enable(pid)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Enables logging for the current process</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#flush/0">flush()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Flushes the Logger</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#level/0">level()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Retrieves the Logger level</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#metadata/0">metadata()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Reads the current process metadata</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#metadata/1">metadata(dict)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Adds the given keyword list to the current process metadata</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#remove_backend/2">remove_backend(backend, opts \\ [])</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Removes a backend</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#remove_translator/1">remove_translator(translator)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Removes a translator</p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+  <div class="summary-macros summary">
+    <h2>
+      <a href="#macros">Macros</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#debug/2">debug(chardata_or_fn, metadata \\ [])</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Logs a debug message</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#error/2">error(chardata_or_fn, metadata \\ [])</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Logs an error</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#info/2">info(chardata_or_fn, metadata \\ [])</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Logs some info</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#log/3">log(level, chardata_or_fn, metadata \\ [])</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Logs a message</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#warn/2">warn(chardata_or_fn, metadata \\ [])</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Logs a warning</p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+
+        </section>
+      
+
+      
+        <section id="types" class="types details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <i class="icon-link"></i>
+            </a>
+            Types
+          </h1>
+          <div class="types-list">
+            <div id="t:backend/0" class="type-detail">
+  <pre><code class="elixir"><a href="#t:backend/0">backend</a> :: <a href="http://elixir-lang.org/docs/stable/elixir/GenEvent.html#t:handler/0">GenEvent.handler</a></code></pre>
+  
+</div>
+<div id="t:level/0" class="type-detail">
+  <pre><code class="elixir"><a href="#t:level/0">level</a> :: :error | :info | :warn | :debug</code></pre>
+  
+</div>
+<div id="t:message/0" class="type-detail">
+  <pre><code class="elixir"><a href="#t:message/0">message</a> :: <a href="http://elixir-lang.org/docs/stable/elixir/IO.html#t:chardata/0">IO.chardata</a> | <a href="http://elixir-lang.org/docs/stable/elixir/String.Chars.html#t:t/0">String.Chars.t</a></code></pre>
+  
+</div>
+
+          </div>
+        </section>
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <i class="icon-link"></i>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="add_backend/2">
+  <div class="detail-header">
+    <a href="#add_backend/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">add_backend(backend, opts \\ [])</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/logger/lib/logger.ex#L369" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Adds a new backend.</p>
+<h2>Options</h2>
+<ul>
+<li><code class="inline">:flush</code> - when <code class="inline">true</code>, guarantees all messages currently sent
+to both Logger and Erlang’s <code class="inline">error_logger</code> are processed before
+the backend is added
+</li>
+</ul>
+
+  </section>
+</div>
+<div class="detail" id="add_translator/1">
+  <div class="detail-header">
+    <a href="#add_translator/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">add_translator(translator)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/logger/lib/logger.ex#L398" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Adds a new translator.</p>
+
+  </section>
+</div>
+<div class="detail" id="bare_log/3">
+  <div class="detail-header">
+    <a href="#bare_log/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">bare_log(level, chardata_or_fn, metadata \\ [])</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/logger/lib/logger.ex#L428" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">bare_log(<a href="#t:level/0">level</a>, <a href="#t:message/0">message</a> | (() -> <a href="#t:message/0">message</a>), <a href="http://elixir-lang.org/docs/stable/elixir/Keyword.html#t:t/0">Keyword.t</a>) ::
+  :ok |
+  {:error, :noproc} |
+  {:error, term}</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Logs a message dynamically.</p>
+<p>Use this function only when there is a need to
+explicitly avoid embedding metadata.</p>
+
+  </section>
+</div>
+<div class="detail" id="compare_levels/2">
+  <div class="detail-header">
+    <a href="#compare_levels/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">compare_levels(level, level)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/logger/lib/logger.ex#L323" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">compare_levels(<a href="#t:level/0">level</a>, <a href="#t:level/0">level</a>) :: :lt | :eq | :gt</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Compares log levels.</p>
+<p>Receives two log levels and compares the <code class="inline">left</code>
+against <code class="inline">right</code> and returns <code class="inline">:lt</code>, <code class="inline">:eq</code> or <code class="inline">:gt</code>.</p>
+
+  </section>
+</div>
+<div class="detail" id="configure/1">
+  <div class="detail-header">
+    <a href="#configure/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">configure(options)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/logger/lib/logger.ex#L341" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Configures the logger.</p>
+<p>See the “Runtime Configuration” section in <a href="Logger.html#content"><code class="inline">Logger</code></a> module
+documentation for the available options.</p>
+
+  </section>
+</div>
+<div class="detail" id="configure_backend/2">
+  <div class="detail-header">
+    <a href="#configure_backend/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">configure_backend(backend, options)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/logger/lib/logger.ex#L416" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">configure_backend(<a href="#t:backend/0">backend</a>, <a href="http://elixir-lang.org/docs/stable/elixir/Keyword.html#t:t/0">Keyword.t</a>) :: term</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Configures the given backend.</p>
+<p>The backends needs to be started and running in order to
+be configured at runtime.</p>
+
+  </section>
+</div>
+<div class="detail" id="disable/1">
+  <div class="detail-header">
+    <a href="#disable/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">disable(pid)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/logger/lib/logger.ex#L300" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Disables logging for the current process.</p>
+<p>Currently the only accepted process is self().</p>
+
+  </section>
+</div>
+<div class="detail" id="enable/1">
+  <div class="detail-header">
+    <a href="#enable/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">enable(pid)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/logger/lib/logger.ex#L290" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Enables logging for the current process.</p>
+<p>Currently the only accepted process is self().</p>
+
+  </section>
+</div>
+<div class="detail" id="flush/0">
+  <div class="detail-header">
+    <a href="#flush/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">flush()</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/logger/lib/logger.ex#L353" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir">flush :: :ok</code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Flushes the Logger.</p>
+<p>This basically guarantees all messages sent to the
+Logger prior to this call will be processed. This is useful
+for testing and it should not be called in production code.</p>
+
+  </section>
+</div>
+<div class="detail" id="level/0">
+  <div class="detail-header">
+    <a href="#level/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">level()</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/logger/lib/logger.ex#L311" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+    <div class="specs">
+      <h4 class="specs-title">Specs</h4>
+      <div class="specs-list">
+        
+          <pre><code class="elixir"><a href="#t:level/0">level</a> :: <a href="#t:level/0">level</a></code></pre>
+        
+      </div>
+    </div>
+  
+  <section class="docstring">
+    <p>Retrieves the Logger level.</p>
+<p>The Logger level can be changed via <a href="#configure/1"><code class="inline">configure/1</code></a>.</p>
+
+  </section>
+</div>
+<div class="detail" id="metadata/0">
+  <div class="detail-header">
+    <a href="#metadata/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">metadata()</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/logger/lib/logger.ex#L281" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Reads the current process metadata.</p>
+
+  </section>
+</div>
+<div class="detail" id="metadata/1">
+  <div class="detail-header">
+    <a href="#metadata/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">metadata(dict)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/logger/lib/logger.ex#L267" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Adds the given keyword list to the current process metadata.</p>
+
+  </section>
+</div>
+<div class="detail" id="remove_backend/2">
+  <div class="detail-header">
+    <a href="#remove_backend/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">remove_backend(backend, opts \\ [])</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/logger/lib/logger.ex#L389" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Removes a backend.</p>
+<h2>Options</h2>
+<ul>
+<li><code class="inline">:flush</code> - when <code class="inline">true</code>, guarantees all messages currently sent
+to both Logger and Erlang’s <code class="inline">error_logger</code> are processed before
+the backend is removed
+</li>
+</ul>
+
+  </section>
+</div>
+<div class="detail" id="remove_translator/1">
+  <div class="detail-header">
+    <a href="#remove_translator/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">remove_translator(translator)</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/logger/lib/logger.ex#L405" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Removes a translator.</p>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+        <section id="macros" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#macros">
+              <i class="icon-link"></i>
+            </a>
+            Macros
+          </h1>
+          <div class="detail" id="debug/2">
+  <div class="detail-header">
+    <a href="#debug/2" class="detail-link" title="Link to this macro">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">debug(chardata_or_fn, metadata \\ [])</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/logger/lib/logger.ex#L503" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Logs a debug message.</p>
+<h2>Examples</h2>
+<pre><code class="elixir">Logger.debug &quot;hello?&quot;
+Logger.debug fn -&gt; &quot;expensive to calculate debug&quot; end</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="error/2">
+  <div class="detail-header">
+    <a href="#error/2" class="detail-link" title="Link to this macro">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">error(chardata_or_fn, metadata \\ [])</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/logger/lib/logger.ex#L490" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Logs an error.</p>
+<h2>Examples</h2>
+<pre><code class="elixir">Logger.error &quot;oops&quot;
+Logger.error fn -&gt; &quot;expensive to calculate error&quot; end</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="info/2">
+  <div class="detail-header">
+    <a href="#info/2" class="detail-link" title="Link to this macro">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">info(chardata_or_fn, metadata \\ [])</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/logger/lib/logger.ex#L477" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Logs some info.</p>
+<h2>Examples</h2>
+<pre><code class="elixir">Logger.info &quot;mission accomplished&quot;
+Logger.info fn -&gt; &quot;expensive to calculate info&quot; end</code></pre>
+
+  </section>
+</div>
+<div class="detail" id="log/3">
+  <div class="detail-header">
+    <a href="#log/3" class="detail-link" title="Link to this macro">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">log(level, chardata_or_fn, metadata \\ [])</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/logger/lib/logger.ex#L515" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Logs a message.</p>
+<p>Developers should rather use the macros <a href="Logger.html#debug/2"><code class="inline">Logger.debug/2</code></a>,
+<a href="Logger.html#warn/2"><code class="inline">Logger.warn/2</code></a>, <a href="Logger.html#info/2"><code class="inline">Logger.info/2</code></a> or <a href="Logger.html#error/2"><code class="inline">Logger.error/2</code></a> instead
+of this macro as they can automatically eliminate
+the Logger call altogether at compile time if desired.</p>
+
+  </section>
+</div>
+<div class="detail" id="warn/2">
+  <div class="detail-header">
+    <a href="#warn/2" class="detail-link" title="Link to this macro">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">warn(chardata_or_fn, metadata \\ [])</span>
+      
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.1.1/lib/logger/lib/logger.ex#L464" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+  </div>
+  
+  <section class="docstring">
+    <p>Logs a warning.</p>
+<h2>Examples</h2>
+<pre><code class="elixir">Logger.warn &quot;knob turned too far to the right&quot;
+Logger.warn fn -&gt; &quot;expensive to calculate warning&quot; end</code></pre>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+        <footer class="footer">
+      <p>
+        <span class="line">
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.11.4),
+        </span>
+        <span class="line">
+          designed by
+          <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+      </p>
+      <button class="night-mode-toggle" />
+    </footer>
+  </div>
+</section>
+</div>
+  <script src="dist/app-6d2e071366.js"></script>
+  </body>
+</html>
+

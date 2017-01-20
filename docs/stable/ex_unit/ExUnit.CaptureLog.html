@@ -1,0 +1,233 @@
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.14.2">
+    <title>ExUnit.CaptureLog – ExUnit v1.3.4</title>
+    <link rel="stylesheet" href="dist/app-23e810f3fe.css" />
+    
+      <link rel="canonical" href="https://hexdocs.pm/ex_unit/ExUnit.CaptureLog.html" />
+    
+    <script src="dist/sidebar_items.js"></script>
+  </head>
+  <body data-type="modules">
+    <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
+
+    <div class="main">
+<button class="sidebar-toggle">
+  <i class="icon-menu"></i>
+</button>
+<section class="sidebar">
+
+  
+  <a href="http://elixir-lang.org/docs.html" class="sidebar-projectLink">
+    <div class="sidebar-projectDetails">
+      <h1 class="sidebar-projectName">
+        ExUnit
+      </h1>
+      <h2 class="sidebar-projectVersion">
+        v1.3.4
+      </h2>
+    </div>
+    
+      <img src="assets/logo.png" alt="ExUnit" class="sidebar-projectImage">
+    
+  </a>
+
+  <div class="sidebar-search">
+    <i class="icon-search"></i>
+    <input type="text" class="sidebar-searchInput" placeholder="search" autocomplete="off" />
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+    
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+    
+
+    
+      <li><a id="exceptions-list" href="#full-list">Exceptions</a></li>
+    
+
+    
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+
+      <h1>
+        <small class="visible-xs">ExUnit v1.3.4</small>
+        ExUnit.CaptureLog
+        
+        
+          <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/ex_unit/lib/ex_unit/capture_log.ex#L1" title="View Source" class="view-source" rel="help">
+            <i class="icon-code"></i>
+          </a>
+        
+      </h1>
+
+      
+        <section id="moduledoc">
+          <p>Functionality to capture logs for testing.</p>
+<h2 id="module-examples" class="section-heading">
+  <a href="#module-examples" class="hover-link"><i class="icon-link"></i></a>
+  Examples
+</h2>
+
+<pre><code class="elixir">defmodule AssertionTest do
+  use ExUnit.Case
+
+  import ExUnit.CaptureLog
+
+  test &quot;example&quot; do
+    assert capture_log(fn -&gt;
+      Logger.error &quot;log msg&quot;
+    end) =~ &quot;log msg&quot;
+  end
+
+  test &quot;check multiple captures concurrently&quot; do
+    fun = fn -&gt;
+      for msg &lt;- [&quot;hello&quot;, &quot;hi&quot;] do
+        assert capture_log(fn -&gt; Logger.error msg end) =~ msg
+      end
+      Logger.debug &quot;testing&quot;
+    end
+    assert capture_log(fun) =~ &quot;hello&quot;
+    assert capture_log(fun) =~ &quot;testing&quot;
+  end
+end</code></pre>
+
+        </section>
+      
+
+      
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <i class="icon-link"></i>
+            </a>
+            Summary
+          </h1>
+          
+
+          
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#capture_log/2">capture_log(opts \\ [], fun)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Captures Logger messages generated when evaluating <code class="inline">fun</code></p>
+</div>
+  
+</div>
+
+  </div>
+
+
+          
+
+          
+
+        </section>
+      
+
+      
+
+      
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <i class="icon-link"></i>
+            </a>
+            Functions
+          </h1>
+          <div class="detail" id="capture_log/2">
+  
+    <span id="capture_log/1" />
+  
+  <div class="detail-header">
+    <a href="#capture_log/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">capture_log(opts \\ [], fun)</span>
+    
+      <a href="https://github.com/elixir-lang/elixir/blob/v1.3.4/lib/ex_unit/lib/ex_unit/capture_log.ex#L65" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>capture_log(<a href="http://elixir-lang.org/docs/stable/elixir/Keyword.html#t:t/0">Keyword.t</a>, (() -> any)) :: <a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Captures Logger messages generated when evaluating <code class="inline">fun</code>.</p>
+<p>Returns the binary which is the captured output.</p>
+<p>This function mutes the <code class="inline">:console</code> backend
+and captures any log messages sent to Logger from the calling
+processes. It is possible to ensure explicit log messages from other
+processes are captured by waiting for their exit or monitor
+signal. This does not guarantee to capture VM generated log messages
+when a process that is spawned using a low level <a href="http://elixir-lang.org/docs/stable/elixir/Kernel.html"><code class="inline">Kernel</code></a> spawn function
+(e.g. <a href="http://elixir-lang.org/docs/stable/elixir/Kernel.html#spawn/1)"><code class="inline">Kernel.spawn/1</code></a> raises an exception that isn’t rescued or a throw
+that isn’t caught. A <a href="http://elixir-lang.org/docs/stable/elixir/Task.html"><code class="inline">Task</code></a>, or other OTP process, will send explicit logs
+that are sent before its exit or monitor signal and will not cause VM
+generated log messages.</p>
+<p>Note that when the <code class="inline">async</code> is set to <code class="inline">true</code>,
+the messages from another test might be captured.</p>
+<p>It is possible to configure the level to capture with <code class="inline">:level</code>,
+which will set the capturing level for the duration of the
+capture, for instance, if the log level is set to :error
+any message with the lower level will be ignored.
+The default level is <code class="inline">nil</code>, which will capture all messages.
+The behaviour is undetermined if async tests change Logger level.</p>
+<p>The format, metadata and colors can be configured with <code class="inline">:format</code>,
+<code class="inline">:metadata</code> and <code class="inline">:colors</code> respectively. These three options
+defaults to the <code class="inline">:console</code> backend configuration parameters.</p>
+
+  </section>
+</div>
+
+        </section>
+      
+
+      
+
+      
+          <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.14.2),
+          </span>
+          <span class="line">
+            designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+            </span>
+        </p>
+        <button class="night-mode-toggle" />
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  <script src="dist/app-f0381555b5.js"></script>
+  </body>
+</html>
+
