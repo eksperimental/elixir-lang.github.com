@@ -1,0 +1,98 @@
+---
+# Jekyll layout that redirects pages
+# this layout control redirects out of the site
+---
+{% assign redirect_url = '' %}
+{% assign stable = site.data.elixir-versions[site.data.elixir-versions.stable] %}
+
+{% if page.url == '/docs/stable/' %}
+  {% assign redirect_url = '/docs.html#{{ stable.version }}' %}
+
+{% elsif page.url contains '/docs/stable/' %}
+  {% assign redirect_url = page.url | replace: '/docs/stable/', 'https://hexdocs.pm/' %}
+
+{% elsif page.url contains '/docs/master/elixir/' %}
+  {% assign redirect_url = page.url | replace: '/docs/master/elixir/', 'https://hexdocs.pm/elixir/master/' %}
+{% elsif page.url contains '/docs/master/eex/' %}
+  {% assign redirect_url = page.url | replace: '/docs/master/eex/', 'https://hexdocs.pm/eex/master/' %}
+{% elsif page.url contains '/docs/master/ex_unit/' %}
+  {% assign redirect_url = page.url | replace: '/docs/master/ex_unit/', 'https://hexdocs.pm/ex_unit/master/' %}
+{% elsif page.url contains '/docs/master/iex/' %}
+  {% assign redirect_url = page.url | replace: '/docs/master/iex/', 'https://hexdocs.pm/iex/master/' %}
+{% elsif page.url contains '/docs/master/logger/' %}
+  {% assign redirect_url = page.url | replace: '/docs/master/logger/', 'https://hexdocs.pm/logger/master/' %}
+{% elsif page.url contains '/docs/master/mix/' %}
+  {% assign redirect_url = page.url | replace: '/docs/master/mix/', 'https://hexdocs.pm/mix/master/' %}
+
+{% elsif page.url contains '/docs/v1.3/elixir/' %}
+  {% assign redirect_url = page.url | replace: '/docs/v1.3/elixir/', 'https://hexdocs.pm/elixir/elixir-versions/' | replace: 'elixir-versions', site.data.elixir-versions.v1_3.version %}
+{% elsif page.url contains '/docs/v1.3/eex/' %}
+  {% assign redirect_url = page.url | replace: '/docs/v1.3/eex/', 'https://hexdocs.pm/eex/elixir-versions/' | replace: 'elixir-versions', site.data.elixir-versions.v1_3.version %}
+{% elsif page.url contains '/docs/v1.3/ex_unit/' %}
+  {% assign redirect_url = page.url | replace: '/docs/v1.3/ex_unit/', 'https://hexdocs.pm/ex_unit/elixir-versions/' | replace: 'elixir-versions', site.data.elixir-versions.v1_3.version %}
+{% elsif page.url contains '/docs/v1.3/iex/' %}
+  {% assign redirect_url = page.url | replace: '/docs/v1.3/iex/', 'https://hexdocs.pm/iex/elixir-versions/' | replace: 'elixir-versions', site.data.elixir-versions.v1_3.version %}
+{% elsif page.url contains '/docs/v1.3/logger/' %}
+  {% assign redirect_url = page.url | replace: '/docs/v1.3/logger/', 'https://hexdocs.pm/logger/elixir-versions/' | replace: 'elixir-versions', site.data.elixir-versions.v1_3.version %}
+{% elsif page.url contains '/docs/v1.3/mix/' %}
+  {% assign redirect_url = page.url | replace: '/docs/v1.3/mix/', 'https://hexdocs.pm/mix/elixir-versions/' | replace: 'elixir-versions', site.data.elixir-versions.v1_3.version %}
+
+{% elsif page.url contains '/docs/v1.2/elixir/' %}
+  {% assign redirect_url = page.url | replace: '/docs/v1.2/elixir/', 'https://hexdocs.pm/elixir/elixir-versions/' | replace: 'elixir-versions', site.data.elixir-versions.v1_2.version %}
+{% elsif page.url contains '/docs/v1.2/eex/' %}
+  {% assign redirect_url = page.url | replace: '/docs/v1.2/eex/', 'https://hexdocs.pm/eex/elixir-versions/' | replace: 'elixir-versions', site.data.elixir-versions.v1_2.version %}
+{% elsif page.url contains '/docs/v1.2/ex_unit/' %}
+  {% assign redirect_url = page.url | replace: '/docs/v1.2/ex_unit/', 'https://hexdocs.pm/ex_unit/elixir-versions/' | replace: 'elixir-versions', site.data.elixir-versions.v1_2.version %}
+{% elsif page.url contains '/docs/v1.2/iex/' %}
+  {% assign redirect_url = page.url | replace: '/docs/v1.2/iex/', 'https://hexdocs.pm/iex/elixir-versions/' | replace: 'elixir-versions', site.data.elixir-versions.v1_2.version %}
+{% elsif page.url contains '/docs/v1.2/logger/' %}
+  {% assign redirect_url = page.url | replace: '/docs/v1.2/logger/', 'https://hexdocs.pm/logger/elixir-versions/' | replace: 'elixir-versions', site.data.elixir-versions.v1_2.version %}
+{% elsif page.url contains '/docs/v1.2/mix/' %}
+  {% assign redirect_url = page.url | replace: '/docs/v1.2/mix/', 'https://hexdocs.pm/mix/elixir-versions/' | replace: 'elixir-versions', site.data.elixir-versions.v1_2.version %}
+
+{% elsif page.url contains '/docs/v1.1/elixir/' %}
+  {% assign redirect_url = page.url | replace: '/docs/v1.1/elixir/', 'https://hexdocs.pm/elixir/elixir-versions/' | replace: 'elixir-versions', site.data.elixir-versions.v1_1.version %}
+{% elsif page.url contains '/docs/v1.1/eex/' %}
+  {% assign redirect_url = page.url | replace: '/docs/v1.1/eex/', 'https://hexdocs.pm/eex/elixir-versions/' | replace: 'elixir-versions', site.data.elixir-versions.v1_1.version %}
+{% elsif page.url contains '/docs/v1.1/ex_unit/' %}
+  {% assign redirect_url = page.url | replace: '/docs/v1.1/ex_unit/', 'https://hexdocs.pm/ex_unit/elixir-versions/' | replace: 'elixir-versions', site.data.elixir-versions.v1_1.version %}
+{% elsif page.url contains '/docs/v1.1/iex/' %}
+  {% assign redirect_url = page.url | replace: '/docs/v1.1/iex/', 'https://hexdocs.pm/iex/elixir-versions/' | replace: 'elixir-versions', site.data.elixir-versions.v1_1.version %}
+{% elsif page.url contains '/docs/v1.1/logger/' %}
+  {% assign redirect_url = page.url | replace: '/docs/v1.1/logger/', 'https://hexdocs.pm/logger/elixir-versions/' | replace: 'elixir-versions', site.data.elixir-versions.v1_1.version %}
+{% elsif page.url contains '/docs/v1.1/mix/' %}
+  {% assign redirect_url = page.url | replace: '/docs/v1.1/mix/', 'https://hexdocs.pm/mix/elixir-versions/' | replace: 'elixir-versions', site.data.elixir-versions.v1_1.version %}
+
+{% elsif page.url contains '/docs/v1.0/elixir/' %}
+  {% assign redirect_url = page.url | replace: '/docs/v1.0/elixir/', 'https://hexdocs.pm/elixir/elixir-versions/' | replace: 'elixir-versions', site.data.elixir-versions.v1_0.version %}
+{% elsif page.url contains '/docs/v1.0/eex/' %}
+  {% assign redirect_url = page.url | replace: '/docs/v1.0/eex/', 'https://hexdocs.pm/eex/elixir-versions/' | replace: 'elixir-versions', site.data.elixir-versions.v1_0.version %}
+{% elsif page.url contains '/docs/v1.0/ex_unit/' %}
+  {% assign redirect_url = page.url | replace: '/docs/v1.0/ex_unit/', 'https://hexdocs.pm/ex_unit/elixir-versions/' | replace: 'elixir-versions', site.data.elixir-versions.v1_0.version %}
+{% elsif page.url contains '/docs/v1.0/iex/' %}
+  {% assign redirect_url = page.url | replace: '/docs/v1.0/iex/', 'https://hexdocs.pm/iex/elixir-versions/' | replace: 'elixir-versions', site.data.elixir-versions.v1_0.version %}
+{% elsif page.url contains '/docs/v1.0/logger/' %}
+  {% assign redirect_url = page.url | replace: '/docs/v1.0/logger/', 'https://hexdocs.pm/logger/elixir-versions/' | replace: 'elixir-versions', site.data.elixir-versions.v1_0.version %}
+{% elsif page.url contains '/docs/v1.0/mix/' %}
+  {% assign redirect_url = page.url | replace: '/docs/v1.0/mix/', 'https://hexdocs.pm/mix/elixir-versions/' | replace: 'elixir-versions', site.data.elixir-versions.v1_0.version %}
+{% endif %}
+
+{% if redirect_url == '' %}
+  {{ content }}
+{% else %}
+<!DOCTYPE html>
+<html lang='en-US'>
+  <head>
+    <meta charset='utf-8'>
+    <title>Redirecting…</title>
+    <link rel='canonical' href='{{ redirect_url }}'>
+    <meta http-equiv='refresh' content='0; url={{ redirect_url }}'>
+  </head>
+  <body>
+    <h1>Redirecting…</h1>
+    <a href='{{ redirect_url }}'>Click here if you are not redirected.</a>
+    <script>location='{{ redirect_url }}'</script>
+  </body>
+</html>
+{% endif %}
+
