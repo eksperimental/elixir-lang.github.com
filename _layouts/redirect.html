@@ -97,7 +97,7 @@
     <meta charset='utf-8'>
     <title>Redirecting…</title>
     <noscript>
-      <link rel='canonical' href='{{ redirect_url }}'>
+      <link rel='canonical' href='{{ redirect_url | split: "#" | first}}'>
       <meta http-equiv='refresh' content='0; url={{ redirect_url }}'>
     </noscript>
   </head>
