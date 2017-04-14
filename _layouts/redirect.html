@@ -3,10 +3,21 @@
 # this layout control redirects out of the site
 ---
 {% assign redirect_url = '' %}
-{% assign stable = site.data.elixir-versions[site.data.elixir-versions.stable] %}
 
-{% if page.url == '/docs/stable/' %}
-  {% assign redirect_url = '/docs.html#{{ stable.version }}' %}
+{% if page.url == '/docs/' %}
+  {% assign redirect_url = '/docs.html' %}
+{% elsif page.url == '/docs/stable/' %}
+  {% assign redirect_url = '/docs.html#stable' %}
+{% elsif page.url == '/docs/master/' %}
+  {% assign redirect_url = '/docs.html#master' %}
+{% elsif page.url == '/docs/v1.3/' %}
+  {% assign redirect_url = '/docs.html#v1.3' %}
+{% elsif page.url == '/docs/v1.2/' %}
+  {% assign redirect_url = '/docs.html#v1.2' %}
+{% elsif page.url == '/docs/v1.1/' %}
+  {% assign redirect_url = '/docs.html#v1.1' %}
+{% elsif page.url == '/docs/v1.0/' %}
+  {% assign redirect_url = '/docs.html#v1.0' %}
 
 {% elsif page.url contains '/docs/stable/' %}
   {% assign redirect_url = page.url | replace: '/docs/stable/', 'https://hexdocs.pm/' %}
@@ -102,7 +113,7 @@
       a.href = url;
       a.innerHTML = "Click here if you are not redirected.";
       document.body.appendChild(a);
-      location=url;
+      location = url;
     </script>
   </body>
 </html>
