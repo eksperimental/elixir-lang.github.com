@@ -106,14 +106,14 @@
     <noscript>
       <a href='{{ redirect_url }}'>Click here if you are not redirected.</a>
     </noscript>
-    <script>
+    {% unless redirect_url contains '#' %}<script>
       var url = '{{ redirect_url }}' + window.location.hash;
       var a = document.createElement('a');
       a.href = url;
       a.innerHTML = "Click here if you are not redirected.";
       document.body.appendChild(a);
       location = url;
-    </script>
+    </script>{% endunless %}
   </body>
 </html>
 {% endif %}
